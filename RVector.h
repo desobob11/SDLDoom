@@ -21,5 +21,6 @@ RVECTOR RVECTOR_diff(RVECTOR v1, RVECTOR v2);
 void RVECTOR_print(RVECTOR v);
 RVECTOR RVECTOR_cast(RVECTOR v1, RVECTOR v2);
 double RVECTOR_length(RVECTOR v);
+int RVECTOR_draw_height(double length);
 
 #endif

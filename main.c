@@ -3,6 +3,8 @@
 #define SDL_MAIN_HANDLED
 #include "SDL2/include/SDL2/SDL.h"
 #include "Wall.h"
+#include "RVector.h"
+#include "Player.h"
 
 #define WIDTH 800
 #define HEIGHT 800
@@ -12,10 +14,10 @@
 #define FPS 60
 #define JUMP -1200
 
+#define MAP_HEIGHT (SIZE * 3)
+#define MAP_WIDTH (SIZE * 3)
 
-void move_player(SDL_Event event, WALL* wall);
-
-    int main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     /* Initializes the timer, audio, video, joystick,
     haptic, gamecontroller and events subsystems */
@@ -36,28 +38,16 @@ void move_player(SDL_Event event, WALL* wall);
         return 0;
     }
 
-    /* Create a renderer */
-   // Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    //SDL_Renderer *rend = SDL_CreateRenderer(wind, -1, render_flags);
+    PLAYER* player = (PLAYER*) malloc(sizeof(PLAYER));
+    RVERTEX head = {0, 0, 0};
+    RVERTEX tail = {0, 0, 0,};
+    player->position.head = head;
+    player->position.tail = tail;
+
     SDL_Surface* surface = SDL_GetWindowSurface(wind);
-    //SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_BLEND);
-   // if (!rend)
-   // {
-   //     printf("Error creating renderer: %s\n", SDL_GetError());
-   //     SDL_DestroyWindow(wind);
-   //     SDL_Quit();
-   //     return 0;
-   // }
 
     /* Main loop */
     float x_pos = (WIDTH - SIZE) / 2, y_pos = (HEIGHT - SIZE) / 2;
-    SDL_Rect* rect = (SDL_Rect*) malloc(sizeof(SDL_Rect));
-    WALL wall = {x_pos, y_pos, SIZE, SIZE, 0xFFFF0000};
-
-    rect->h = SIZE;
-    rect->w = 700;
-    rect->x = x_pos;
-    rect->y = y_pos;
     SDL_Event event;
     while (true) {
 
@@ -65,7 +55,7 @@ void move_player(SDL_Event event, WALL* wall);
         /* Process events */
         while (SDL_PollEvent(&event))
         {
-            move_player(event, &wall);
+            move_player(player, event, MAP_WIDTH, MAP_HEIGHT);
             if (event.type == SDL_QUIT) {
                 SDL_Quit();
              //   SDL_DestroyRenderer(rend);
@@ -74,50 +64,13 @@ void move_player(SDL_Event event, WALL* wall);
                 return 0;
             }
         }
-        /* Clear screen */
-      //  SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-       // SDL_RenderClear(rend);
         SDL_LockSurface(surface);
         SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
         SDL_UnlockSurface(surface);
 
-        WALL_render(wall, surface);
         SDL_UpdateWindowSurface(wind);
-        /* Draw the rectangle */
-      //  SDL_SetRenderDrawColor(rend, 255, 0, 0, 255);
-       // SDL_RenderFillRect(rend, rect);
-
-        /* Draw to window and loop */
-     //   SDL_RenderPresent(rend);
+        RVECTOR_print(read_pos(player));
         SDL_Delay(1000 / FPS);
     }
 }
 
-void move_player(SDL_Event event, WALL* wall) {
-    if (event.type == SDL_KEYDOWN) {
-        switch (event.key.keysym.scancode)
-        {
-        case SDL_SCANCODE_W:
-            wall->h += 10;
-            wall->w += 10;
-         //   if ((wall->color & 0x000000FF) < 0xFF) {
-         //       wall->color += 1;
-         //   }
-            break;
-
-        case SDL_SCANCODE_S:
-            wall->h -= 10;
-            wall->w -= 10;
-         //   if ((wall->color & 0x000000FF) >= 0x00)
-          //  {
-          //      wall->color -= 1;
-          //  }
-            break;
-        default:
-            break;
-        }
-        wall->x = (WIDTH - wall->w) / 2;
-        wall->y = (HEIGHT - wall->h) / 2;
-    }
-
-}
