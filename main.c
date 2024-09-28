@@ -6,7 +6,7 @@
 
 #define WIDTH 800
 #define HEIGHT 800
-#define SIZE 1
+#define SIZE 50
 #define SPEED 600
 #define GRAVITY 60
 #define FPS 60
@@ -52,7 +52,7 @@ void move_player(SDL_Event event, WALL* wall);
     /* Main loop */
     float x_pos = (WIDTH - SIZE) / 2, y_pos = (HEIGHT - SIZE) / 2;
     SDL_Rect* rect = (SDL_Rect*) malloc(sizeof(SDL_Rect));
-    WALL wall = {x_pos, y_pos, SIZE, SIZE, 0xFFFF00FF};
+    WALL wall = {x_pos, y_pos, SIZE, SIZE, 0xFFFF0000};
 
     rect->h = SIZE;
     rect->w = 700;
@@ -98,16 +98,16 @@ void move_player(SDL_Event event, WALL* wall) {
         switch (event.key.keysym.scancode)
         {
         case SDL_SCANCODE_W:
-            wall->h += 2;
-            wall->w += 2;
+            wall->h += 10;
+            wall->w += 10;
          //   if ((wall->color & 0x000000FF) < 0xFF) {
          //       wall->color += 1;
          //   }
             break;
 
         case SDL_SCANCODE_S:
-            wall->h -= 2;
-            wall->w -= 2;
+            wall->h -= 10;
+            wall->w -= 10;
          //   if ((wall->color & 0x000000FF) >= 0x00)
           //  {
           //      wall->color -= 1;

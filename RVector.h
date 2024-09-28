@@ -1,0 +1,25 @@
+#ifndef RVECTOR_H_
+#define RVECTOR_H_
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+
+typedef struct RVERTEX {
+    double x;
+    double y;
+    double z;
+} RVERTEX;
+
+typedef struct RVECTOR
+{
+    RVERTEX head;
+    RVERTEX tail;
+} RVECTOR;
+
+RVECTOR RVECTOR_diff(RVECTOR v1, RVECTOR v2);
+void RVECTOR_print(RVECTOR v);
+RVECTOR RVECTOR_cast(RVECTOR v1, RVECTOR v2);
+double RVECTOR_length(RVECTOR v);
+
+#endif
