@@ -5,6 +5,12 @@
 #include <stdio.h>
 #include <math.h>
 
+
+typedef struct DRAW_COL {
+    uint32_t color;
+    double distance;
+} DRAW_COL;
+
 typedef struct RVERTEX {
     double x;
     double y;
@@ -23,6 +29,6 @@ void RVECTOR_print(RVECTOR v);
 RVECTOR RVECTOR_cast(RVECTOR v1, RVECTOR v2);
 double RVECTOR_length(RVECTOR v);
 int RVECTOR_draw_height(double length);
-double RVECTOR_cast_seek_length(RVECTOR v1, int* map, int map_width);
+DRAW_COL RVECTOR_cast_seek_length(RVECTOR v1, int* map, int map_width);
 
 #endif

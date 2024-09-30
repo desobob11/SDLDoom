@@ -1,6 +1,9 @@
 #include "RVector.h"
 #define WALL_SIZE 50
 
+
+
+
 RVECTOR RVECTOR_diff(RVECTOR v1, RVECTOR v2) {
    // RVECTOR v3 = {v2.x - v1.x, v2.y - v1.y, v2.z - v1.z};
    // RVECTOR v = {v1.x + v3.x, v1.y + v3.y, v1.z + v3.z};
@@ -13,10 +16,10 @@ RVECTOR RVECTOR_cast(RVECTOR v1, RVECTOR v2) {
 }
 
 ////   RVERTEX start_pos = {75, 0, 0};
-double RVECTOR_cast_seek_length(RVECTOR v, int* map, int map_width) {
+DRAW_COL RVECTOR_cast_seek_length(RVECTOR v, int* map, int map_width) {
     int hit = 0;
-    double length = -1;
     RVECTOR copy = v;
+    DRAW_COL col;
     // assuming this function is only cast using normalized direction vector
      // fro player's position
      double x_incr = fabs(v.head.x - v.tail.x);
@@ -29,8 +32,9 @@ double RVECTOR_cast_seek_length(RVECTOR v, int* map, int map_width) {
         int j = (int) copy.head.x / WALL_SIZE;
        // printf("Head at (%d, %d)\n", i, j);
         if (*(map + ((i * map_width) + j))) {
-            printf("Wall Found at (%d, %d)\n", i, j);
-            length = RVECTOR_length(copy);
+            printf("Wall Found at (%.2lf, %.2lf)\n", copy.head.x, copy.head.z);
+            col.distance = RVECTOR_length(copy);
+            col.color = *(map + ((i * map_width) + j));
             hit = 1;
         }
         else {
@@ -38,8 +42,7 @@ double RVECTOR_cast_seek_length(RVECTOR v, int* map, int map_width) {
             copy.head = new_head;
         }
     }
-
-    return length;
+    return col;
 }
 
 RVECTOR RVECTOR_normalize(RVECTOR v) {
