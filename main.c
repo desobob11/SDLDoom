@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #define SDL_MAIN_HANDLED
 #include "SDL2/include/SDL2/SDL.h"
 #include "Wall.h"
@@ -16,63 +17,12 @@
 #define JUMP -1200
 #define MIN_BRIGHT 75
 
-#define MAP_HEIGHT (SIZE * 4)
-#define MAP_WIDTH (SIZE * 4)
+#define MAP_HEIGHT (SIZE * 3)
+#define MAP_WIDTH (SIZE * 3)
 
-void GAME_render_column(WALL wall, SDL_Surface* surface) {
 
-    
-    SDL_SetSurfaceBlendMode(surface, SDL_BLENDMODE_BLEND);
-    SDL_LockSurface(surface);
-    SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
-    for (int i = wall.x; i < wall.x + wall.w; ++i) {
-        for (int j = wall.y; j < wall.y + wall.h; ++j) {
- 
-            uint32_t* pixels = (uint32_t*) surface->pixels;
-            pixels[j * surface->w + i] = wall.color;
-            // uint32_t* pixel = (uint32_t* ) ((uint8_t* ) surface->pixels
-            //  + (wall.y + j) * surface->pitch + (wall.x * i) * surface->format->BitsPerPixel);
 
-            //if (*pixel != wall.color) {
-          //      *pixel = wall.color;
-          //  }
-        }
-    }
-    SDL_UnlockSurface(surface);
-}
 
-/*
-void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, PLAYER* player, int* map, int map_width) {
-    SDL_LockSurface(surface);
-      SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
-    
-    RVECTOR turn_vec = player->dir_vector;
-    double dir = M_PI / 8;
-    RVERTEX dir_head = {player->position.head.x + cos(dir), 0, player->position.head.z + sin(dir)};
-    turn_vec.head = dir_head;
-    //for (int i = 0; i < WIDTH; ++i) {
-    int i = WIDTH / 2;
-        DRAW_COL col = RVECTOR_cast_seek_length(turn_vec, map, map_width);
-        dir -= (M_PI / 1600);
-        dir_head.x = player->position.head.x + cos(dir);
-        dir_head.z = player->position.head.z + sin(dir);
-        turn_vec.head = dir_head;
-
-        
-    
-    int col_height = (int) (( col.distance / (double) MAP_HEIGHT) * (double) HEIGHT);
-    int half = col_height / 2;
-    uint32_t color = col.color;
-    color -= ( 5 * col_height);
-        for (int j = half; j < HEIGHT - half; ++j) {
-            //  printf("here\n");
-            uint32_t* pixels = (uint32_t*) surface->pixels;
-                pixels[j * surface->w + i] = color;
-        }
-  //  }
-    SDL_UpdateWindowSurface(wind);
-    SDL_UnlockSurface(surface);
-}*/
 
 void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, PLAYER* player, int* map, int map_width) {
     SDL_LockSurface(surface);
@@ -98,36 +48,14 @@ void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, PLAYER* player, in
     DRAW_COL col = RVECTOR_cast_seek_length(turn_vec, map, map_width);
 
 
-    int thiscolor;
-    if (col.distance > 30 && col.distance < 40) {
-        thiscolor = 0xFFFFFFFF;
-    }
-    else if (col.distance > 40 && col.distance < 50) {
-
-                thiscolor = 0xDDDDDDDD;
-    }
-    else if (col.distance > 50 && col.distance < 60) {
-        thiscolor = 0xBBBBBBBB;
-    }
-        else if (col.distance > 60 && col.distance < 70) {
-
-                thiscolor = 0x999999999;
-    }
-        else if (col.distance > 70 && col.distance < 80) {
-
-                thiscolor = 0x66666666;
-    }
-    else {
-        thiscolor = 0x33333333;
-    }
-
-        int col_height = HEIGHT - (int) (( col.distance / (double) MAP_HEIGHT) * (double) HEIGHT);
+       // int col_height = (int) (( col.distance / (double) MAP_HEIGHT) * (double) HEIGHT);
+       int col_height = (int) col.distance * (int) 2;
     int half = col_height / 2;
 
-        for (int j = half; j < HEIGHT - half; ++j) {
+        for (int j = col_height; j < HEIGHT - col_height; ++j) {
             //  printf("here\n");
             uint32_t* pixels = (uint32_t*) surface->pixels;
-                pixels[j * surface->w + i] = thiscolor;
+                pixels[j * surface->w + i] = col.color;
         }
         dir -= (M_PI / 1600);
     turn_vec.head.x = player->position.head.x + cos(dir);
@@ -168,9 +96,13 @@ int main(int argc, char *argv[])
     PLAYER* player = PLAYER_init_player(start_pos);
 
 
-    uint32_t map[9] = { 0x00000099, 0x00000099, 0x00000099,
-                    0x00000099, 0x00000000, 0x00000099,
-                    0x00000099, 0x00000099, 0x00000099};
+    uint32_t map[9] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
+                    0xFFFFFFFF, 0x00000000, 0xFFFFFFFF,
+                    0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF};
+                    
+    //uint32_t map[9] = { 0x00000099, 0x00000099, 0x00000099,
+      //              0x00000099, 0x00000000, 0x00000099,
+        //            0x00000099, 0x00000099, 0x00000099};;
 
     SDL_Surface* surface = SDL_GetWindowSurface(wind);
     SDL_SetSurfaceBlendMode(surface, SDL_BLENDMODE_BLEND);
@@ -182,7 +114,7 @@ int main(int argc, char *argv[])
         /* Process events */
         while (SDL_PollEvent(&event))
         {
-            move_player(player, event, MAP_WIDTH, MAP_HEIGHT);
+            move_player(player, event, map, 3, 3);
             PLAYER_rotate_camera(player, event);
 
             if (event.type == SDL_QUIT) {

@@ -8,6 +8,8 @@
 #include "RVector.h"
 
 
+#define MOUSE_SENS 10.0
+
 typedef struct PLAYER {
     RVECTOR position;
     RVECTOR dir_vector;
@@ -15,7 +17,7 @@ typedef struct PLAYER {
 
 } PLAYER;
 
-void move_player(PLAYER *player, SDL_Event event, int l_width, int l_height);
+void move_player(PLAYER *player, SDL_Event event, uint32_t* map, int l_width, int l_height);
 RVECTOR read_pos(PLAYER* player);
 
 PLAYER *PLAYER_init_player(RVERTEX head);
