@@ -44,16 +44,16 @@ PLAYER *PLAYER_init_player(RVERTEX head)
     player->position.head = head;
     player->position.tail = tail;
 
-    player->direction = M_PI / 2.0;
+    player->direction = (3 * M_PI) / 2;
 
     RVERTEX dir_tail = head;
-    RVERTEX dir_head = {head.x + cos(player->direction), 0, head.z + sin(player->direction)};
+    RVERTEX dir_head = {head.x + cos(player->direction), 0, head.z - sin(player->direction)};
     RVECTOR dir_vector = {dir_head, dir_tail};
     player->dir_vector = dir_vector;
     return player;
 }
 
-PLAYER *PLAYER_rotate_camera(PLAYER *player, SDL_Event event)
+void *PLAYER_rotate_camera(PLAYER *player, SDL_Event event)
 {   
     if (event.type == SDL_KEYDOWN)
     {
@@ -75,3 +75,4 @@ PLAYER *PLAYER_rotate_camera(PLAYER *player, SDL_Event event)
         printf("%.2lf %.2lf\n", player->direction / M_PI, RVECTOR_length(player->dir_vector));
     }
 }
+

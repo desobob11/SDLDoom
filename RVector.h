@@ -23,5 +23,6 @@ void RVECTOR_print(RVECTOR v);
 RVECTOR RVECTOR_cast(RVECTOR v1, RVECTOR v2);
 double RVECTOR_length(RVECTOR v);
 int RVECTOR_draw_height(double length);
+double RVECTOR_cast_seek_length(RVECTOR v1, int* map, int map_width);
 
 #endif
