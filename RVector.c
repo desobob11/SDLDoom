@@ -12,6 +12,15 @@ RVECTOR RVECTOR_cast(RVECTOR v1, RVECTOR v2) {
     return v;
 }
 
+RVECTOR RVECTOR_normalize(RVECTOR v) {
+    RVECTOR norm = {v.head, v.tail};
+    double inverse_length = 1 / RVECTOR_length(norm);
+    norm.head.x *= inverse_length;
+    norm.head.y *= inverse_length;
+    norm.head.z *= inverse_length;
+    return norm;
+}
+
 double RVECTOR_length(RVECTOR v) {
     double x = (v.head.x - v.tail.x);
     x *= x;

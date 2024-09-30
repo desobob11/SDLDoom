@@ -2,6 +2,10 @@
     "files.associations": {
         "sdl.h": "c",
         "wall.h": "c",
-        "RVector.C": "cpp"
+        "RVector.C": "cpp",
+        "sec.h": "c",
+        "stdlib.h": "c",
+        "string.h": "c",
+        "limits.h": "c"
     }
 }
