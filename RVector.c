@@ -45,8 +45,8 @@ uint32_t RVECTOR_darken_color(uint32_t color, uint32_t distance) {
 }
 
 ////   RVERTEX start_pos = {75, 0, 0};
-DRAW_COL RVECTOR_cast_seek_length(RVECTOR v, RVECTOR horizon, int* map, int map_width) {
-    int hit = 0;
+DRAW_COL RVECTOR_cast_seek_length(RVECTOR v, RVERTEX h_point, int* map, int map_width) {
+  int hit = 0;
     RVECTOR copy = v;
     DRAW_COL col;
     // assuming this function is only cast using normalized direction vector
@@ -70,9 +70,8 @@ DRAW_COL RVECTOR_cast_seek_length(RVECTOR v, RVECTOR horizon, int* map, int map_
 
            // col.distance = RVECTOR_length(copy);
 
-           RVERTEX near_horiz = RVECTOR_closest_point(copy.head, horizon);
-           RVECTOR final = {copy.head, near_horiz};
-           col.distance = RVECTOR_length(final);
+
+           col.distance = RVECTOR_length(copy);
 
 
      
@@ -83,7 +82,8 @@ DRAW_COL RVECTOR_cast_seek_length(RVECTOR v, RVECTOR horizon, int* map, int map_
             }
             else {
                 //printf("here\n");
-                col.color = RVECTOR_darken_color(*(map + ((i * map_width) + j)), (uint32_t) col.distance) ;
+               // col.color = RVECTOR_darken_color(*(map + ((i * map_width) + j)), (uint32_t) col.distance) ;
+                col.color = *(map + ((i * map_width) + j));
             }
 
             //col.color = *(map + ((i * map_width) + j));

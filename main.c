@@ -18,8 +18,8 @@
 #define JUMP -1200
 #define MIN_BRIGHT 75
 
-#define MAP_HEIGHT (SIZE * 3)
-#define MAP_WIDTH (SIZE * 3)
+#define MAP_HEIGHT (SIZE * 5)
+#define MAP_WIDTH (SIZE * 5)
 
 
 
@@ -29,46 +29,55 @@ void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, PLAYER* player, in
     SDL_LockSurface(surface);
       SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
 
-    RVECTOR turn_vec = player->dir_vector;
-    SDL_Color col;
-    col.a = 0x99;
-    col.r = 0xFF;
-    col.g = 0xFF;
-    col.b = 0xFF;
-    
-    double dir = player->direction - (M_PI / 8);
-    if (dir < 0)
-        dir += (2.0 * M_PI);
-    turn_vec.head.x = player->position.head.x + cos(dir);
-    turn_vec.head.z = player->position.head.z + sin(dir);
 
-    //RVECTOR_print(turn_vec);
-    //printf("DIR %.2lf %.2lf %.2lf\n", dir, dir / M_PI, RVECTOR_length(turn_vec));
-    
+    RVECTOR h_iter;
+    double x_incr = player->horizon.head.x - player->horizon.tail.x;
+    double z_incr = player->horizon.head.z - player->horizon.tail.z;
+    x_incr /= RVECTOR_length(player->horizon);
+    z_incr /= RVECTOR_length(player->horizon);
+    RVERTEX h_head = player->horizon.tail;
+    h_iter.head = h_head;
+    h_iter.tail = h_head;
+    //h_iter = RVECTOR_normalize(h_iter);
+
+//exit(0);
+//printf("%.2lf\n\n"), RVECTOR_length(h_iter);
+
     for (int i = 0; i < WIDTH; ++i) {
+    //        RVECTOR_print(player->horizon);
+    //RVECTOR_print(h_iter);
+    //printf("%.2lf\n\n", RVECTOR_length(h_iter));
+    RVERTEX plane_point = h_iter.head;
+    RVECTOR ray;
+    ray.head = plane_point;
+    ray.tail = player->position.head;
+    double ray_x_incr = ray.head.x - ray.tail.x;
+    double ray_z_incr = ray.head.z - ray.tail.z;
+    ray_x_incr /= RVECTOR_length(ray);
+    ray_z_incr /= RVECTOR_length(ray);
+    ray.head = ray.tail;
+    ray.head.x += ray_x_incr;
+    ray.head.z -= ray_z_incr;
 
-    DRAW_COL col = RVECTOR_cast_seek_length(turn_vec, player->horizon, map, map_width);
+    DRAW_COL col = RVECTOR_cast_seek_length(ray, plane_point, map, map_width);
 
 
        // int col_height = (int) (( col.distance / (double) MAP_HEIGHT) * (double) HEIGHT);
-       int col_height = (int) col.distance;
+    int col_height = (int) col.distance / (HEIGHT / 10);
     int half = col_height / 2;
 
         for (int j = col_height; j < HEIGHT - col_height; ++j) {
-            //  printf("here\n");
+          //    printf("here\n");
             uint32_t* pixels = (uint32_t*) surface->pixels;
                 pixels[j * surface->w + i] = col.color;
        
         }
-        
-
-
-        dir -= (M_PI / 1600);
-    turn_vec.head.x = player->position.head.x + cos(dir);
-    turn_vec.head.z = player->position.head.z + sin(dir);
+        h_iter.head.x += x_incr;
+        h_iter.head.z -= z_incr; 
     }
     SDL_UpdateWindowSurface(wind);
     SDL_UnlockSurface(surface);
+   // exit(0);
 }
 
 int main(int argc, char *argv[])
@@ -98,17 +107,19 @@ int main(int argc, char *argv[])
 
 
 
-    RVERTEX start_pos = {75, 0, 75};
+    RVERTEX start_pos = {4000, 0, 4000};
     PLAYER* player = PLAYER_init_player(start_pos);
 
 
-    uint32_t map[9] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
-                    0xFFFFFFFF, 0x00000000, 0xFFFFFFFF,
-                    0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF};
+    uint32_t map[25] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
+                   0xFFFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF,
+                    0xFFFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF,
+                  0xFFFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF,
+                 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF};
                     
-    //uint32_t map[9] = { 0x00000099, 0x00000099, 0x00000099,
-      //              0x00000099, 0x00000000, 0x00000099,
-        //            0x00000099, 0x00000099, 0x00000099};;
+  //  uint32_t map[9] = { 0x00000099, 0x00000099, 0x00000099,
+    //                0x00000099, 0x00000000, 0x00000099,
+      //                  0x00000099, 0x00000099, 0x00000099};;
 
     SDL_Surface* surface = SDL_GetWindowSurface(wind);
     SDL_SetSurfaceBlendMode(surface, SDL_BLENDMODE_BLEND);
@@ -120,7 +131,7 @@ int main(int argc, char *argv[])
         /* Process events */
         while (SDL_PollEvent(&event))
         {
-            move_player(player, event, map, 3, 3);
+        ////    move_player(player, event, map, 3, 3);
             PLAYER_rotate_camera(player, event);
 
             if (event.type == SDL_QUIT) {
@@ -131,7 +142,7 @@ int main(int argc, char *argv[])
                 return 0;
             }
         }
-        GAME_render_view(wind, surface, player, map, 3);
+        GAME_render_view(wind, surface, player, map, 5);
        // SDL_LockSurface(surface);
       //  SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
      //   SDL_UnlockSurface(surface);
