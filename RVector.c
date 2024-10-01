@@ -1,5 +1,5 @@
 #include "RVector.h"
-#define WALL_SIZE 50
+#define WALL_SIZE 1600
 
 
 
@@ -45,7 +45,7 @@ uint32_t RVECTOR_darken_color(uint32_t color, uint32_t distance) {
 }
 
 ////   RVERTEX start_pos = {75, 0, 0};
-DRAW_COL RVECTOR_cast_seek_length(RVECTOR v, int* map, int map_width) {
+DRAW_COL RVECTOR_cast_seek_length(RVECTOR v, RVECTOR horizon, int* map, int map_width) {
     int hit = 0;
     RVECTOR copy = v;
     DRAW_COL col;
@@ -68,7 +68,15 @@ DRAW_COL RVECTOR_cast_seek_length(RVECTOR v, int* map, int map_width) {
             int corner_a = x_mod % WALL_SIZE == 0 && z_mod % WALL_SIZE  == 0;
             int corner_b = x_mod % WALL_SIZE == WALL_SIZE - 1 && z_mod % WALL_SIZE  == WALL_SIZE - 1;
 
-            col.distance = RVECTOR_length(copy);
+           // col.distance = RVECTOR_length(copy);
+
+           RVERTEX near_horiz = RVECTOR_closest_point(copy.head, horizon);
+           RVECTOR final = {copy.head, near_horiz};
+           col.distance = RVECTOR_length(final);
+
+
+     
+         //  exit(0);
 
             if (corner_a || corner_b) {
                 col.color = 0x00000000;
@@ -122,3 +130,13 @@ void RVECTOR_print(RVECTOR v) {
     v.head.x, v.head.y, v.head.z);
 }
 
+
+
+RVERTEX RVECTOR_closest_point(RVERTEX ray_head, RVECTOR horizon) {
+    double m1 = (horizon.head.z - horizon.tail.z) / (horizon.head.x - horizon.tail.x);
+    double m2 = -(1.0 / m1);
+    double point_x = ((m1*horizon.tail.x) - (m2*ray_head.x) - horizon.tail.z + ray_head.z) / (m1 - m2);
+    double point_z = (m2*(point_x - ray_head.x)) + ray_head.z;
+    RVERTEX point = {point_x, 0, point_z};
+    return point;
+}

@@ -7,10 +7,11 @@
 #include "RVector.h"
 #include "Player.h"
 #include <math.h>
+#include <unistd.h>
 
 #define WIDTH 800
 #define HEIGHT 800
-#define SIZE 50
+#define SIZE 1600
 #define SPEED 600
 #define GRAVITY 60
 #define FPS 60
@@ -45,18 +46,23 @@ void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, PLAYER* player, in
     //printf("DIR %.2lf %.2lf %.2lf\n", dir, dir / M_PI, RVECTOR_length(turn_vec));
     
     for (int i = 0; i < WIDTH; ++i) {
-    DRAW_COL col = RVECTOR_cast_seek_length(turn_vec, map, map_width);
+
+    DRAW_COL col = RVECTOR_cast_seek_length(turn_vec, player->horizon, map, map_width);
 
 
        // int col_height = (int) (( col.distance / (double) MAP_HEIGHT) * (double) HEIGHT);
-       int col_height = (int) col.distance * (int) 2;
+       int col_height = (int) col.distance;
     int half = col_height / 2;
 
         for (int j = col_height; j < HEIGHT - col_height; ++j) {
             //  printf("here\n");
             uint32_t* pixels = (uint32_t*) surface->pixels;
                 pixels[j * surface->w + i] = col.color;
+       
         }
+        
+
+
         dir -= (M_PI / 1600);
     turn_vec.head.x = player->position.head.x + cos(dir);
     turn_vec.head.z = player->position.head.z + sin(dir);
