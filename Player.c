@@ -3,6 +3,7 @@
 
 #define WALL_SIZE 50
 
+#define HORIZ_LEN 1024
 void move_player(PLAYER *player, SDL_Event event, uint32_t* map, int l_width, int l_height)
 { 
     if (event.type == SDL_KEYDOWN)
@@ -64,10 +65,25 @@ PLAYER *PLAYER_init_player(RVERTEX head)
     RVERTEX dir_head = {head.x + cos(player->direction), 0, head.z - sin(player->direction)};
     RVECTOR dir_vector = {dir_head, dir_tail};
     player->dir_vector = dir_vector;
+
+    RVERTEX horiz_tail = head;
+    double hor_dir = player->direction + (M_PI / 2.0);
+    RVERTEX horiz_head = {head.x + (cos(hor_dir)), 0, head.z + (sin(hor_dir))};
+    RVERTEX h_f_head = horiz_head;
+
+
+    horiz_tail = head;
+    hor_dir = player->direction - (M_PI / 2.0);
+    horiz_head.x = head.x + (cos(hor_dir));
+    horiz_head.z = head.z + (sin(hor_dir));
+
+    RVERTEX h_f_tail = horiz_head;
+    player->horizon.head = h_f_head;
+    player->horizon.tail = h_f_tail;
     return player;
 }
 
-void *PLAYER_rotate_camera(PLAYER *player, SDL_Event event)
+void PLAYER_rotate_camera(PLAYER *player, SDL_Event event)
 {   
     if (event.type == SDL_KEYDOWN)
     {
@@ -85,8 +101,25 @@ void *PLAYER_rotate_camera(PLAYER *player, SDL_Event event)
         }
         RVERTEX dir_head = {player->position.head.x + cos(player->direction), 0, player->position.head.z + sin(player->direction)};
         player->dir_vector.head = dir_head;
-       // RVECTOR_print(player->dir_vector);
-       // printf("%.2lf %.2lf\n", player->direction / M_PI, RVECTOR_length(player->dir_vector));
+
+        RVERTEX head = player->dir_vector.tail;
+        RVERTEX horiz_tail = head;
+    double hor_dir = player->direction + (M_PI / 2.0);
+    RVERTEX horiz_head = {head.x + (cos(hor_dir)) * HORIZ_LEN, 0, head.z + (sin(hor_dir)) * HORIZ_LEN};
+    RVERTEX h_f_head = horiz_head;
+
+
+    horiz_tail = head;
+    hor_dir = player->direction - (M_PI / 2.0);
+    horiz_head.x = head.x + (cos(hor_dir)) * HORIZ_LEN;
+    horiz_head.z = head.z + (sin(hor_dir)) * HORIZ_LEN;
+
+    RVERTEX h_f_tail = horiz_head;
+    player->horizon.head = h_f_head;
+    player->horizon.tail = h_f_tail;
+
+        RVECTOR_print(player->horizon);
+        printf("%.2lf %.2lf\n", player->direction / M_PI, RVECTOR_length(player->horizon));
     }
 }
 

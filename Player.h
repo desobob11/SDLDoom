@@ -14,13 +14,13 @@ typedef struct PLAYER {
     RVECTOR position;
     RVECTOR dir_vector;
     double direction;
-
+    RVECTOR horizon;
 } PLAYER;
 
 void move_player(PLAYER *player, SDL_Event event, uint32_t* map, int l_width, int l_height);
 RVECTOR read_pos(PLAYER* player);
 
 PLAYER *PLAYER_init_player(RVERTEX head);
-void *PLAYER_rotate_camera(PLAYER *player, SDL_Event event);
+void PLAYER_rotate_camera(PLAYER *player, SDL_Event event);
 
 #endif
