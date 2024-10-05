@@ -73,7 +73,7 @@ DRAW_COL RVECTOR_cast_seek_length(SDL_Renderer* rend, RVECTOR v, RVERTEX h_point
 
            col.distance = RVECTOR_length(copy);
             //RVECTOR_print(copy);
-          // SDL_RenderDrawLine(rend, (int)copy.head.x, (int)copy.head.z, (int)copy.tail.x, (int)copy.tail.z);
+           SDL_RenderDrawLine(rend, (int)copy.head.x, (int)copy.head.z, (int)copy.tail.x, (int)copy.tail.z);
 
             
      

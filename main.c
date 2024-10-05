@@ -24,6 +24,9 @@
 #define MAP_WIDTH (BLOCK_SIZE * 3)
 
 
+extern int DRAW_MODE;
+int DRAW_MODE = 0;
+
 
 
 
@@ -32,8 +35,8 @@
 
 void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, SDL_Renderer* rend, PLAYER* player, int* map, int map_width) {
 
-    SDL_LockSurface(surface);
-    SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
+   // SDL_LockSurface(surface);
+   // SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
 
 
     RVECTOR h_iter;
@@ -41,6 +44,8 @@ void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, SDL_Renderer* rend
     double z_incr = player->horizon.head.z - player->horizon.tail.z;
     x_incr /= RVECTOR_length(player->horizon);
     z_incr /= RVECTOR_length(player->horizon);
+    x_incr /= 16;
+    z_incr /= 16;
     RVERTEX h_head = player->horizon.tail;
     h_iter.head = h_head;
     h_iter.tail = h_head;
@@ -49,7 +54,7 @@ void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, SDL_Renderer* rend
 //exit(0);
 //printf("%.2lf\n\n"), RVECTOR_length(h_iter);
 
-    for (int i = 0; i < 50; ++i) {
+    for (int i = 0; i < 800; ++i) {
     //        RVECTOR_print(player->horizon);
     //RVECTOR_print(h_iter);
     //printf("%.2lf\n\n", RVECTOR_length(h_iter));
@@ -69,10 +74,11 @@ void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, SDL_Renderer* rend
 
 
        // int col_height = (int) (( col.distance / (double) MAP_HEIGHT) * (double) HEIGHT);
-    int col_height = (int) col.distance;
+    double draw_height = ((800.0 / col.distance) * 0.1) * 800.0;
+    int col_height = (int) draw_height;
     printf("%d\n", col_height);
     int half = col_height / 2;
-    for (int k = (16*i); k < (16*(i + 1)); ++ k) {
+   
 
     
         for (int j = col_height; j < HEIGHT - col_height; ++j) {
@@ -82,7 +88,7 @@ void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, SDL_Renderer* rend
         }
         h_iter.head.x += x_incr;
         h_iter.head.z += z_incr; 
-    }
+    
     }
 //    SDL_UpdateWindowSurface(wind);
   //  SDL_UnlockSurface(surface);
@@ -110,18 +116,18 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    //Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    //SDL_Renderer *rend = SDL_CreateRenderer(wind, -1, render_flags);
+    Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
+    SDL_Renderer *rend = SDL_CreateRenderer(wind, -1, render_flags);
     //SDL_Surface* surface = SDL_GetWindowSurface(wind);
-    //SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_BLEND);
-    //SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-  //  if (!rend)
-   // {
-    //  printf("Error creating renderer: %s\n", SDL_GetError());
-     // SDL_DestroyWindow(wind);
-     // SDL_Quit();
-     // return 0;
-   // }
+    SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
+    if (!rend)
+    {
+      printf("Error creating renderer: %s\n", SDL_GetError());
+      SDL_DestroyWindow(wind);
+      SDL_Quit();
+      return 0;
+    }
 
 
 
@@ -163,15 +169,15 @@ int main(int argc, char *argv[])
                 return 0;
             }
         }
-    //SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-   // SDL_RenderClear(rend);
+    SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
+    SDL_RenderClear(rend);
         SDL_Rect rect;
         rect.h = 10;
         rect.w = 10;
         rect.x = (int) player->position.head.x;
         rect.y = (int) player->position.head.z;
-      // SDL_SetRenderDrawColor(rend, 255, 0, 0, 255);
-       GAME_render_view(wind, surface, NULL, player, map, 3);
+       SDL_SetRenderDrawColor(rend, 255, 0, 0, 255);
+       GAME_render_view(wind, surface, rend, player, map, 3);
 
       for (int i = 0; i < 600; i += BLOCK_SIZE) {
         for (int j = 0; j < 600; j += BLOCK_SIZE) {
@@ -184,12 +190,12 @@ int main(int argc, char *argv[])
         }
       }
 
-        //SDL_RenderDrawRect(rend, &rect);
-        //SDL_RenderDrawLine(rend, player->horizon.head.x, player->horizon.head.z, player->horizon.tail.x, player->horizon.tail.z);
-    //SDL_SetRenderDrawColor(rend, 0, 255, 0, 255);
-  //SDL_RenderDrawLine(rend, player->dir_vector.head.x, player->dir_vector.head.z, player->dir_vector.tail.x, player->dir_vector.tail.z);
+        SDL_RenderDrawRect(rend, &rect);
+        SDL_RenderDrawLine(rend, player->horizon.head.x, player->horizon.head.z, player->horizon.tail.x, player->horizon.tail.z);
+        SDL_SetRenderDrawColor(rend, 0, 255, 0, 255);
+        SDL_RenderDrawLine(rend, player->dir_vector.head.x, player->dir_vector.head.z, player->dir_vector.tail.x, player->dir_vector.tail.z);
        // printf("%d %d\n", rect.x, rect.y);
-     //   SDL_RenderPresent(rend);
+        SDL_RenderPresent(rend);
 
        // SDL_LockSurface(surface);
       //  SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
