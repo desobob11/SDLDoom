@@ -54,7 +54,7 @@ void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, SDL_Renderer* rend
 //exit(0);
 //printf("%.2lf\n\n"), RVECTOR_length(h_iter);
 
-    for (int i = 0; i < 800; i += 4) {
+    for (int i = 0; i < 800; i += 1) {
     //        RVECTOR_print(player->horizon);
     //RVECTOR_print(h_iter);
     //printf("%.2lf\n\n", RVECTOR_length(h_iter));
@@ -80,7 +80,7 @@ void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, SDL_Renderer* rend
     int half = col_height / 2;
    
 
-    for (int k = i; k < i + 4; ++k) {
+    for (int k = i; k < i + 1; ++k) {
 
     
         for (int j = half; j < HEIGHT - half; ++j) {

@@ -96,9 +96,9 @@ void PLAYER_rotate_camera(PLAYER *player, SDL_Event event)
     {
         SDL_Scancode code = event.key.keysym.scancode;
         if (code == SDL_SCANCODE_LEFT)
-            player->direction += (M_PI / MOUSE_SENS);
-        if (code == SDL_SCANCODE_RIGHT)
             player->direction -= (M_PI / MOUSE_SENS);
+        if (code == SDL_SCANCODE_RIGHT)
+            player->direction += (M_PI / MOUSE_SENS);
 
         if (player->direction > 2.0 * M_PI) {
             player->direction -= (2.0 * M_PI);
