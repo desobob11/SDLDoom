@@ -20,8 +20,8 @@
 #define JUMP -1200
 #define MIN_BRIGHT 75
 
-#define MAP_HEIGHT (BLOCK_SIZE * 3)
-#define MAP_WIDTH (BLOCK_SIZE * 3)
+#define MAP_HEIGHT (BLOCK_SIZE * 5)
+#define MAP_WIDTH (BLOCK_SIZE * 5)
 
 
 extern int DRAW_MODE;
@@ -35,8 +35,8 @@ int DRAW_MODE = 0;
 
 void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, SDL_Renderer* rend, PLAYER* player, int* map, int map_width) {
 
-   // SDL_LockSurface(surface);
-   // SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
+    SDL_LockSurface(surface);
+    SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
 
 
     RVECTOR h_iter;
@@ -73,25 +73,25 @@ void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, SDL_Renderer* rend
     DRAW_COL col = RVECTOR_cast_seek_length(rend, ray, player->horizon, map, map_width);
 
 
-       // int col_height = (int) (( col.distance / (double) MAP_HEIGHT) * (double) HEIGHT);
-    double draw_height = ((800.0 / col.distance) * 0.1) * 800.0;
-    int col_height = (int) draw_height;
-    printf("%d\n", col_height);
+        int col_height = (int) (( col.distance / (double) MAP_HEIGHT) * (double) HEIGHT);
+   // double draw_height = ((800.0 / col.distance) * 0.1) * 800.0;
+   // int col_height = (int) draw_height;
+   // printf("%d\n", col_height);
     int half = col_height / 2;
    
 
     
-        for (int j = col_height; j < HEIGHT - col_height; ++j) {
-         //   uint32_t* pixels = (uint32_t*) surface->pixels;
-       //         pixels[j * surface->w + k] = col.color;
+        for (int j = half; j < HEIGHT - half; ++j) {
+            uint32_t* pixels = (uint32_t*) surface->pixels;
+                pixels[j * surface->w + i] = col.color;
        
         }
         h_iter.head.x += x_incr;
         h_iter.head.z += z_incr; 
     
     }
-//    SDL_UpdateWindowSurface(wind);
-  //  SDL_UnlockSurface(surface);
+    SDL_UpdateWindowSurface(wind);
+    SDL_UnlockSurface(surface);
    // exit(0);
 }
 
@@ -117,36 +117,38 @@ int main(int argc, char *argv[])
     }
 
     Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    SDL_Renderer *rend = SDL_CreateRenderer(wind, -1, render_flags);
+    //SDL_Renderer *rend = SDL_CreateRenderer(wind, -1, render_flags);
     //SDL_Surface* surface = SDL_GetWindowSurface(wind);
-    SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_BLEND);
-    SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-    if (!rend)
-    {
-      printf("Error creating renderer: %s\n", SDL_GetError());
-      SDL_DestroyWindow(wind);
-      SDL_Quit();
-      return 0;
-    }
+    //SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_BLEND);
+    //SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
+    //if (!rend)
+   // {
+    //  printf("Error creating renderer: %s\n", SDL_GetError());
+     // SDL_DestroyWindow(wind);
+      //SDL_Quit();
+     // return 0;
+   // }
 
 
 
 
 
 
-    RVERTEX start_pos = {300, 0, 300};
+    RVERTEX start_pos = {500, 0, 500};
     PLAYER* player = PLAYER_init_player(start_pos);
 
 
-   // uint32_t map[25] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
-     //              0xFFFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF,
-       //             0xFFFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF,
-         //         0xFFFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF,
-           //      0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF};
-                    
-    uint32_t map[9] = { 0x00000099, 0x00000099, 0x00000099,
-                    0x00000099, 0x00000000, 0x00000099,
-                        0x00000099, 0x00000099, 0x00000099};;
+    uint32_t map[25] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
+                   0xFFFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF,
+                    0xFFFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF,
+                  0xFFFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF,
+                 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF};
+
+          /*          
+    uint32_t map[9] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
+                    0xFFFFFFFF, 0x00000000, 0xFFFFFFFF,
+                        0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF};;
+                        */
 
     SDL_Surface* surface = SDL_GetWindowSurface(wind);
    // SDL_SetSurfaceBlendMode(surface, SDL_BLENDMODE_BLEND);
@@ -169,15 +171,15 @@ int main(int argc, char *argv[])
                 return 0;
             }
         }
-    SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-    SDL_RenderClear(rend);
+   // SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
+  //  SDL_RenderClear(rend);
         SDL_Rect rect;
         rect.h = 10;
         rect.w = 10;
         rect.x = (int) player->position.head.x;
         rect.y = (int) player->position.head.z;
-       SDL_SetRenderDrawColor(rend, 255, 0, 0, 255);
-       GAME_render_view(wind, surface, rend, player, map, 3);
+     //  SDL_SetRenderDrawColor(rend, 255, 0, 0, 255);
+       GAME_render_view(wind, surface, NULL, player, map, 5);
 
       for (int i = 0; i < 600; i += BLOCK_SIZE) {
         for (int j = 0; j < 600; j += BLOCK_SIZE) {
@@ -186,16 +188,16 @@ int main(int argc, char *argv[])
           this.x = j;
           this.h = BLOCK_SIZE;
           this.w = BLOCK_SIZE;
-          SDL_RenderDrawRect(rend, &this);
+        //  SDL_RenderDrawRect(rend, &this);
         }
       }
 
-        SDL_RenderDrawRect(rend, &rect);
-        SDL_RenderDrawLine(rend, player->horizon.head.x, player->horizon.head.z, player->horizon.tail.x, player->horizon.tail.z);
-        SDL_SetRenderDrawColor(rend, 0, 255, 0, 255);
-        SDL_RenderDrawLine(rend, player->dir_vector.head.x, player->dir_vector.head.z, player->dir_vector.tail.x, player->dir_vector.tail.z);
+       // SDL_RenderDrawRect(rend, &rect);
+       // SDL_RenderDrawLine(rend, player->horizon.head.x, player->horizon.head.z, player->horizon.tail.x, player->horizon.tail.z);
+       // SDL_SetRenderDrawColor(rend, 0, 255, 0, 255);
+       // SDL_RenderDrawLine(rend, player->dir_vector.head.x, player->dir_vector.head.z, player->dir_vector.tail.x, player->dir_vector.tail.z);
        // printf("%d %d\n", rect.x, rect.y);
-        SDL_RenderPresent(rend);
+      //  SDL_RenderPresent(rend);
 
        // SDL_LockSurface(surface);
       //  SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
