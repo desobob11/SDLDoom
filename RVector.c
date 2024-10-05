@@ -1,5 +1,6 @@
 #include "RVector.h"
-#define WALL_SIZE 1600
+#include "Const.h"
+
 
 
 
@@ -57,16 +58,16 @@ DRAW_COL RVECTOR_cast_seek_length(RVECTOR v, RVERTEX h_point, int* map, int map_
     
     while (!hit) {
   
-        int i = (int) copy.head.z / WALL_SIZE;
-        int j = (int) copy.head.x / WALL_SIZE;
+        int i = (int) copy.head.z / BLOCK_SIZE;
+        int j = (int) copy.head.x / BLOCK_SIZE;
        // printf("Head at (%d, %d)\n", i, j);
         if (*(map + ((i * map_width) + j))) {
            // printf("Wall Found at (%.2lf, %.2lf)\n", copy.head.x, copy.head.z);
-            int x_mod = (int) copy.head.x % WALL_SIZE;
-            int z_mod = (int) copy.head.z % WALL_SIZE;
+            int x_mod = (int) copy.head.x % BLOCK_SIZE;
+            int z_mod = (int) copy.head.z % BLOCK_SIZE;
 
-            int corner_a = x_mod % WALL_SIZE == 0 && z_mod % WALL_SIZE  == 0;
-            int corner_b = x_mod % WALL_SIZE == WALL_SIZE - 1 && z_mod % WALL_SIZE  == WALL_SIZE - 1;
+            int corner_a = x_mod % BLOCK_SIZE == 0 && z_mod % BLOCK_SIZE  == 0;
+            int corner_b = x_mod % BLOCK_SIZE == BLOCK_SIZE - 1 && z_mod % BLOCK_SIZE  == BLOCK_SIZE - 1;
 
            // col.distance = RVECTOR_length(copy);
 

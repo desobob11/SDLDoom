@@ -30,7 +30,7 @@
 
 
 
-void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, SDL_Renderer* rend, PLAYER* player, int* map, int map_width) {
+void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, PLAYER* player, int* map, int map_width) {
     SDL_LockSurface(surface);
       SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
 
@@ -71,14 +71,14 @@ void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, SDL_Renderer* rend
     int col_height = (int) col.distance / (HEIGHT / 10);
     int half = col_height / 2;
 
-      //  for (int j = col_height; j < HEIGHT - col_height; ++j) {
+        for (int j = col_height; j < HEIGHT - col_height; ++j) {
           //    printf("here\n");
-       //     uint32_t* pixels = (uint32_t*) surface->pixels;
-       //         pixels[j * surface->w + i] = col.color;
+            uint32_t* pixels = (uint32_t*) surface->pixels;
+                pixels[j * surface->w + i] = col.color;
        
-       // }
-       // h_iter.head.x += x_incr;
-       // h_iter.head.z -= z_incr; 
+        }
+        h_iter.head.x += x_incr;
+        h_iter.head.z -= z_incr; 
     }
     SDL_UpdateWindowSurface(wind);
     SDL_UnlockSurface(surface);
@@ -162,11 +162,13 @@ int main(int argc, char *argv[])
 
   
         SDL_Rect rect;
-        rect.h = 10;
-        rect.w = 10;
-        rect.x = (int) player->position.head.x;
-        rect.y = (int) player->position.head.z;
-       SDL_SetRenderDrawColor(rend, 255, 0, 0, 255);
+        rect.h = 400;
+        rect.w = 400;
+        //rect.x = (int) player->position.head.x;
+        //rect.y = (int) player->position.head.z;
+        rect.x = 200;
+        rect.y = 200;
+       SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
         SDL_RenderDrawRect(rend, &rect);
 
        // printf("%d %d\n", rect.x, rect.y);
