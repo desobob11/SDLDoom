@@ -30,9 +30,9 @@ uint32_t RVECTOR_darken_color(uint32_t color, uint32_t distance) {
     g = (color >> 8) & 0xFF;
     b = (color) & 0xFF;
 
-    r = GAME_max(r - (distance), 0x00);
-    g = GAME_max(g - (distance), 0x00);
-    b = GAME_max(b - (distance), 0x00);
+    r = GAME_max(r * (1 - (distance /800.0)), 0x00);
+    g = GAME_max(g * (1 - (distance /800.0)), 0x00);
+    b = GAME_max(b * (1 - (distance /800.0)), 0x00);
 
     uint32_t darkened = 0x00000000;
 
@@ -85,8 +85,8 @@ DRAW_COL RVECTOR_cast_seek_length(SDL_Renderer* rend, RVECTOR v, RVECTOR h_point
             }
             else {
                 //printf("here\n");
-             //   col.color = RVECTOR_darken_color(*(map + ((i * map_width) + j)), (uint32_t) col.distance) ;
-                col.color = *(map + ((i * map_width) + j));
+                col.color = RVECTOR_darken_color(*(map + ((i * map_width) + j)), (uint32_t) col.distance) ;
+             //   col.color = *(map + ((i * map_width) + j));
             }
 
             //col.color = *(map + ((i * map_width) + j));
