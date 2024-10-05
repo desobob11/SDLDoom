@@ -7,7 +7,7 @@
 #define HORIZON_DIST 50
 
 
-#define HORIZ_LEN 400
+#define HORIZ_LEN 25
 void move_player(PLAYER *player, SDL_Event event, uint32_t* map, int l_width, int l_height)
 {   
     if (event.type == SDL_KEYDOWN)
@@ -70,11 +70,11 @@ PLAYER *PLAYER_init_player(RVERTEX head)
     RVECTOR dir_vector = {dir_head, dir_tail};
     player->dir_vector = dir_vector;
 
-    RVERTEX horiz_tail = player->dir_vector.head;
+  RVERTEX horiz_tail = player->dir_vector.head;
     horiz_tail.x += (cos(player->direction) * HORIZON_DIST);
     horiz_tail.z -= (sin(player->direction) * HORIZON_DIST);
     double hor_dir = player->direction + (M_PI / 2.0);
-    RVERTEX horiz_head = {horiz_head.x + (cos(hor_dir) * HORIZ_LEN), 0, horiz_head.z - (sin(hor_dir) * HORIZ_LEN)};
+    RVERTEX horiz_head = {player->dir_vector.head.x + (cos(hor_dir) * HORIZ_LEN), 0, player->dir_vector.head.z - (sin(hor_dir) * HORIZ_LEN)};
     RVERTEX h_f_head = horiz_head;
 
 
@@ -82,8 +82,8 @@ PLAYER *PLAYER_init_player(RVERTEX head)
     horiz_tail.x += (cos(player->direction) * HORIZON_DIST);
     horiz_tail.z -= (sin(player->direction) * HORIZON_DIST);
     hor_dir = player->direction - (M_PI / 2.0);
-    horiz_head.x = horiz_tail.x + (cos(hor_dir) * HORIZ_LEN);
-    horiz_head.z = horiz_tail.z - (sin(hor_dir) * HORIZ_LEN);
+    horiz_head.x = player->dir_vector.head.x + (cos(hor_dir) * HORIZ_LEN);
+    horiz_head.z = player->dir_vector.head.z - (sin(hor_dir) * HORIZ_LEN);
 
     RVERTEX h_f_tail = horiz_head;
     player->horizon.head = h_f_head;
@@ -130,8 +130,8 @@ void PLAYER_rotate_camera(PLAYER *player, SDL_Event event)
     player->horizon.head = h_f_head;
     player->horizon.tail = h_f_tail;
 
-        RVECTOR_print(player->horizon);
-        printf("%.2lf %.2lf\n", player->direction / M_PI, RVECTOR_length(player->horizon));
+     //   RVECTOR_print(player->horizon);
+   //     printf("%.2lf %.2lf\n", player->direction / M_PI, RVECTOR_length(player->horizon));
     }
 }
 

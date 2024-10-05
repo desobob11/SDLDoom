@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include "SDL2/include/SDL2/SDL.h"
 
 
 typedef struct DRAW_COL {
@@ -29,7 +30,7 @@ void RVECTOR_print(RVECTOR v);
 RVECTOR RVECTOR_cast(RVECTOR v1, RVECTOR v2);
 double RVECTOR_length(RVECTOR v);
 int RVECTOR_draw_height(double length);
-DRAW_COL RVECTOR_cast_seek_length(RVECTOR v1, RVERTEX h_point, int* map, int map_width);
+DRAW_COL RVECTOR_cast_seek_length(SDL_Renderer* rend, RVECTOR v1, RVERTEX h_point, int* map, int map_width);
 uint32_t RVECTOR_darken_color(uint32_t color, uint32_t distance);
 RVERTEX RVECTOR_closest_point(RVERTEX ray_head, RVECTOR horizon);
 

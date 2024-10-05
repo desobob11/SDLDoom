@@ -4,7 +4,6 @@
 
 
 
-
 uint32_t GAME_max(uint32_t x, uint32_t y) {
     if (x > y) {
         return x;
@@ -46,14 +45,14 @@ uint32_t RVECTOR_darken_color(uint32_t color, uint32_t distance) {
 }
 
 ////   RVERTEX start_pos = {75, 0, 0};
-DRAW_COL RVECTOR_cast_seek_length(RVECTOR v, RVERTEX h_point, int* map, int map_width) {
+DRAW_COL RVECTOR_cast_seek_length(SDL_Renderer* rend, RVECTOR v, RVERTEX h_point, int* map, int map_width) {
   int hit = 0;
     RVECTOR copy = v;
     DRAW_COL col;
     // assuming this function is only cast using normalized direction vector
      // fro player's position
-     double x_incr = fabs(v.head.x - v.tail.x);
-     double z_incr = fabs(v.head.z - v.tail.z);
+     double x_incr = v.head.x - v.tail.x;
+     double z_incr = v.head.z - v.tail.z;
 
     
     while (!hit) {
@@ -73,8 +72,10 @@ DRAW_COL RVECTOR_cast_seek_length(RVECTOR v, RVERTEX h_point, int* map, int map_
 
 
            col.distance = RVECTOR_length(copy);
+            //RVECTOR_print(copy);
+          // SDL_RenderDrawLine(rend, (int)copy.head.x, (int)copy.head.z, (int)copy.tail.x, (int)copy.tail.z);
 
-
+            
      
          //  exit(0);
 

@@ -2,4 +2,4 @@
 
 
 
-int BLOCK_SIZE = 400;
+int BLOCK_SIZE = 200;
