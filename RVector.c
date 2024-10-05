@@ -45,7 +45,7 @@ uint32_t RVECTOR_darken_color(uint32_t color, uint32_t distance) {
 }
 
 ////   RVERTEX start_pos = {75, 0, 0};
-DRAW_COL RVECTOR_cast_seek_length(SDL_Renderer* rend, RVECTOR v, RVERTEX h_point, int* map, int map_width) {
+DRAW_COL RVECTOR_cast_seek_length(SDL_Renderer* rend, RVECTOR v, RVECTOR h_point, int* map, int map_width) {
   int hit = 0;
     RVECTOR copy = v;
     DRAW_COL col;
@@ -69,12 +69,13 @@ DRAW_COL RVECTOR_cast_seek_length(SDL_Renderer* rend, RVECTOR v, RVERTEX h_point
             int corner_b = x_mod % BLOCK_SIZE == BLOCK_SIZE - 1 && z_mod % BLOCK_SIZE  == BLOCK_SIZE - 1;
 
            // col.distance = RVECTOR_length(copy);
-
+            copy.tail = RVECTOR_closest_point(copy.head, h_point);
 
            col.distance = RVECTOR_length(copy);
             //RVECTOR_print(copy);
+            SDL_SetRenderDrawColor(rend, 0, 128, 0, 100);
            SDL_RenderDrawLine(rend, (int)copy.head.x, (int)copy.head.z, (int)copy.tail.x, (int)copy.tail.z);
-
+ SDL_SetRenderDrawColor(rend, 255, 0, 0, 255);
             
      
          //  exit(0);
@@ -135,6 +136,14 @@ void RVECTOR_print(RVECTOR v) {
 
 
 RVERTEX RVECTOR_closest_point(RVERTEX ray_head, RVECTOR horizon) {
+    if (horizon.head.x == horizon.tail.x) {
+        RVERTEX p = {horizon.tail.x, 0, ray_head.z};
+        return p;
+    }
+    if (horizon.head.z == horizon.tail.z) {
+        RVERTEX p = {ray_head.x, 0, horizon.tail.z};
+        return p;
+    }
     double m1 = (horizon.head.z - horizon.tail.z) / (horizon.head.x - horizon.tail.x);
     double m2 = -(1.0 / m1);
     double point_x = ((m1*horizon.tail.x) - (m2*ray_head.x) - horizon.tail.z + ray_head.z) / (m1 - m2);

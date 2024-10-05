@@ -4,7 +4,7 @@
 
 
 
-#define HORIZON_DIST 50
+#define HORIZON_DIST 25
 
 
 #define HORIZ_LEN 25
@@ -74,7 +74,7 @@ PLAYER *PLAYER_init_player(RVERTEX head)
     horiz_tail.x += (cos(player->direction) * HORIZON_DIST);
     horiz_tail.z -= (sin(player->direction) * HORIZON_DIST);
     double hor_dir = player->direction + (M_PI / 2.0);
-    RVERTEX horiz_head = {player->dir_vector.head.x + (cos(hor_dir) * HORIZ_LEN), 0, player->dir_vector.head.z - (sin(hor_dir) * HORIZ_LEN)};
+    RVERTEX horiz_head = {horiz_tail.x + (cos(hor_dir) * HORIZ_LEN), 0, horiz_tail.z - (sin(hor_dir) * HORIZ_LEN)};
     RVERTEX h_f_head = horiz_head;
 
 
@@ -82,9 +82,8 @@ PLAYER *PLAYER_init_player(RVERTEX head)
     horiz_tail.x += (cos(player->direction) * HORIZON_DIST);
     horiz_tail.z -= (sin(player->direction) * HORIZON_DIST);
     hor_dir = player->direction - (M_PI / 2.0);
-    horiz_head.x = player->dir_vector.head.x + (cos(hor_dir) * HORIZ_LEN);
-    horiz_head.z = player->dir_vector.head.z - (sin(hor_dir) * HORIZ_LEN);
-
+    horiz_head.x = horiz_tail.x + (cos(hor_dir) * HORIZ_LEN);
+    horiz_head.z = horiz_tail.z - (sin(hor_dir) * HORIZ_LEN);
     RVERTEX h_f_tail = horiz_head;
     player->horizon.head = h_f_head;
     player->horizon.tail = h_f_tail;
@@ -115,7 +114,7 @@ void PLAYER_rotate_camera(PLAYER *player, SDL_Event event)
     horiz_tail.x += (cos(player->direction) * HORIZON_DIST);
     horiz_tail.z -= (sin(player->direction) * HORIZON_DIST);
     double hor_dir = player->direction + (M_PI / 2.0);
-    RVERTEX horiz_head = {player->dir_vector.head.x + (cos(hor_dir) * HORIZ_LEN), 0, player->dir_vector.head.z - (sin(hor_dir) * HORIZ_LEN)};
+    RVERTEX horiz_head = {horiz_tail.x + (cos(hor_dir) * HORIZ_LEN), 0, horiz_tail.z - (sin(hor_dir) * HORIZ_LEN)};
     RVERTEX h_f_head = horiz_head;
 
 
@@ -123,9 +122,8 @@ void PLAYER_rotate_camera(PLAYER *player, SDL_Event event)
     horiz_tail.x += (cos(player->direction) * HORIZON_DIST);
     horiz_tail.z -= (sin(player->direction) * HORIZON_DIST);
     hor_dir = player->direction - (M_PI / 2.0);
-    horiz_head.x = player->dir_vector.head.x + (cos(hor_dir) * HORIZ_LEN);
-    horiz_head.z = player->dir_vector.head.z - (sin(hor_dir) * HORIZ_LEN);
-
+    horiz_head.x = horiz_tail.x + (cos(hor_dir) * HORIZ_LEN);
+    horiz_head.z = horiz_tail.z - (sin(hor_dir) * HORIZ_LEN);
     RVERTEX h_f_tail = horiz_head;
     player->horizon.head = h_f_head;
     player->horizon.tail = h_f_tail;
