@@ -85,8 +85,8 @@ DRAW_COL RVECTOR_cast_seek_length(SDL_Renderer* rend, RVECTOR v, RVECTOR h_point
             }
             else {
                 //printf("here\n");
-                col.color = RVECTOR_darken_color(*(map + ((i * map_width) + j)), (uint32_t) col.distance) ;
-                //col.color = *(map + ((i * map_width) + j));
+             //   col.color = RVECTOR_darken_color(*(map + ((i * map_width) + j)), (uint32_t) col.distance) ;
+                col.color = *(map + ((i * map_width) + j));
             }
 
             //col.color = *(map + ((i * map_width) + j));

@@ -54,7 +54,7 @@ void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, SDL_Renderer* rend
 //exit(0);
 //printf("%.2lf\n\n"), RVECTOR_length(h_iter);
 
-    for (int i = 0; i < 800; ++i) {
+    for (int i = 0; i < 800; i += 4) {
     //        RVECTOR_print(player->horizon);
     //RVECTOR_print(h_iter);
     //printf("%.2lf\n\n", RVECTOR_length(h_iter));
@@ -73,22 +73,25 @@ void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, SDL_Renderer* rend
     DRAW_COL col = RVECTOR_cast_seek_length(rend, ray, player->horizon, map, map_width);
 
 
-        int col_height = (int) (( col.distance / (double) MAP_HEIGHT) * (double) HEIGHT);
+        int col_height = (int) (col.distance);
    // double draw_height = ((800.0 / col.distance) * 0.1) * 800.0;
    // int col_height = (int) draw_height;
    // printf("%d\n", col_height);
     int half = col_height / 2;
    
 
+    for (int k = i; k < i + 4; ++k) {
+
     
         for (int j = half; j < HEIGHT - half; ++j) {
             uint32_t* pixels = (uint32_t*) surface->pixels;
-                pixels[j * surface->w + i] = col.color;
+                pixels[j * surface->w + k] = col.color;
        
         }
         h_iter.head.x += x_incr;
         h_iter.head.z += z_incr; 
     
+    }
     }
     SDL_UpdateWindowSurface(wind);
     SDL_UnlockSurface(surface);
@@ -138,11 +141,11 @@ int main(int argc, char *argv[])
     PLAYER* player = PLAYER_init_player(start_pos);
 
 
-    uint32_t map[25] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
-                   0xFFFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF,
-                    0xFFFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF,
-                  0xFFFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF,
-                 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF};
+    uint32_t map[25] = { 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF,
+                   0x00FFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
+                    0x00FFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
+                  0x00FFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
+                 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF};
 
           /*          
     uint32_t map[9] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
@@ -151,7 +154,7 @@ int main(int argc, char *argv[])
                         */
 
     SDL_Surface* surface = SDL_GetWindowSurface(wind);
-   // SDL_SetSurfaceBlendMode(surface, SDL_BLENDMODE_BLEND);
+    SDL_SetSurfaceBlendMode(surface, SDL_BLENDMODE_BLEND);
     /* Main loop */
     float x_pos = (WIDTH - BLOCK_SIZE) / 2, y_pos = (HEIGHT - BLOCK_SIZE) / 2;
     SDL_Event event;
