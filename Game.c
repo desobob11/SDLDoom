@@ -1,40 +1,37 @@
 #include "Game.h"
+#include "Const.h"
 
-int SCREEN_WIDTH = 800;
-int SCREEN_HEIGHT = 800;
+void GAME_render_view(SDL_Window *wind, SDL_Surface *surface, SDL_Renderer *rend, PLAYER *player, uint32_t *map, int map_width)
+{
 
+  SDL_LockSurface(surface);
+  SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
 
-void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, SDL_Renderer* rend, PLAYER* player, int* map, int map_width) {
+  RVECTOR h_iter;
+  double x_incr = player->horizon.head.x - player->horizon.tail.x;
+  double z_incr = player->horizon.head.z - player->horizon.tail.z;
+  x_incr /= RVECTOR_length(player->horizon);
+  z_incr /= RVECTOR_length(player->horizon);
+  x_incr /= 16;
+  z_incr /= 16;
+  RVERTEX h_head = player->horizon.tail;
+  h_iter.head = h_head;
+  h_iter.tail = h_head;
 
-    SDL_LockSurface(surface);
-    SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
+  for (int i = 0; i < 800; i += 16)
+  {
 
-
-    RVECTOR h_iter;
-    double x_incr = player->horizon.head.x - player->horizon.tail.x;
-    double z_incr = player->horizon.head.z - player->horizon.tail.z;
-    x_incr /= RVECTOR_length(player->horizon);
-    z_incr /= RVECTOR_length(player->horizon);
-    x_incr /= 16;
-    z_incr /= 16;
-    RVERTEX h_head = player->horizon.tail;
-    h_iter.head = h_head;
-    h_iter.tail = h_head;
-
-
-    for (int i = 0; i < 800; i += 16) {
-
-      RVERTEX plane_point = h_iter.head;
-      RVECTOR ray;
-      ray.head = plane_point;
-      ray.tail = player->position.head;
-      double ray_x_incr = ray.head.x - ray.tail.x;
-      double ray_z_incr = ray.head.z - ray.tail.z;
-      ray_x_incr /= RVECTOR_length(ray);
-      ray_z_incr /= RVECTOR_length(ray);
-      ray.head = ray.tail;
-      ray.head.x += ray_x_incr;
-      ray.head.z += ray_z_incr;
+    RVERTEX plane_point = h_iter.head;
+    RVECTOR ray;
+    ray.head = plane_point;
+    ray.tail = player->position.head;
+    double ray_x_incr = ray.head.x - ray.tail.x;
+    double ray_z_incr = ray.head.z - ray.tail.z;
+    ray_x_incr /= RVECTOR_length(ray);
+    ray_z_incr /= RVECTOR_length(ray);
+    ray.head = ray.tail;
+    ray.head.x += ray_x_incr;
+    ray.head.z += ray_z_incr;
 
     DRAW_COL col = RVECTOR_cast_seek_length(rend, ray, player->horizon, map, map_width);
 

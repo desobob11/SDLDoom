@@ -7,7 +7,6 @@
 #include "RVector.h"
 #include "Player.h"
 #include <math.h>
-#include <unistd.h>
 #include "Const.h"
 #include "Game.h"
 #include "Automap.h"
@@ -22,9 +21,6 @@
 
 extern int DRAW_MODE;
 int DRAW_MODE = 0;
-
-extern int SCREEN_WIDTH;
-extern int SCREEN_HEIGHT;
 
 
 
@@ -86,7 +82,7 @@ int main(int argc, char *argv[])
         /* Process events */
         while (SDL_PollEvent(&event))
         {
-
+            PLAYER_move_player(player, event, map_.map, 5, 5);
             PLAYER_rotate_camera(player, event);
 
             if (event.type == SDL_QUIT) {
@@ -96,11 +92,13 @@ int main(int argc, char *argv[])
                 return 0;
             }
         }
+        /*
         SDL_Rect rect;
         rect.h = 10;
         rect.w = 10;
         rect.x = (int) player->position.head.x;
         rect.y = (int) player->position.head.z;
+        */
         GAME_render_view(wind, surface, NULL, player, map_.map, 5);
         SDL_Delay(1000 / FPS);
     }

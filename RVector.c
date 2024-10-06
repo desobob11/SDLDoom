@@ -45,7 +45,7 @@ uint32_t RVECTOR_darken_color(uint32_t color, uint32_t distance) {
 }
 
 ////   RVERTEX start_pos = {75, 0, 0};
-DRAW_COL RVECTOR_cast_seek_length(SDL_Renderer* rend, RVECTOR v, RVECTOR h_point, int* map, int map_width) {
+DRAW_COL RVECTOR_cast_seek_length(SDL_Renderer* rend, RVECTOR v, RVECTOR h_point, uint32_t* map, int map_width) {
   int hit = 0;
     RVECTOR copy = v;
     DRAW_COL col;
@@ -80,14 +80,14 @@ DRAW_COL RVECTOR_cast_seek_length(SDL_Renderer* rend, RVECTOR v, RVECTOR h_point
      
          //  exit(0);
 
-            if (corner_a || corner_b) {
-                col.color = 0x00000000;
-            }
-            else {
+           // if (corner_a || corner_b) {
+            //    col.color = 0x00000000;
+           // }
+           // else {
                 //printf("here\n");
                 col.color = RVECTOR_darken_color(*(map + ((i * map_width) + j)), (uint32_t) col.distance) ;
              //   col.color = *(map + ((i * map_width) + j));
-            }
+            //}
 
             //col.color = *(map + ((i * map_width) + j));
             hit = 1;

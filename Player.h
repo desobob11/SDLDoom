@@ -17,7 +17,7 @@ typedef struct PLAYER {
     RVECTOR horizon;
 } PLAYER;
 
-void move_player(PLAYER *player, SDL_Event event, uint32_t* map, int l_width, int l_height);
+void PLAYER_move_player(PLAYER *player, SDL_Event event, uint32_t* map, int l_width, int l_height);
 RVECTOR read_pos(PLAYER* player);
 
 PLAYER *PLAYER_init_player(RVERTEX head);

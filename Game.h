@@ -8,7 +8,7 @@
 
 
 void GAME_render_view(SDL_Window* wind, SDL_Surface* surface, 
-SDL_Renderer* rend, PLAYER* player, int* map, int map_width);
+SDL_Renderer* rend, PLAYER* player, uint32_t* map, int map_width);
 
 
 

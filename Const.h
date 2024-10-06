@@ -3,9 +3,7 @@
 
 extern int BLOCK_SIZE;
 
-
-
-
-
+extern int SCREEN_WIDTH;
+extern int SCREEN_HEIGHT;
 
 #endif
