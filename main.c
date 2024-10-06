@@ -15,8 +15,8 @@
 #define SPEED 600
 #define FPS 60
 
-#define MAP_HEIGHT (BLOCK_SIZE * 5)
-#define MAP_WIDTH (BLOCK_SIZE * 5)
+#define MAP_HEIGHT (BLOCK_SIZE * 7)
+#define MAP_WIDTH (BLOCK_SIZE * 7)
 
 
 extern int DRAW_MODE;
@@ -61,18 +61,20 @@ int main(int argc, char *argv[])
 
 
 
-    RVERTEX start_pos = {500, 0, 500};
+    RVERTEX start_pos = {900, 0, 900};
     PLAYER* player = PLAYER_init_player(start_pos);
 
     MAP map_;
-    map_.h = 5;
-    map_.w = 5;
+    map_.h = 7;
+    map_.w = 7;
 
-    uint32_t map[25] = {0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF,
-                        0x00FFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
-                        0x00FFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
-                        0x00FFFFFF, 0x00000000, 0x00FFFFFF, 0x00000000, 0x00FFFFFF,
-                        0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF};
+    uint32_t map[49] = {0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF,
+                        0x00FFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000000FF, 0x00FFFFFF,
+                        0x00FFFFFF, 0x00000000, 0x00FF0000, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
+                        0x00FFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
+                        0x00FFFFFF, 0x00000000, 0x00FF0000, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
+                        0x00FFFFFF, 0x0000FF00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
+                        0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF};
     map_.map = map;
 
 
@@ -82,7 +84,7 @@ int main(int argc, char *argv[])
         /* Process events */
         while (SDL_PollEvent(&event))
         {
-            PLAYER_move_player(player, event, map_.map, 5, 5);
+            PLAYER_move_player(player, event, map_.map, 7, 7);
             PLAYER_rotate_camera(player, event);
 
             if (event.type == SDL_QUIT) {
@@ -99,7 +101,7 @@ int main(int argc, char *argv[])
         rect.x = (int) player->position.head.x;
         rect.y = (int) player->position.head.z;
         */
-        GAME_render_view(wind, surface, NULL, player, map_.map, 5);
+        GAME_render_view(wind, surface, NULL, player, map_.map, 7);
         SDL_Delay(1000 / FPS);
     }
 }

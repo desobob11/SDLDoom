@@ -5,7 +5,7 @@
 
 
 
-#define HORIZON_DIST 50
+#define HORIZON_DIST 25
 #define MOVE_SPEED 200.0
 
 #define HORIZ_LEN 25
