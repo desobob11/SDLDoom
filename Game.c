@@ -18,7 +18,7 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface, SDL_Renderer *rend
   h_iter.head = h_head;
   h_iter.tail = h_head;
 
-  for (int i = 0; i < 800; i += 16)
+  for (int i = 0; i < 800; i += 1)
   {
 
     RVERTEX plane_point = h_iter.head;
@@ -36,19 +36,22 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface, SDL_Renderer *rend
     DRAW_COL col = RVECTOR_cast_seek_length(rend, ray, player->horizon, map, map_width);
 
 
-        int col_height = (int) (col.distance);
-
-      int half = col_height / 2;
-      for (int k = i; k < i + 16; ++k) { 
+        int col_height = SCREEN_HEIGHT - (SCREEN_HEIGHT / (( (col.distance)) / 100.0));
+        printf("%d\n", col_height);
+       // col_height *= 20;
+        int half = col_height / 2;
+        for (int k = i; k < i + 1; ++k)
+        { 
           for (int j = half; j < SCREEN_HEIGHT - half; ++j) {
               uint32_t* pixels = (uint32_t*) surface->pixels;
                   pixels[j * surface->w + k] = col.color;
         
           }
-          h_iter.head.x += x_incr;
-          h_iter.head.z += z_incr; 
+
       
       }
+      h_iter.head.x += x_incr * 1;
+      h_iter.head.z += z_incr * 1;
     }
     SDL_UpdateWindowSurface(wind);
     SDL_UnlockSurface(surface);

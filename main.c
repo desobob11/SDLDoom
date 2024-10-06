@@ -67,13 +67,13 @@ int main(int argc, char *argv[])
     MAP map_;
     map_.h = 5;
     map_.w = 5;
-    
-    uint32_t map[25] = { 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF,
-                   0x00FFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
-                    0x00FFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
-                  0x00FFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
-                 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF};
-     map_.map = map;
+
+    uint32_t map[25] = {0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF,
+                        0x00FFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
+                        0x00FFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
+                        0x00FFFFFF, 0x00000000, 0x00FFFFFF, 0x00000000, 0x00FFFFFF,
+                        0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF};
+    map_.map = map;
 
 
     SDL_Event event;
