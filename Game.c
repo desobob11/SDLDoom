@@ -38,9 +38,19 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface, SDL_Renderer *rend
 
           int col_height = SCREEN_HEIGHT - (SCREEN_HEIGHT / (( (col.distance)) / 100.0));
 
-          if (col_height > 0) {
-
+          if (col_height < 0) {
+            for (int k = i; k < i + 1; ++k)
+            {
+              for (int j = 0; j < SCREEN_HEIGHT; ++j)
+              {
+                uint32_t *pixels = (uint32_t *)surface->pixels;
+                pixels[j * surface->w + k] = col.color;
+              }
+            }
+          }
+          else {
           
+
           // col_height *= 20;
           int half = col_height / 2;
           for (int k = i; k < i + 1; ++k)
@@ -52,8 +62,10 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface, SDL_Renderer *rend
             }
 
         
-        }
+         }
           }
+  
+          
         h_iter.head.x += x_incr;
         h_iter.head.z += z_incr;
       }

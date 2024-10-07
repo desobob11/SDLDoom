@@ -150,8 +150,8 @@ void PLAYER_rotate_camera(PLAYER *player, SDL_Event event)
     player->horizon.head = h_f_head;
     player->horizon.tail = h_f_tail;
 
-        RVECTOR_print(player->dir_vector);
-        printf("%.2lf %.2lf\n", player->direction / M_PI, RVECTOR_length(player->dir_vector));
+     //   RVECTOR_print(player->dir_vector);
+     //   printf("%.2lf %.2lf\n", player->direction / M_PI, RVECTOR_length(player->dir_vector));
     }
 }
 
