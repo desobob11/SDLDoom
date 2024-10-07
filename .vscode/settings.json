@@ -6,6 +6,7 @@
         "sec.h": "c",
         "stdlib.h": "c",
         "string.h": "c",
-        "limits.h": "c"
+        "limits.h": "c",
+        "automap.h": "c"
     }
 }
