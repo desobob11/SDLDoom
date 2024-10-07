@@ -69,6 +69,5 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface, SDL_Renderer *rend
         h_iter.head.x += x_incr;
         h_iter.head.z += z_incr;
       }
-      SDL_UpdateWindowSurface(wind);
       SDL_UnlockSurface(surface);
 }

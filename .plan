@@ -7,9 +7,9 @@
 	-- Do i want to have directional source of light?
 
 
---Smooth player inputs
-	-- Remove ALL input delay
+** --Smooth player inputs
+**	-- Remove ALL input delay
 	-- Mouse input to look left and right
-	-- Allow simaltaneous movement, turning, and automap
+**	-- Allow simaltaneous movement, turning, and automap
 
 --Add movement in any direction

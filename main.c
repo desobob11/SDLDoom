@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
 
     SDL_Event event;
     while (true) {
-
+      SDL_UpdateWindowSurface(wind);
         /* Process events */
         while (SDL_PollEvent(&event))
         {
