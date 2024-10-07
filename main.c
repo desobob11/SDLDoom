@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
                 SDL_Scancode code = event.key.keysym.scancode;
 
                 if (code == SDL_SCANCODE_TAB) {
-                    RENDER_MDOE = RENDER_MDOE;
+                    RENDER_MDOE = !RENDER_MDOE;
                 }
             }
 
