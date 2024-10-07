@@ -1,6 +1,6 @@
 #include "RVector.h"
 #include "Const.h"
-
+#include "Automap.h"
 
 
 
@@ -49,54 +49,38 @@ DRAW_COL RVECTOR_cast_seek_length(SDL_Renderer* rend, RVECTOR v, RVECTOR h_point
   int hit = 0;
     RVECTOR copy = v;
     DRAW_COL col;
-    // assuming this function is only cast using normalized direction vector
-     // fro player's position
+
      double x_incr = v.head.x - v.tail.x;
      double z_incr = v.head.z - v.tail.z;
 
-    
-    while (!hit) {
-  
-        int i = (int) copy.head.z / BLOCK_SIZE;
-        int j = (int) copy.head.x / BLOCK_SIZE;
-       // printf("Head at (%d, %d)\n", i, j);
-        if (*(map + ((i * map_width) + j))) {
-           // printf("Wall Found at (%.2lf, %.2lf)\n", copy.head.x, copy.head.z);
-            int x_mod = (int) copy.head.x % BLOCK_SIZE;
-            int z_mod = (int) copy.head.z % BLOCK_SIZE;
+     int i = 0;
+     int j = 0;
+     while (!hit && (i >= 0 && i < current_map.h && j >= 0 && j < current_map.w))
+     {
+ 
+        i = (int)copy.head.z / BLOCK_SIZE;
+        j = (int)copy.head.x / BLOCK_SIZE;
+        if (*(map + ((i * map_width) + j)))
+        {
+            int x_mod = (int)copy.head.x % BLOCK_SIZE;
+            int z_mod = (int)copy.head.z % BLOCK_SIZE;
 
-            int corner_a = x_mod % BLOCK_SIZE == 0 && z_mod % BLOCK_SIZE  == 0;
-            int corner_b = x_mod % BLOCK_SIZE == BLOCK_SIZE - 1 && z_mod % BLOCK_SIZE  == BLOCK_SIZE - 1;
+            int corner_a = x_mod % BLOCK_SIZE == 0 && z_mod % BLOCK_SIZE == 0;
+            int corner_b = x_mod % BLOCK_SIZE == BLOCK_SIZE - 1 && z_mod % BLOCK_SIZE == BLOCK_SIZE - 1;
 
-           // col.distance = RVECTOR_length(copy);
             copy.tail = RVECTOR_closest_point(copy.head, h_point);
 
-           col.distance = RVECTOR_length(copy);
-            //RVECTOR_print(copy);
-          //  SDL_SetRenderDrawColor(rend, 0, 128, 0, 100);
-          // SDL_RenderDrawLine(rend, (int)copy.head.x, (int)copy.head.z, (int)copy.tail.x, (int)copy.tail.z);
- //SDL_SetRenderDrawColor(rend, 255, 0, 0, 255);
-            
-     
-         //  exit(0);
-
-           // if (corner_a || corner_b) {
-            //    col.color = 0x00000000;
-           // }
-           // else {
-                //printf("here\n");
-                col.color = RVECTOR_darken_color(*(map + ((i * map_width) + j)), (uint32_t) col.distance) ;
-             //   col.color = *(map + ((i * map_width) + j));
-            //}
-
-            //col.color = *(map + ((i * map_width) + j));
+            col.distance = RVECTOR_length(copy);
+            col.color = RVECTOR_darken_color(*(map + ((i * map_width) + j)), (uint32_t)col.distance);
             hit = 1;
-        }
-        else {
-            RVERTEX new_head = {copy.head.x + x_incr, 0, copy.head.z + z_incr};
-            copy.head = new_head;
-        }
+            }
+            else
+            {
+                RVERTEX new_head = {copy.head.x + x_incr, 0, copy.head.z + z_incr};
+                copy.head = new_head;
+            }
     }
+
     return col;
 }
 

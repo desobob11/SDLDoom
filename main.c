@@ -25,6 +25,7 @@ int DRAW_MODE = 0;
 
 
 
+
 int main(int argc, char *argv[])
 {
     /* Initializes the timer, audio, video, joystick,
@@ -64,9 +65,8 @@ int main(int argc, char *argv[])
     RVERTEX start_pos = {900, 0, 900};
     PLAYER* player = PLAYER_init_player(start_pos);
 
-    MAP map_;
-    map_.h = 7;
-    map_.w = 7;
+    current_map.h = 7;
+    current_map.w = 7;
 
     uint32_t map[49] = {0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF,
                         0x00FFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000000FF, 0x00FFFFFF,
@@ -75,8 +75,10 @@ int main(int argc, char *argv[])
                         0x00FFFFFF, 0x00000000, 0x00FF0000, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
                         0x00FFFFFF, 0x0000FF00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
                         0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF};
-    map_.map = map;
+    current_map.map = map;
 
+    current_map.v_h = current_map.h * BLOCK_SIZE;
+    current_map.v_w = current_map.w * BLOCK_SIZE;
 
     SDL_Event event;
     while (true) {
@@ -84,7 +86,7 @@ int main(int argc, char *argv[])
         /* Process events */
         while (SDL_PollEvent(&event))
         {
-            PLAYER_move_player(player, event, map_.map, 7, 7);
+            PLAYER_move_player(player, event, current_map.map, 7, 7);
             PLAYER_rotate_camera(player, event);
 
             if (event.type == SDL_QUIT) {
@@ -101,7 +103,7 @@ int main(int argc, char *argv[])
         rect.x = (int) player->position.head.x;
         rect.y = (int) player->position.head.z;
         */
-        GAME_render_view(wind, surface, NULL, player, map_.map, 7);
+        GAME_render_view(wind, surface, NULL, player, current_map.map, 7);
         SDL_Delay(1000 / FPS);
     }
 }

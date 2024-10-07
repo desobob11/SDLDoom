@@ -8,15 +8,15 @@
 
 
 
-
 typedef struct MAP {
     int h;
     int w;
-    uint32_t * map;
+    double v_h;
+    double v_w;
+    uint32_t* map;
 } MAP;
 
-
-
+extern MAP current_map;
 
 uint32_t* AUTOMAP_create_map(MAP amap, uint32_t* arr);
 

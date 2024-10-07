@@ -1,7 +1,7 @@
 #include "Automap.h"
 
 
-
+MAP current_map;
 
 
 uint32_t* AUTOMAP_create_map(MAP amap, uint32_t* arr) {
