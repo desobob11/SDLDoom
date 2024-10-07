@@ -8,7 +8,7 @@
 #include "RVector.h"
 
 
-#define MOUSE_SENS 10.0
+#define MOUSE_SENS 50.0
 
 typedef struct PLAYER {
     RVECTOR position;

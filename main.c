@@ -90,8 +90,8 @@ int main(int argc, char *argv[])
         /* Process events */
         while (SDL_PollEvent(&event))
         {
-            PLAYER_move_player(player, event, current_map.map, 7, 7);
-            PLAYER_rotate_camera(player, event);
+           // PLAYER_move_player(player, event, current_map.map, 7, 7);
+            //PLAYER_rotate_camera(player, event);
 
             if (event.type == SDL_KEYDOWN)
             {
@@ -109,6 +109,9 @@ int main(int argc, char *argv[])
                 return 0;
             }
         }
+
+            PLAYER_move_player(player, event, current_map.map, 7, 7);
+            PLAYER_rotate_camera(player, event);
         if (RENDER_MDOE == 0) {
             GAME_render_view(wind, surface, NULL, player, current_map.map, 7);
         }

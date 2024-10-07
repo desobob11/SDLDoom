@@ -7,71 +7,68 @@
 
 
 #define HORIZON_DIST 25
-#define MOVE_SPEED 5.0
+#define MOVE_SPEED 10.0
 
 #define HORIZ_LEN 25
 void PLAYER_move_player(PLAYER *player, SDL_Event event, uint32_t* map, int l_width, int l_height)
 {   int i = 0, j = 0;
-    if (event.type == SDL_KEYDOWN)
-    {
-        double x_incr = (player->dir_vector.head.x - player->dir_vector.tail.x)  * MOVE_SPEED;
-        double z_incr = (player->dir_vector.head.z - player->dir_vector.tail.z) * MOVE_SPEED;
+    const Uint8* keystates = SDL_GetKeyboardState(NULL);
+    double x_incr = (player->dir_vector.head.x - player->dir_vector.tail.x)  * MOVE_SPEED;
+    double z_incr = (player->dir_vector.head.z - player->dir_vector.tail.z) * MOVE_SPEED;
 
-        RVERTEX new_dir_ahead = {player->position.head.x + x_incr,0, player->position.head.z + z_incr};
-        RVERTEX new_dir_back = {player->position.head.x - x_incr,0, player->position.head.z - z_incr};
-        SDL_Scancode code = event.key.keysym.scancode;
+    RVERTEX new_dir_ahead = {player->position.head.x + x_incr,0, player->position.head.z + z_incr};
+    RVERTEX new_dir_back = {player->position.head.x - x_incr,0, player->position.head.z - z_incr};
+
 
 
     // TODO: correct magic numbers and definitions of level dimensions
-        int check_ahead = new_dir_ahead.z - HORIZON_DIST  < current_map.v_h && new_dir_ahead.x - HORIZON_DIST < current_map.v_w
-            && new_dir_ahead.z - HORIZON_DIST >= 0 && new_dir_ahead.x - HORIZON_DIST >= 0;
-        int check_back = new_dir_back.z < current_map.v_h && new_dir_back.x < current_map.v_w
-            && new_dir_back.z >= 0 && new_dir_back.x >= 0;
+    int check_ahead = new_dir_ahead.z - HORIZON_DIST  < current_map.v_h && new_dir_ahead.x - HORIZON_DIST < current_map.v_w
+        && new_dir_ahead.z - HORIZON_DIST >= 0 && new_dir_ahead.x - HORIZON_DIST >= 0;
+    int check_back = new_dir_back.z < current_map.v_h && new_dir_back.x < current_map.v_w
+        && new_dir_back.z >= 0 && new_dir_back.x >= 0;
 
 
-        if (code == SDL_SCANCODE_W)
-        {
-                i = (int) new_dir_ahead.z / BLOCK_SIZE;
-                j = (int) new_dir_ahead.x / BLOCK_SIZE;
-                if (i >= 0 && i < current_map.h && j >= 0 && j < current_map.w) {
-                
-                        if (check_ahead) {
-                            if (*(current_map.map + ((i * l_width) + j)) == 0) {
-                                player->dir_vector.tail.x += x_incr;
-                                player->dir_vector.tail.z += z_incr;
+    if (keystates[SDL_SCANCODE_W])
+    {
+            i = (int) new_dir_ahead.z / BLOCK_SIZE;
+            j = (int) new_dir_ahead.x / BLOCK_SIZE;
+            if (i >= 0 && i < current_map.h && j >= 0 && j < current_map.w) {
+            
+                    if (check_ahead) {
+                        if (*(current_map.map + ((i * l_width) + j)) == 0) {
+                            player->dir_vector.tail.x += x_incr;
+                            player->dir_vector.tail.z += z_incr;
 
-                                player->dir_vector.head.x += x_incr;
-                                player->dir_vector.head.z += z_incr;
-                                player->position.head = new_dir_ahead;
-                            }
+                            player->dir_vector.head.x += x_incr;
+                            player->dir_vector.head.z += z_incr;
+                            player->position.head = new_dir_ahead;
                         }
-                }
-   
-        }
-        else if (code == SDL_SCANCODE_S)
-        {
-            i = (int)new_dir_back.z / BLOCK_SIZE;
-            j = (int)new_dir_back.x / BLOCK_SIZE;
-            if (i >= 0 && i < current_map.h && j >= 0 && j < current_map.w)
-            {
-
-                if (check_back)
-                {
-                    if (*(current_map.map + ((i * l_width) + j)) == 0)
-                    {
-                        player->dir_vector.tail.x += x_incr * MOVE_SPEED;
-                        player->dir_vector.tail.z += z_incr * MOVE_SPEED;
-
-                        player->dir_vector.head.x += x_incr * MOVE_SPEED;
-                        player->dir_vector.head.z += z_incr * MOVE_SPEED;
-                        player->position.head = new_dir_ahead;
                     }
-                }
-        }
-    
+            }
 
-        }
     }
+    else if (keystates[SDL_SCANCODE_S])
+    {
+        i = (int)new_dir_back.z / BLOCK_SIZE;
+        j = (int)new_dir_back.x / BLOCK_SIZE;
+        if (i >= 0 && i < current_map.h && j >= 0 && j < current_map.w)
+        {
+
+            if (check_back)
+            {
+                if (*(current_map.map + ((i * l_width) + j)) == 0)
+                {
+                    player->dir_vector.tail.x += x_incr * MOVE_SPEED;
+                    player->dir_vector.tail.z += z_incr * MOVE_SPEED;
+
+                    player->dir_vector.head.x += x_incr * MOVE_SPEED;
+                    player->dir_vector.head.z += z_incr * MOVE_SPEED;
+                    player->position.head = new_dir_ahead;
+                }
+            }
+    }
+    }
+
 }
 
 RVECTOR read_pos(PLAYER *player) {
@@ -113,13 +110,12 @@ PLAYER *PLAYER_init_player(RVERTEX head)
 }
 
 void PLAYER_rotate_camera(PLAYER *player, SDL_Event event)
-{   
-    if (event.type == SDL_KEYDOWN)
-    {
-        SDL_Scancode code = event.key.keysym.scancode;
-        if (code == SDL_SCANCODE_LEFT)
+{   const Uint8* keystates = SDL_GetKeyboardState(NULL);
+
+        
+        if (keystates[SDL_SCANCODE_LEFT])
             player->direction -= (M_PI / MOUSE_SENS);
-        if (code == SDL_SCANCODE_RIGHT)
+        if (keystates[SDL_SCANCODE_RIGHT])
             player->direction += (M_PI / MOUSE_SENS);
 
         if (player->direction > 2.0 * M_PI) {
@@ -152,6 +148,6 @@ void PLAYER_rotate_camera(PLAYER *player, SDL_Event event)
 
      //   RVECTOR_print(player->dir_vector);
      //   printf("%.2lf %.2lf\n", player->direction / M_PI, RVECTOR_length(player->dir_vector));
-    }
+    
 }
 
