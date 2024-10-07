@@ -26,8 +26,12 @@ int DRAW_MODE = 0;
 
 
 
+
+
+
 int main(int argc, char *argv[])
 {
+
     /* Initializes the timer, audio, video, joystick,
     haptic, gamecontroller and events subsystems */
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
@@ -89,6 +93,15 @@ int main(int argc, char *argv[])
             PLAYER_move_player(player, event, current_map.map, 7, 7);
             PLAYER_rotate_camera(player, event);
 
+            if (event.type == SDL_KEYDOWN)
+            {
+                SDL_Scancode code = event.key.keysym.scancode;
+
+                if (code == SDL_SCANCODE_TAB) {
+                    RENDER_MDOE = RENDER_MDOE;
+                }
+            }
+
             if (event.type == SDL_QUIT) {
                 SDL_Quit();
                 SDL_DestroyWindowSurface(wind);
@@ -96,14 +109,12 @@ int main(int argc, char *argv[])
                 return 0;
             }
         }
-        /*
-        SDL_Rect rect;
-        rect.h = 10;
-        rect.w = 10;
-        rect.x = (int) player->position.head.x;
-        rect.y = (int) player->position.head.z;
-        */
-        GAME_render_view(wind, surface, NULL, player, current_map.map, 7);
+        if (RENDER_MDOE == 0) {
+            GAME_render_view(wind, surface, NULL, player, current_map.map, 7);
+        }
+        else {
+            AUTOMAP_render_map(wind, surface, current_map.map, player);
+        }
         SDL_Delay(1000 / FPS);
     }
 }

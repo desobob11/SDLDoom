@@ -7,6 +7,9 @@
 #include "Player.h"
 
 
+extern int RENDER_MDOE;
+
+
 
 typedef struct MAP {
     int h;
@@ -20,20 +23,6 @@ extern MAP current_map;
 
 uint32_t* AUTOMAP_create_map(MAP amap, uint32_t* arr);
 
-
-void AUTOMAP_render_map(uint32_t map, PLAYER* player);
-
-
-
-
-
-
-
-
-
-
-
-
-
+void AUTOMAP_render_map(SDL_Window *wind, SDL_Surface *surface, uint32_t* map, PLAYER *player);
 
 #endif

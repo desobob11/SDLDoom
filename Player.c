@@ -16,7 +16,7 @@ void PLAYER_move_player(PLAYER *player, SDL_Event event, uint32_t* map, int l_wi
     {
         double x_incr = (player->dir_vector.head.x - player->dir_vector.tail.x)  * MOVE_SPEED;
         double z_incr = (player->dir_vector.head.z - player->dir_vector.tail.z) * MOVE_SPEED;
-       // printf("%.2lf %.2lf\n", x_incr, z_incr);
+
         RVERTEX new_dir_ahead = {player->position.head.x + x_incr,0, player->position.head.z + z_incr};
         RVERTEX new_dir_back = {player->position.head.x - x_incr,0, player->position.head.z - z_incr};
         SDL_Scancode code = event.key.keysym.scancode;
@@ -69,7 +69,7 @@ void PLAYER_move_player(PLAYER *player, SDL_Event event, uint32_t* map, int l_wi
                 }
         }
     
-    //RVECTOR_print(player->position);
+
         }
     }
 }
