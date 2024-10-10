@@ -1,7 +1,8 @@
 #include "Game.h"
 #include "Const.h"
 
-void GAME_render_view(SDL_Window *wind, SDL_Surface *surface, SDL_Renderer *rend, PLAYER *player, uint32_t *map, int map_width)
+int RENDER_MODE = 0;
+void GAME_render_view(SDL_Window *wind, SDL_Surface *surface, SDL_Renderer *rend, PLAYER *player, WALL* map, int map_w, int map_h)
 {
 
     SDL_LockSurface(surface);
@@ -33,7 +34,7 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface, SDL_Renderer *rend
       ray.head.x += ray_x_incr;
       ray.head.z += ray_z_incr;
 
-      DRAW_COL col = RVECTOR_cast_seek_length(rend, ray, player->horizon, map, map_width);
+      DRAW_COL col = RVECTOR_cast_seek_length(rend, ray, player->horizon, map, map_w, map_h);
 
 
           int col_height = SCREEN_HEIGHT - (SCREEN_HEIGHT / (( (col.distance)) / 100.0));
