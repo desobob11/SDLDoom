@@ -2,7 +2,7 @@
 #include "Const.h"
 
 int RENDER_MODE = 0;
-void GAME_render_view(SDL_Window *wind, SDL_Surface *surface, SDL_Renderer *rend, PLAYER *player, WALL* map, int map_w, int map_h)
+void GAME_render_view(SDL_Window *wind, SDL_Surface *surface, SDL_Renderer *rend, PLAYER *player, uint32_t* map, int map_w, int map_h)
 {
 
     SDL_LockSurface(surface);

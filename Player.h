@@ -19,7 +19,7 @@ typedef struct PLAYER {
     RVECTOR horizon;
 } PLAYER;
 
-void PLAYER_move_player(PLAYER *player, SDL_Event event, WALL* map, int map_vw,
+void PLAYER_move_player(PLAYER *player, SDL_Event event, uint32_t* map, int map_vw,
 int map_vh, int map_w, int map_h);
 RVECTOR read_pos(PLAYER* player);
 

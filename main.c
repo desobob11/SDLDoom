@@ -72,20 +72,28 @@ int main(int argc, char *argv[])
     RVERTEX start_pos = {700, 0, 700};
     PLAYER* player = PLAYER_init_player(start_pos);
 
-    current_map.h = 7;
-    current_map.w = 7;
 
-    WALL map[49] = {white, white, white, white, white, white, white,
+    MAP map;
+
+    WALL walls[49] = {white, white, white, white, white, white, white,
                         white, none, none, none, none, blue, white,
                         white, none, red, none, none, none, white,
                         white, none, none, none, none, none, white,
                         white, none, red, none, yellow, none, white,
                         white, green, none, none, none, none, white,
                         white, white, white, white, white, white, white};
-    current_map.map = map;
+    map.map = walls;
 
-    current_map.v_h = current_map.h * BLOCK_SIZE;
-    current_map.v_w = current_map.w * BLOCK_SIZE;
+    map.w = 7;
+    map.h = 7;
+
+    uint32_t wall_colors[49];
+    for (int i = 0; i < 49; ++i) {
+        wall_colors[i] = walls[i].color;
+    }
+
+    map.v_h = map.h * BLOCK_SIZE;
+    map.v_w = map.w * BLOCK_SIZE;
 
     SDL_Event event;
     while (true) {
@@ -93,7 +101,7 @@ int main(int argc, char *argv[])
         /* Process events */
         while (SDL_PollEvent(&event))
         {
-           // PLAYER_move_player(player, event, current_map.map, 7, 7);
+           // PLAYER_move_player(player, event, map.map, 7, 7);
             //PLAYER_rotate_camera(player, event);
 
             if (event.type == SDL_KEYDOWN)
@@ -113,14 +121,14 @@ int main(int argc, char *argv[])
             }
         }
 
-            PLAYER_move_player(player, event, current_map.map, current_map.v_w, current_map.v_h, 
-            current_map.w, current_map.h);
+            PLAYER_move_player(player, event, map.map, map.v_w, map.v_h, 
+            map.w, map.h);
             PLAYER_rotate_camera(player, event);
         if (RENDER_MODE == 0) {
-            GAME_render_view(wind, surface, NULL, player, current_map.map, current_map.w, current_map.h);
+            GAME_render_view(wind, surface, NULL, player, wall_colors, map.w, map.h);
         }
         else {
-            AUTOMAP_render_map(wind, surface, current_map.map, player->position);
+            AUTOMAP_render_map(wind, surface, wall_colors, player->position);
         }
         SDL_Delay(1000 / FPS);
     }

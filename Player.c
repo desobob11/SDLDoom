@@ -1,8 +1,8 @@
 #include "Player.h"
 #include <math.h>
 #include "Const.h"
-
-
+#include "Wall.h"
+#include "Automap.h"
 
 
 
@@ -12,7 +12,7 @@
 #define MOVE_SPEED 10.0
 
 #define HORIZ_LEN 25
-void PLAYER_move_player(PLAYER *player, SDL_Event event, WALL* walls, int map_vw, int map_vh, int map_w, int map_h)
+void PLAYER_move_player(PLAYER *player, SDL_Event event, uint32_t* walls, int map_vw, int map_vh, int map_w, int map_h)
 {   int i = 0, j = 0;
     const Uint8* keystates = SDL_GetKeyboardState(NULL);
     double x_incr = (player->dir_vector.head.x - player->dir_vector.tail.x)  * MOVE_SPEED;
@@ -37,7 +37,7 @@ void PLAYER_move_player(PLAYER *player, SDL_Event event, WALL* walls, int map_vw
             if (i >= 0 && i < map_h && j >= 0 && j < map_w) {
             
                     if (check_ahead) {
-                        if (walls[i*map_w + j].color == 0) {
+                        if (walls[i*map_w + j] == 0) {
                             player->dir_vector.tail.x += x_incr;
                             player->dir_vector.tail.z += z_incr;
 
