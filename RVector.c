@@ -40,12 +40,14 @@ uint32_t RVECTOR_darken_color(uint32_t color, uint32_t distance) {
     darkened |= (g << 8);
     darkened |= b;
 
+
+
     return darkened;
 
 }
 
 ////   RVERTEX start_pos = {75, 0, 0};
-DRAW_COL RVECTOR_cast_seek_length(SDL_Renderer* rend, RVECTOR v, RVECTOR h_point, uint32_t* map, int map_width) {
+DRAW_COL RVECTOR_cast_seek_length(SDL_Renderer* rend, RVECTOR v, RVECTOR h_point, WALL* walls, int map_w, int map_h) {
   int hit = 0;
     RVECTOR copy = v;
     DRAW_COL col;
@@ -55,12 +57,12 @@ DRAW_COL RVECTOR_cast_seek_length(SDL_Renderer* rend, RVECTOR v, RVECTOR h_point
 
      int i = 0;
      int j = 0;
-     while (!hit && (i >= 0 && i < current_map.h && j >= 0 && j < current_map.w))
+     while (!hit && (i >= 0 && i < map_h && j >= 0 && j < map_w))
      {
  
         i = (int)copy.head.z / BLOCK_SIZE;
         j = (int)copy.head.x / BLOCK_SIZE;
-        if (*(map + ((i * map_width) + j)))
+        if (walls[i*map_w + j].color)
         {
             int x_mod = (int)copy.head.x % BLOCK_SIZE;
             int z_mod = (int)copy.head.z % BLOCK_SIZE;
@@ -71,7 +73,7 @@ DRAW_COL RVECTOR_cast_seek_length(SDL_Renderer* rend, RVECTOR v, RVECTOR h_point
             copy.tail = RVECTOR_closest_point(copy.head, h_point);
 
             col.distance = RVECTOR_length(copy);
-            col.color = RVECTOR_darken_color(*(map + ((i * map_width) + j)), (uint32_t)col.distance);
+            col.color = RVECTOR_darken_color(walls[i*map_w + j].color, (uint32_t)col.distance);
             hit = 1;
             }
             else

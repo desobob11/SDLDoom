@@ -1,7 +1,9 @@
 #include "Player.h"
 #include <math.h>
 #include "Const.h"
-#include "Automap.h"    // this is bad
+#include "Wall.h"
+#include "Automap.h"
+
 
 
 
@@ -10,7 +12,7 @@
 #define MOVE_SPEED 10.0
 
 #define HORIZ_LEN 25
-void PLAYER_move_player(PLAYER *player, SDL_Event event, uint32_t* map, int l_width, int l_height)
+void PLAYER_move_player(PLAYER *player, SDL_Event event, uint32_t* walls, int map_vw, int map_vh, int map_w, int map_h)
 {   int i = 0, j = 0;
     const Uint8* keystates = SDL_GetKeyboardState(NULL);
     double x_incr = (player->dir_vector.head.x - player->dir_vector.tail.x)  * MOVE_SPEED;
@@ -22,9 +24,9 @@ void PLAYER_move_player(PLAYER *player, SDL_Event event, uint32_t* map, int l_wi
 
 
     // TODO: correct magic numbers and definitions of level dimensions
-    int check_ahead = new_dir_ahead.z - HORIZON_DIST  < current_map.v_h && new_dir_ahead.x - HORIZON_DIST < current_map.v_w
+    int check_ahead = new_dir_ahead.z - HORIZON_DIST  < map_vh && new_dir_ahead.x - HORIZON_DIST < map_vw
         && new_dir_ahead.z - HORIZON_DIST >= 0 && new_dir_ahead.x - HORIZON_DIST >= 0;
-    int check_back = new_dir_back.z < current_map.v_h && new_dir_back.x < current_map.v_w
+    int check_back = new_dir_back.z < map_vh && new_dir_back.x < map_vw
         && new_dir_back.z >= 0 && new_dir_back.x >= 0;
 
 
@@ -32,10 +34,10 @@ void PLAYER_move_player(PLAYER *player, SDL_Event event, uint32_t* map, int l_wi
     {
             i = (int) new_dir_ahead.z / BLOCK_SIZE;
             j = (int) new_dir_ahead.x / BLOCK_SIZE;
-            if (i >= 0 && i < current_map.h && j >= 0 && j < current_map.w) {
+            if (i >= 0 && i < map_h && j >= 0 && j < map_w) {
             
                     if (check_ahead) {
-                        if (*(current_map.map + ((i * l_width) + j)) == 0) {
+                        if (walls[i*map_w + j] == 0) {
                             player->dir_vector.tail.x += x_incr;
                             player->dir_vector.tail.z += z_incr;
 
@@ -47,27 +49,7 @@ void PLAYER_move_player(PLAYER *player, SDL_Event event, uint32_t* map, int l_wi
             }
 
     }
-    else if (keystates[SDL_SCANCODE_S])
-    {
-        i = (int)new_dir_back.z / BLOCK_SIZE;
-        j = (int)new_dir_back.x / BLOCK_SIZE;
-        if (i >= 0 && i < current_map.h && j >= 0 && j < current_map.w)
-        {
 
-            if (check_back)
-            {
-                if (*(current_map.map + ((i * l_width) + j)) == 0)
-                {
-                    player->dir_vector.tail.x += x_incr * MOVE_SPEED;
-                    player->dir_vector.tail.z += z_incr * MOVE_SPEED;
-
-                    player->dir_vector.head.x += x_incr * MOVE_SPEED;
-                    player->dir_vector.head.z += z_incr * MOVE_SPEED;
-                    player->position.head = new_dir_ahead;
-                }
-            }
-    }
-    }
 
 }
 

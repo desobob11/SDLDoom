@@ -62,27 +62,38 @@ int main(int argc, char *argv[])
     }
 
 
+    WALL red = {0x00FF0000};
+    WALL green = {0x0000FF00};
+    WALL blue = {0x000000FF};
+    WALL yellow = {0x00FFFF00};
+    WALL white = {0x00FFFFFF};
+    WALL none = {0x00000000};
 
-
-
-
-    RVERTEX start_pos = {900, 0, 900};
+    RVERTEX start_pos = {700, 0, 700};
     PLAYER* player = PLAYER_init_player(start_pos);
 
-    current_map.h = 7;
-    current_map.w = 7;
 
-    uint32_t map[49] = {0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF,
-                        0x00FFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000000FF, 0x00FFFFFF,
-                        0x00FFFFFF, 0x00000000, 0x00FF0000, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
-                        0x00FFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
-                        0x00FFFFFF, 0x00000000, 0x00FF0000, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
-                        0x00FFFFFF, 0x0000FF00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00FFFFFF,
-                        0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF};
-    current_map.map = map;
+    MAP map;
 
-    current_map.v_h = current_map.h * BLOCK_SIZE;
-    current_map.v_w = current_map.w * BLOCK_SIZE;
+    WALL walls[49] = {white, white, white, white, white, white, white,
+                        white, none, none, none, none, blue, white,
+                        white, none, red, none, none, none, white,
+                        white, none, none, none, none, none, white,
+                        white, none, red, none, yellow, none, white,
+                        white, green, none, none, none, none, white,
+                        white, white, white, white, white, white, white};
+    map.map = walls;
+
+    map.w = 7;
+    map.h = 7;
+
+    uint32_t wall_colors[49];
+    for (int i = 0; i < 49; ++i) {
+        wall_colors[i] = walls[i].color;
+    }
+
+    map.v_h = map.h * BLOCK_SIZE;
+    map.v_w = map.w * BLOCK_SIZE;
 
     SDL_Event event;
     while (true) {
@@ -90,7 +101,7 @@ int main(int argc, char *argv[])
         /* Process events */
         while (SDL_PollEvent(&event))
         {
-           // PLAYER_move_player(player, event, current_map.map, 7, 7);
+           // PLAYER_move_player(player, event, map.map, 7, 7);
             //PLAYER_rotate_camera(player, event);
 
             if (event.type == SDL_KEYDOWN)
@@ -98,7 +109,7 @@ int main(int argc, char *argv[])
                 SDL_Scancode code = event.key.keysym.scancode;
 
                 if (code == SDL_SCANCODE_TAB) {
-                    RENDER_MDOE = !RENDER_MDOE;
+                    RENDER_MODE = !RENDER_MODE;
                 }
             }
 
@@ -110,13 +121,14 @@ int main(int argc, char *argv[])
             }
         }
 
-            PLAYER_move_player(player, event, current_map.map, 7, 7);
+            PLAYER_move_player(player, event, map.map, map.v_w, map.v_h, 
+            map.w, map.h);
             PLAYER_rotate_camera(player, event);
-        if (RENDER_MDOE == 0) {
-            GAME_render_view(wind, surface, NULL, player, current_map.map, 7);
+        if (RENDER_MODE == 0) {
+            GAME_render_view(wind, surface, NULL, player, wall_colors, map.w, map.h);
         }
         else {
-            AUTOMAP_render_map(wind, surface, current_map.map, player);
+            AUTOMAP_render_map(wind, surface, wall_colors, player->position);
         }
         SDL_Delay(1000 / FPS);
     }
