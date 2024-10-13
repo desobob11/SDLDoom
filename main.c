@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
                         white, none, none, none, none, blue, white,
                         white, none, red, none, none, none, white,
                         white, none, none, none, none, none, white,
-                        white, none, red, none, yellow, none, white,
+                        white, none, red, none, none, none, white,
                         white, green, none, none, none, none, white,
                         white, white, white, white, white, white, white};
     map.map = walls;
