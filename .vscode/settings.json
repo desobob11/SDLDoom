@@ -8,7 +8,8 @@
         "string.h": "c",
         "limits.h": "c",
         "automap.h": "c",
-        "system_error": "c"
+        "system_error": "c",
+        "player.h": "c"
     },
     "makefile.configureOnOpen": false
 }

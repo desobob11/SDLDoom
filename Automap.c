@@ -1,6 +1,5 @@
 #include "Automap.h"
 
-MAP current_map;
 
 
 
@@ -14,6 +13,14 @@ void AUTOMAP_render_map(SDL_Window* wind, SDL_Surface* surface, WALL* map, RVECT
 
 
 
-    SDL_UpdateWindowSurface(wind);
+   // SDL_UpdateWindowSurface(wind);
     SDL_UnlockSurface(surface);
+}
+
+
+void AUTOMAP_render_wall(SDL_Surface* surface, WALL wall) {
+
+
+
+
 }

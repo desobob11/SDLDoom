@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
                         white, none, none, none, none, blue, white,
                         white, none, red, none, none, none, white,
                         white, none, none, none, none, none, white,
-                        white, none, red, none, none, none, white,
+                        white, none, red, none, none, yellow, white,
                         white, green, none, none, none, none, white,
                         white, white, white, white, white, white, white};
     map.map = walls;
@@ -121,14 +121,14 @@ int main(int argc, char *argv[])
             }
         }
 
-            PLAYER_move_player(player, event, map.map, map.v_w, map.v_h, 
+            PLAYER_move_player(player, event, wall_colors, map.v_w, map.v_h, 
             map.w, map.h);
             PLAYER_rotate_camera(player, event);
         if (RENDER_MODE == 0) {
             GAME_render_view(wind, surface, NULL, player, wall_colors, map.w, map.h);
         }
         else {
-            AUTOMAP_render_map(wind, surface, wall_colors, player->position);
+            AUTOMAP_render_map(wind, surface, walls, player->position);
         }
         SDL_Delay(1000 / FPS);
     }

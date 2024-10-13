@@ -19,16 +19,13 @@ void PLAYER_move_player(PLAYER *player, SDL_Event event, uint32_t* walls, int ma
     double z_incr = (player->dir_vector.head.z - player->dir_vector.tail.z) * MOVE_SPEED;
 
     RVERTEX new_dir_ahead = {player->position.head.x + x_incr,0, player->position.head.z + z_incr};
-    RVERTEX new_dir_back = {player->position.head.x - x_incr,0, player->position.head.z - z_incr};
+   // RVERTEX new_dir_back = {player->position.head.x - x_incr,0, player->position.head.z - z_incr};
 
 
 
     // TODO: correct magic numbers and definitions of level dimensions
     int check_ahead = new_dir_ahead.z - HORIZON_DIST  < map_vh && new_dir_ahead.x - HORIZON_DIST < map_vw
         && new_dir_ahead.z - HORIZON_DIST >= 0 && new_dir_ahead.x - HORIZON_DIST >= 0;
-    int check_back = new_dir_back.z < map_vh && new_dir_back.x < map_vw
-        && new_dir_back.z >= 0 && new_dir_back.x >= 0;
-
 
     if (keystates[SDL_SCANCODE_W])
     {

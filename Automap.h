@@ -17,9 +17,11 @@ typedef struct MAP {
     WALL* map;
 } MAP;
 
-extern MAP current_map;
 
 
 void AUTOMAP_render_map(SDL_Window *wind, SDL_Surface *surface, WALL* map, RVECTOR player_pos);
+
+void AUTOMAP_render_wall(SDL_Surface* surface, WALL wall);
+
 
 #endif
