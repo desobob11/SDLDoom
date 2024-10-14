@@ -31,6 +31,8 @@ void AUTOMAP_render_wall(SDL_Surface* surface, WALL wall, RVECTOR player_pos);
 void AUTOMAP_render_walls(SDL_Surface* surface, WALL* wall, int walls_len, RVECTOR player_pos);
 void AUTOMAP_render_player(SDL_Surface* surface, RVECTOR player_pos);
 
+void AUTOMAP_render_vector(SDL_Surface* surface, RVECTOR vector);
+
 uint32_t AUTOMAP_get_draw_offset_x(RVECTOR player_pos);
 uint32_t AUTOMAP_get_draw_offset_z(RVECTOR player_pos);
 
