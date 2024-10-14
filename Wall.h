@@ -7,6 +7,8 @@
 typedef struct WALL
 {
     uint32_t color;
+    uint32_t x_pos;
+    uint32_t z_pos;
 } WALL;
 
 

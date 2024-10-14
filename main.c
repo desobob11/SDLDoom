@@ -84,6 +84,15 @@ int main(int argc, char *argv[])
                         white, white, white, white, white, white, white};
     map.map = walls;
 
+    for (int i = 0; i < 7; ++i) {
+        for (int j = 0; j < 7; ++j) {
+            walls[i*7 + j].x_pos = (j * BLOCK_SIZE);
+            walls[i*7 + j].z_pos = (i * BLOCK_SIZE);
+        }
+    }
+
+
+
     map.w = 7;
     map.h = 7;
 
@@ -128,7 +137,7 @@ int main(int argc, char *argv[])
             GAME_render_view(wind, surface, NULL, player, wall_colors, map.w, map.h);
         }
         else {
-            AUTOMAP_render_map(wind, surface, walls, player->position);
+            AUTOMAP_render_map(wind, surface, map, player->position);
         }
         SDL_Delay(1000 / FPS);
     }
