@@ -5,7 +5,6 @@
 
 
 void AUTOMAP_render_map(SDL_Window* wind, SDL_Surface* surface, MAP map, RVECTOR player_pos) {
-    WALL* walls = map.map;
     SDL_LockSurface(surface);
     SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
 
