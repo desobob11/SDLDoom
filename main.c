@@ -61,6 +61,10 @@ int main(int argc, char *argv[])
       return 0;
     }
 
+    if (SDL_SetRelativeMouseMode(SDL_TRUE)) {
+        printf("Error capturing mouse: %s\n", SDL_GetError());
+        
+    }
 
     WALL red = {0x00FF0000};
     WALL green = {0x0000FF00};

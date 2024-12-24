@@ -89,13 +89,23 @@ PLAYER *PLAYER_init_player(RVERTEX head)
 }
 
 void PLAYER_rotate_camera(PLAYER *player, SDL_Event event)
-{   const Uint8* keystates = SDL_GetKeyboardState(NULL);
+{       const uint8_t* keystates = SDL_GetKeyboardState(NULL);
+        int xrel, yrel;
 
+        uint32_t mouseMotion = SDL_GetRelativeMouseState(&xrel, &yrel);
         
+
+
+        if (xrel != 0)
+            player->direction += (xrel / MOUSE_SENS);
+            
         if (keystates[SDL_SCANCODE_LEFT])
-            player->direction -= (M_PI / MOUSE_SENS);
+            player->direction -= (M_PI / KEY_SENS);
+
         if (keystates[SDL_SCANCODE_RIGHT])
-            player->direction += (M_PI / MOUSE_SENS);
+            player->direction += (M_PI / KEY_SENS);
+
+   
 
         if (player->direction > 2.0 * M_PI) {
             player->direction -= (2.0 * M_PI);
