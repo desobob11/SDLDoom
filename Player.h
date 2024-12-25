@@ -10,7 +10,9 @@
 #include "Wall.h"
 
 
-#define MOUSE_SENS 50.0
+#define MOUSE_SENS 300.0
+
+#define KEY_SENS 50.0
 
 typedef struct PLAYER {
     RVECTOR position;

@@ -12,6 +12,8 @@
 #include "Automap.h"
 
 
+#define SDL_HINT_RENDER_VSYNC "SDL_RENDER_VSYNC"
+
 #define SPEED 600
 #define FPS 60
 
@@ -61,6 +63,15 @@ int main(int argc, char *argv[])
       return 0;
     }
 
+    if (SDL_SetRelativeMouseMode(SDL_TRUE)) {
+        printf("Error capturing mouse: %s\n", SDL_GetError());
+    }
+
+    if (SDL_ShowCursor(SDL_DISABLE)) {
+        printf("Error hiding cursor: %s\n", SDL_GetError());
+    }
+
+
 
     WALL red = {0x00FF0000};
     WALL green = {0x0000FF00};
@@ -79,10 +90,19 @@ int main(int argc, char *argv[])
                         white, none, none, none, none, blue, white,
                         white, none, red, none, none, none, white,
                         white, none, none, none, none, none, white,
-                        white, none, red, none, yellow, none, white,
+                        white, none, red, none, none, yellow, white,
                         white, green, none, none, none, none, white,
                         white, white, white, white, white, white, white};
     map.map = walls;
+
+    for (int i = 0; i < 7; ++i) {
+        for (int j = 0; j < 7; ++j) {
+            walls[i*7 + j].x_pos = (j * BLOCK_SIZE);
+            walls[i*7 + j].z_pos = (i * BLOCK_SIZE);
+        }
+    }
+
+
 
     map.w = 7;
     map.h = 7;
@@ -121,14 +141,14 @@ int main(int argc, char *argv[])
             }
         }
 
-            PLAYER_move_player(player, event, map.map, map.v_w, map.v_h, 
+            PLAYER_move_player(player, event, wall_colors, map.v_w, map.v_h, 
             map.w, map.h);
             PLAYER_rotate_camera(player, event);
         if (RENDER_MODE == 0) {
             GAME_render_view(wind, surface, NULL, player, wall_colors, map.w, map.h);
         }
         else {
-            AUTOMAP_render_map(wind, surface, wall_colors, player->position);
+            AUTOMAP_render_map(wind, surface, map, player->position);
         }
         SDL_Delay(1000 / FPS);
     }
