@@ -26,13 +26,17 @@ void PLAYER_move_player(PLAYER *player, SDL_Event event, uint32_t* walls, int ma
 
 
     RVERTEX new_dir_ahead = {player->position.head.x + x_incr,0, player->position.head.z + z_incr};
-   // RVERTEX new_dir_back = {player->position.head.x - x_incr,0, player->position.head.z - z_incr};
-
-
-
+    RVERTEX new_dir_back = {player->position.head.x - x_incr,0, player->position.head.z - z_incr};
+    RVERTEX new_dir_left = {player->position.head.x - x_incr, 0, player->position.head.z - z_incr};
+    RVERTEX new_dir_right = {player->position.head.x - x_incr, 0, player->position.head.z - z_incr};
     // TODO: correct magic numbers and definitions of level dimensions
     int check_ahead = new_dir_ahead.z - HORIZON_DIST  < map_vh && new_dir_ahead.x - HORIZON_DIST < map_vw
         && new_dir_ahead.z - HORIZON_DIST >= 0 && new_dir_ahead.x - HORIZON_DIST >= 0;
+
+    int check_back = new_dir_back.z - HORIZON_DIST  < map_vh && new_dir_back.x - HORIZON_DIST < map_vw
+        && new_dir_back.z - HORIZON_DIST >= 0 && new_dir_back.x - HORIZON_DIST >= 0;
+
+    int check_back = new_dir_back.z - HORIZON_DIST < map_vh && new_dir_back.x - HORIZON_DIST < map_vw && new_dir_back.z - HORIZON_DIST >= 0 && new_dir_back.x - HORIZON_DIST >= 0;
 
     if (keystates[SDL_SCANCODE_W])
     {
@@ -54,7 +58,27 @@ void PLAYER_move_player(PLAYER *player, SDL_Event event, uint32_t* walls, int ma
 
     }
 
+    else if (keystates[SDL_SCANCODE_S])
+    {
+        i = (int)new_dir_back.z / BLOCK_SIZE;
+        j = (int)new_dir_back.x / BLOCK_SIZE;
+        if (i >= 0 && i < map_h && j >= 0 && j < map_w)
+        {
 
+            if (check_back)
+            {
+                if (walls[i * map_w + j] == 0)
+                {
+                    player->dir_vector.tail.x -= x_incr;
+                    player->dir_vector.tail.z -= z_incr;
+
+                    player->dir_vector.head.x -= x_incr;
+                    player->dir_vector.head.z -= z_incr;
+                    player->position.head = new_dir_back;
+                }
+            }
+        }
+    }
 }
 
 RVECTOR read_pos(PLAYER *player) {
