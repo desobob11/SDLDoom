@@ -15,7 +15,7 @@
 #define SDL_HINT_RENDER_VSYNC "SDL_RENDER_VSYNC"
 
 #define SPEED 600
-#define FPS 60
+#define FPS 120
 
 #define MAP_HEIGHT (BLOCK_SIZE * 7)
 #define MAP_WIDTH (BLOCK_SIZE * 7)
