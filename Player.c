@@ -92,7 +92,7 @@ void PLAYER_rotate_camera(PLAYER *player, SDL_Event event)
 {       const uint8_t* keystates = SDL_GetKeyboardState(NULL);
         int xrel, yrel;
 
-        uint32_t mouseMotion = SDL_GetRelativeMouseState(&xrel, &yrel);
+        SDL_GetRelativeMouseState(&xrel, &yrel);
         
 
 

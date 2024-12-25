@@ -24,8 +24,11 @@ RVECTOR RVECTOR_cast(RVECTOR v1, RVECTOR v2) {
 }
 
 uint32_t RVECTOR_darken_color(uint32_t color, uint32_t distance) {
+    if (distance >= 4 * BLOCK_SIZE)
+        return 0x00;
     uint32_t r, g, b;
-
+    
+    
     r = (color >> 16) & 0xFF;
     g = (color >> 8) & 0xFF;
     b = (color) & 0xFF;
@@ -64,11 +67,7 @@ DRAW_COL RVECTOR_cast_seek_length(SDL_Renderer* rend, RVECTOR v, RVECTOR h_point
         j = (int)copy.head.x / BLOCK_SIZE;
         if (walls[i*map_w + j])
         {
-          //  int x_mod = (int)copy.head.x % BLOCK_SIZE;
-          //  int z_mod = (int)copy.head.z % BLOCK_SIZE;
-
-//            int corner_a = x_mod % BLOCK_SIZE == 0 && z_mod % BLOCK_SIZE == 0;
-  //          int corner_b = x_mod % BLOCK_SIZE == BLOCK_SIZE - 1 && z_mod % BLOCK_SIZE == BLOCK_SIZE - 1;
+ 
 
             copy.tail = RVECTOR_closest_point(copy.head, h_point);
 

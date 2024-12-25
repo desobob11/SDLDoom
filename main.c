@@ -12,6 +12,8 @@
 #include "Automap.h"
 
 
+#define SDL_HINT_RENDER_VSYNC "SDL_RENDER_VSYNC"
+
 #define SPEED 600
 #define FPS 60
 
@@ -63,8 +65,13 @@ int main(int argc, char *argv[])
 
     if (SDL_SetRelativeMouseMode(SDL_TRUE)) {
         printf("Error capturing mouse: %s\n", SDL_GetError());
-        
     }
+
+    if (SDL_ShowCursor(SDL_DISABLE)) {
+        printf("Error hiding cursor: %s\n", SDL_GetError());
+    }
+
+
 
     WALL red = {0x00FF0000};
     WALL green = {0x0000FF00};
