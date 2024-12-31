@@ -136,3 +136,17 @@ RVERTEX RVECTOR_closest_point(RVERTEX ray_head, RVECTOR horizon) {
     RVERTEX point = {point_x, 0, point_z};
     return point;
 }
+
+RVECTOR RVECTOR_rotate_vector(double theta, RVECTOR vector) {
+    RVECTOR to_return;
+    RVERTEX temp_head = {vector.head.x - vector.tail.x, 0, vector.head.z - vector.tail.z};
+    RVERTEX origin = {0, 0, 0};
+    RVECTOR temp = {temp_head, origin};
+
+    to_return.head.x = (temp.head.x * cos(theta)) - (temp.head.z * sin(theta));
+    to_return.head.z = (temp.head.x * sin(theta)) + (temp.head.z * cos(theta));
+    to_return.head.x += vector.tail.x;
+    to_return.head.z += vector.tail.z;
+    to_return.tail = vector.tail;
+    return to_return;
+}
