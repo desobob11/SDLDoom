@@ -4,13 +4,13 @@
 
 
 
-<!-- PROJECT LOGO -->
+
 <br />
 <div align="center">
   <a href="https://github.com/desobob11/SDLDoom">
   </a>
 
-  <h3 align="center">SDoomL</h3>
+  <h3 align="center">SDLDoom</h3>
 
   <p align="center">
     A simple raycasting rendering engine implented in C using SDL2. It's like jumping back to 1993!
@@ -20,7 +20,7 @@
 
 
 
-<!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 I got the inspiration for this project from the one and only John Carmack himself. I was listening to <a href="https://www.youtube.com/watch?v=I845O57ZSy4">John's appearance on the Lex Fridman podcast </a> during my morning commute one day. I was particularly interested with John's recollection of the development of Wolfenstein 3D, which was built using a raycasting techniques. shortly thereafter, I decided that I wanted to try implementing a raycasting engine myself!
@@ -43,7 +43,7 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 
 
-<!-- GETTING STARTED -->
+
 ## Getting Started
 
 The repository comes with two compiled executables:
@@ -76,7 +76,7 @@ This section is for compiling the program.
 
 
 
-<!-- CONTACT -->
+
 ## Contact
 
 Desmond O'Brien -- desmondobrien01@outlook.com
