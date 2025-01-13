@@ -141,9 +141,10 @@ int main(int argc, char *argv[])
             }
         }
 
-            PLAYER_move_player(player, event, wall_colors, map.v_w, map.v_h, 
-            map.w, map.h);
-            PLAYER_rotate_camera(player, event);
+
+        PLAYER_move_player(player, event, wall_colors, map.v_w, map.v_h,
+                           map.w, map.h);
+        PLAYER_rotate_camera(player, event);
         if (RENDER_MODE == 0) {
             GAME_render_view(wind, surface, NULL, player, wall_colors, map.w, map.h);
         }
