@@ -10,7 +10,7 @@
   <a href="https://github.com/desobob11/SDLDoom">
   </a>
 
-  <h3 align="center">SDLDoom</h3>
+  <h3 align="center">SDLDoom :gun:</h3>
 
   <p align="center">
     A simple raycasting rendering engine implented in C using SDL2. It's like jumping back to 1993!
@@ -23,14 +23,14 @@
 
 ## About The Project
 
-I got the inspiration for this project from the one and only John Carmack himself. I was listening to <a href="https://www.youtube.com/watch?v=I845O57ZSy4">John's appearance on the Lex Fridman podcast </a> during my morning commute one day. I was particularly interested with John's recollection of the development of Wolfenstein 3D, which was built using a raycasting techniques. shortly thereafter, I decided that I wanted to try implementing a raycasting engine myself!
+I got the inspiration for this project from the one and only John Carmack himself :sunglasses:. I was listening to <a href="https://www.youtube.com/watch?v=I845O57ZSy4">John's appearance on the Lex Fridman podcast </a> during my morning commute one day. I was particularly interested with John's recollection of the development of Wolfenstein 3D, which was built using a raycasting techniques. shortly thereafter, I decided that I wanted to try implementing a raycasting engine myself!
 
 Principles of the Engine:
-* I use SDL2 for managing a window and receiving user inputs
+* I use SDL2 for managing a window and receiving user inputs :raising_hand:
 * I am able to access the pixel buffer of the window to write individual pixels to any color of my choosing!
-* By using some vector artihmetic, I can cast rays out from the player's position, one for each vertical line of the framebuffer, out into the game world
+* By using some vector artihmetic :arrow_upper_right:, I can cast rays out from the player's position, one for each vertical line of the framebuffer, out into the game world
 * When a ray hits a wall, I draw a vertical line of pixels according to the distance of the array
-* This gives the illusion of a 3D gameworld without the use of polygons or a 3D rendering pipeline!
+* This gives the illusion of a 3D gameworld :eyeglasses: without the use of polygons or a 3D rendering pipeline!
 
 ### Built With
 
