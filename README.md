@@ -13,7 +13,7 @@
   <h3 align="center">SDLDoom :gun:</h3>
 
   <p align="center">
-    A simple raycasting rendering engine implented in C using SDL2. It's like jumping back to 1993!
+    A raycasting rendering game engine implented in C using SDL2. It's like jumping back to 1993!
   </p>
 </div>
 
