@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #define SDL_MAIN_HANDLED
-#include "SDL2/include/SDL2/SDL.h"
+#include "../SDL2/include/SDL2/SDL.h"
 #include "Wall.h"
 #include "RVector.h"
 #include "Player.h"

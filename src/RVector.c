@@ -1,6 +1,9 @@
+/*
 #include "RVector.h"
 #include "Const.h"
 #include "Automap.h"
+
+
 
 
 
@@ -150,3 +153,5 @@ RVECTOR RVECTOR_rotate_vector(double theta, RVECTOR vector) {
     to_return.tail = vector.tail;
     return to_return;
 }
+
+*/
