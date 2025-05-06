@@ -3,8 +3,6 @@
 
 
 
-namespace DOOM {
-    void Sprite::render() {
-        
-    }
+namespace NGIN {
+
 }

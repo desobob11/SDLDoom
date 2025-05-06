@@ -12,7 +12,9 @@
         "player.h": "c",
         "stdio.h": "c",
         "utility": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "xstring": "cpp",
+        "vector": "cpp"
     },
     "makefile.configureOnOpen": false
 }
