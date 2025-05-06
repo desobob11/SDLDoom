@@ -9,7 +9,10 @@
         "limits.h": "c",
         "automap.h": "c",
         "system_error": "c",
-        "player.h": "c"
+        "player.h": "c",
+        "stdio.h": "c",
+        "utility": "cpp",
+        "xutility": "cpp"
     },
     "makefile.configureOnOpen": false
 }
