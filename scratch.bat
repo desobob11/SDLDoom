@@ -6,5 +6,7 @@ src\scratch.cpp ^
 src\Player.cpp ^
 src\Vector.cpp ^
 src\Wall.cpp ^
--IC:\Users\Des\SDLDoom\SDL2\include -LC:\Users\Des\SDLDoom\SDL2\lib -Wall -lmingw32 -lSDL2main -lSDL2 -o scratch
-scratch
+src\Sprite.cpp ^
+src\SpriteBatch.cpp ^
+-IC:\Users\Des\SDLDoom\SDL2\include -LC:\Users\Des\SDLDoom\SDL2\lib -Wall -lmingw32 -lSDL2main -lSDL2 -o scr
+scr

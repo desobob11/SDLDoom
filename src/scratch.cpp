@@ -12,6 +12,7 @@
 #include "Vector.h"
 #include "Wall.h"
 #include "Sprite.h"
+#include "SpriteBatch.h"
 
 #define SDL_HINT_RENDER_VSYNC "SDL_RENDER_VSYNC"
 
@@ -24,6 +25,14 @@
 extern int DRAW_MODE;
 int DRAW_MODE = 0;
 
+using namespace std;
+
 int main(int argc, char* argv[]) {
-    
+    NGIN::SpriteBatch batch {};
+
+    for (auto iter = batch.lookupTable.begin(); iter != batch.lookupTable.end(); ++iter) {
+        cout << iter->first << " " << iter->second.first << " " << iter->second.second << endl;
+    }
+
+
 }
