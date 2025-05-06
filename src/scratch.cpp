@@ -9,15 +9,15 @@
 #include "Const.h"
 #include "Game.h"
 #include "Player.h"
-#include "Vector.h"
-#include "Wall.h"
 #include "Sprite.h"
 #include "SpriteBatch.h"
+#include "Vector.h"
+#include "Wall.h"
 
 #define SDL_HINT_RENDER_VSYNC "SDL_RENDER_VSYNC"
 
 #define SPEED 600
-#define FPS 120
+#define FPS 180
 
 #define MAP_HEIGHT (BLOCK_SIZE * 7)
 #define MAP_WIDTH (BLOCK_SIZE * 7)
@@ -28,11 +28,62 @@ int DRAW_MODE = 0;
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    NGIN::SpriteBatch batch {};
+    NGIN::SpriteBatch batch{};
 
-    for (auto iter = batch.lookupTable.begin(); iter != batch.lookupTable.end(); ++iter) {
-        cout << iter->first << " " << iter->second.first << " " << iter->second.second << endl;
+    for (auto iter = batch.lookupTable.begin(); iter != batch.lookupTable.end();
+         ++iter) {
+        cout << iter->first << " " << iter->second.first << " "
+             << iter->second.second << endl;
+    }
+    NGIN::Sprite sp1{"imp", 0, 0};
+
+    batch.addSprite(&sp1);
+    batch.loadImages();
+
+    /* Initializes the timer, audio, video, joystick,
+   haptic, gamecontroller and events subsystems */
+    if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+        printf("Error initializing SDL: %s\n", SDL_GetError());
+        return 0;
+    }
+    /* Create a window */
+    SDL_Window* wind = SDL_CreateWindow("SDoomL", SDL_WINDOWPOS_CENTERED,
+                                        SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH,
+                                        SCREEN_HEIGHT, 0);
+    if (!wind) {
+        printf("Error creating window: %s\n", SDL_GetError());
+        SDL_Quit();
+        return 0;
     }
 
+    SDL_Surface* surface = SDL_GetWindowSurface(wind);
+    SDL_SetSurfaceBlendMode(surface, SDL_BLENDMODE_BLEND);
+    if (!surface) {
+        printf("Error creating surface: %s\n", SDL_GetError());
+        SDL_DestroyWindow(wind);
+        SDL_Quit();
+        return 0;
+    }
 
+    if (SDL_SetRelativeMouseMode(SDL_TRUE)) {
+        printf("Error capturing mouse: %s\n", SDL_GetError());
+    }
+
+    if (SDL_ShowCursor(SDL_DISABLE)) {
+        printf("Error hiding cursor: %s\n", SDL_GetError());
+    }
+
+    SDL_Event event;
+    while (true) {
+        SDL_UpdateWindowSurface(wind);
+        /* Process events */
+        while (SDL_PollEvent(&event)) {
+        }
+
+        SDL_LockSurface(surface);
+        SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
+        batch.renderSprites(surface);
+        SDL_UnlockSurface(surface);
+        SDL_Delay(1000 / FPS);
+    }
 }

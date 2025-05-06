@@ -17,10 +17,10 @@ namespace NGIN {
         private:
             std::vector<Sprite*> sprites;
             std::map<std::string, uint8_t*> imgs;
-            void loadImages();
             void loadImage(Sprite sp);
             static void loadLookup();
         public:
+            void loadImages();
             void addSprite(Sprite* s);
             void renderSprites(SDL_Surface* surf);
             static std::map<std::string, std::pair<uint32_t, uint32_t>> lookupTable; 

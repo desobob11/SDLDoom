@@ -9,8 +9,6 @@ namespace NGIN {
 typedef struct Sprite {
     // private:
     std::string name;
-    uint32_t w;
-    uint32_t h;
     uint32_t x;
     uint32_t z;
 
