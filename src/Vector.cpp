@@ -1,25 +1,18 @@
 #include "Vector.h"
 
+#include <algorithm>
+
 #include "Automap.h"
 #include "Const.h"
 
-uint32_t GAME_max(uint32_t x, uint32_t y) {
-    if (x > y) {
-        return x;
-    }
-    return y;
-}
-
 namespace DOOM {
 
-Vector Vector::Vector_diff(Vector v1, Vector v2) { return v1; }
-
 Vector Vector::Vector_cast(Vector v1, Vector v2) {
-    Vector v = {v2.head, v1.head};
+    Vector v = Vector{v2.head, v1.head};
     return v;
 }
 
-uint32_t Vector_darken_color(uint32_t color, uint32_t distance) {
+uint32_t Vector::Vector_darken_color(uint32_t color, uint32_t distance) {
     if (distance >= 4 * BLOCK_SIZE) return 0x00;
     uint32_t r, g, b;
 
@@ -27,9 +20,9 @@ uint32_t Vector_darken_color(uint32_t color, uint32_t distance) {
     g = (color >> 8) & 0xFF;
     b = (color) & 0xFF;
 
-    r = GAME_max(r * (1 - (distance / 800.0)), 0x00);
-    g = GAME_max(g * (1 - (distance / 800.0)), 0x00);
-    b = GAME_max(b * (1 - (distance / 800.0)), 0x00);
+    r = std::max(r * (1 - (distance / 800.0)), (double)0x00);
+    g = std::max(g * (1 - (distance / 800.0)), (double)0x00);
+    b = std::max(b * (1 - (distance / 800.0)), (double)0x00);
 
     uint32_t darkened = 0x00000000;
 
@@ -42,9 +35,10 @@ uint32_t Vector_darken_color(uint32_t color, uint32_t distance) {
 
 ////   VERTEX start_pos = {75, 0, 0};
 DRAW_COL Vector::Vector_cast_seek_length(SDL_Renderer* rend, Vector h_point,
-                                 uint32_t* walls, int map_w, int map_h) const {
+                                         uint32_t* walls, int map_w,
+                                         int map_h) const {
     int hit = 0;
-    Vector copy = Vector {*this};
+    Vector copy = Vector{*this};
     DRAW_COL col;
 
     double x_incr = this->head.x - this->tail.x;
@@ -56,11 +50,11 @@ DRAW_COL Vector::Vector_cast_seek_length(SDL_Renderer* rend, Vector h_point,
         i = (int)copy.head.z / BLOCK_SIZE;
         j = (int)copy.head.x / BLOCK_SIZE;
         if (walls[i * map_w + j]) {
-            copy.tail = Vector_closest_point(copy.head, h_point);
+            copy.tail = Vector::Vector_closest_point(copy.head, h_point);
 
             col.distance = copy.Vector_length();
-            col.color = Vector_darken_color(walls[i * map_w + j],
-                                            (uint32_t)col.distance);
+            col.color = Vector::Vector_darken_color(walls[i * map_w + j],
+                                                    (uint32_t)col.distance);
             hit = 1;
         } else {
             VERTEX new_head = {copy.head.x + x_incr, 0, copy.head.z + z_incr};
@@ -97,10 +91,11 @@ int Vector_draw_height(double length) { return 1; }
 
 void Vector::Vector_print() const {
     printf("Tail: (%.2lf, %.2lf, %.2lf) Head: (%.2lf, %.2lf, %.2lf)\n",
-           this->tail.x,  this->tail.y,  this->tail.z,  this->head.x,  this->head.y,  this->head.z);
+           this->tail.x, this->tail.y, this->tail.z, this->head.x, this->head.y,
+           this->head.z);
 }
 
-VERTEX Vector_closest_point(VERTEX ray_head, Vector horizon) {
+VERTEX Vector::Vector_closest_point(VERTEX ray_head, Vector horizon) {
     if (horizon.head.x == horizon.tail.x) {
         VERTEX p = {horizon.tail.x, 0, ray_head.z};
         return p;
@@ -120,7 +115,7 @@ VERTEX Vector_closest_point(VERTEX ray_head, Vector horizon) {
     return point;
 }
 
-Vector Vector_rotate_vector(double theta, Vector vector) {
+Vector Vector::Vector_rotate_vector(double theta, Vector vector) {
     Vector to_return;
     VERTEX temp_head = {vector.head.x - vector.tail.x, 0,
                         vector.head.z - vector.tail.z};
