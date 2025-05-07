@@ -18,7 +18,12 @@ import os
 files = [i for i in os.listdir("assets/") if ".png" in i]
 with open("assets/lookup.txt", "w") as look:
     for file in files:
-        img = np.asarray(PIL.Image.open(f"assets/{file}"))
+        img = np.array(PIL.Image.open(f"assets/{file}"))
+       # img.setflags(write=1)
+        for i in range(img.shape[0]):
+            for j in range(img.shape[1]):
+                row = img[i, j]
+                img[i, j] = np.array((row[2], row[1], row[0], row[3]))
         sprite_name = file.split(".png")[0]
         look.writelines([f"{sprite_name},{img.shape[0]},{img.shape[1]}"])
 

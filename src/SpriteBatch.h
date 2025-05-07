@@ -16,7 +16,7 @@ namespace NGIN {
     class SpriteBatch {
         private:
             std::vector<Sprite*> sprites;
-            std::map<std::string, uint8_t*> imgs;
+            std::map<std::string, uint32_t*> imgs;
             void loadImage(Sprite sp);
             static void loadLookup();
         public:

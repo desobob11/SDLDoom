@@ -15,10 +15,10 @@ namespace NGIN {
 
         for (Sprite* sp : this->sprites) {
             cout << (*sp).name << endl;
-            uint8_t* img = this->imgs[(*sp).name];
+            uint32_t* img = this->imgs[(*sp).name];
             
-            uint32_t w = this->lookupTable[(*sp).name].first;
-            uint32_t h = this->lookupTable[(*sp).name].second;
+            uint32_t h = this->lookupTable[(*sp).name].first;
+            uint32_t w = this->lookupTable[(*sp).name].second;
             cout << w << " " << h << endl;
 
             for (uint32_t i = 0; i < h; ++i) {
@@ -31,20 +31,20 @@ namespace NGIN {
 
     void SpriteBatch::loadImage(Sprite sp) {
         std::stringstream sb {};
-        sb << "./assets/" << sp.name << ".RAW";
+        sb << "./assets/" << sp.name << ".dat";
         std::string fname = sb.str();
 
         std::ifstream file {fname, std::ios::binary};
         if (file.is_open()) {
-            uint32_t w = this->lookupTable[sp.name].first;
-            uint32_t h = this->lookupTable[sp.name].second;
+            uint32_t h = this->lookupTable[sp.name].first;
+            uint32_t w = this->lookupTable[sp.name].second;
+            cout << h << " " << w << endl;
 
             size_t offset = 0;
-            uint8_t* imgArr = new uint8_t[w * h];
-            while (file.read(reinterpret_cast<char*>(imgArr + offset), PARSE_SIZE)) {
-                offset += file.gcount();
+            uint32_t* imgArr = new uint32_t[h*w];
+            while (file.read(reinterpret_cast<char*>(imgArr + offset), sizeof(uint32_t))) {
+                ++offset;
             }
-            offset += file.gcount(); 
             this->imgs[sp.name] = imgArr;
         }
 
@@ -70,13 +70,13 @@ namespace NGIN {
                 std::string name = line.substr(0, line.find(","));
                 line.erase(0, line.find(",") + 1);  // "length" = 1
 
-                uint32_t width = static_cast<uint32_t>(std::stoi(line.substr(0, line.find(","))));
-                line.erase(0, line.find(",") + 1);  // "length" = 1
-
                 uint32_t height = static_cast<uint32_t>(std::stoi(line.substr(0, line.find(","))));
                 line.erase(0, line.find(",") + 1);  // "length" = 1
+
+                uint32_t width = static_cast<uint32_t>(std::stoi(line.substr(0, line.find(","))));
+                line.erase(0, line.find(",") + 1);  // "length" = 1
                 
-                std::pair<uint32_t, uint32_t> hw {width, height};
+                std::pair<uint32_t, uint32_t> hw {height, width};
 
                 SpriteBatch::lookupTable[name] = hw;
             }
