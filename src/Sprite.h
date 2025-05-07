@@ -11,6 +11,7 @@ typedef struct Sprite {
     std::string name;
     uint32_t x;
     uint32_t z;
+    float scale;
 
     // public:
 

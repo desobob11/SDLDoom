@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
         cout << iter->first << " " << iter->second.first << " "
              << iter->second.second << endl;
     }
-    NGIN::Sprite sp1{"imp", 0, 0};
+    NGIN::Sprite sp1{"imp", 0, 0, 0.5};
 
     batch.addSprite(&sp1);
     batch.loadImages();

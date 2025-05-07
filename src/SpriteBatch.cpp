@@ -19,7 +19,7 @@ namespace NGIN {
             uint32_t h = this->lookupTable[(*sp).name].first;
             uint32_t w = this->lookupTable[(*sp).name].second;
 
-            SCALED_SPRITE ss = scaleDown(0.33, img, h, w);
+            SCALED_SPRITE ss = scaleDown(sp->scale, img, h, w);
 
             for (uint32_t i = 0; i < ss.h; ++i) {
                 for (uint32_t j = 0; j < ss.w; ++j) {
@@ -111,6 +111,27 @@ namespace NGIN {
         return SCALED_SPRITE {factor, scaledImg, h, w};
     }
 
+
+    
+    SCALED_SPRITE SpriteBatch::scaleUp(double factor, uint32_t* img, uint32_t height, uint32_t width) {
+        uint32_t h = static_cast<uint32_t>(height * factor);
+        uint32_t w = static_cast<uint32_t>(width * factor);
+
+        size_t w_iter = static_cast<size_t>(width / w);
+        size_t h_iter = static_cast<size_t>(height / h);
+
+        size_t img_i = 0;
+        uint32_t* scaledImg = new uint32_t[h*w];
+        for (size_t i = 0; i < h; ++i) {
+            size_t img_j = 0;
+            for (size_t j = 0; j < w; ++j) {
+                scaledImg[(i*w) + j] = img[(img_i*width) + img_j];
+                img_j += w_iter;
+            }
+            img_i += h_iter;
+        }
+        return SCALED_SPRITE {factor, scaledImg, h, w};
+    }
 
    // uint32_t *pixels = (uint32_t *)surface->pixels;
 
