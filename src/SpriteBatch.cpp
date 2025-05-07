@@ -14,16 +14,16 @@ namespace NGIN {
         uint32_t *pixels = (uint32_t *) surface->pixels;
 
         for (Sprite* sp : this->sprites) {
-            cout << (*sp).name << endl;
             uint32_t* img = this->imgs[(*sp).name];
             
             uint32_t h = this->lookupTable[(*sp).name].first;
             uint32_t w = this->lookupTable[(*sp).name].second;
-            cout << w << " " << h << endl;
 
-            for (uint32_t i = 0; i < h; ++i) {
-                for (uint32_t j = 0; j < w; ++j) {
-                    pixels[(i * surface->w) + j] = img[(i * w) + j];
+            SCALED_SPRITE ss = scaleDown(0.33, img, h, w);
+
+            for (uint32_t i = 0; i < ss.h; ++i) {
+                for (uint32_t j = 0; j < ss.w; ++j) {
+                    pixels[(i * surface->w) + j] = ss.img[(i * ss.w) + j];
                 }
             }
         }
@@ -87,6 +87,28 @@ namespace NGIN {
         if (SpriteBatch::lookupTable.size() == 0) {
             SpriteBatch::loadLookup();
         }
+    }
+
+
+
+    SCALED_SPRITE SpriteBatch::scaleDown(double factor, uint32_t* img, uint32_t height, uint32_t width) {
+        uint32_t h = static_cast<uint32_t>(height * factor);
+        uint32_t w = static_cast<uint32_t>(width * factor);
+
+        size_t w_iter = static_cast<size_t>(width / w);
+        size_t h_iter = static_cast<size_t>(height / h);
+
+        size_t img_i = 0;
+        uint32_t* scaledImg = new uint32_t[h*w];
+        for (size_t i = 0; i < h; ++i) {
+            size_t img_j = 0;
+            for (size_t j = 0; j < w; ++j) {
+                scaledImg[(i*w) + j] = img[(img_i*width) + img_j];
+                img_j += w_iter;
+            }
+            img_i += h_iter;
+        }
+        return SCALED_SPRITE {factor, scaledImg, h, w};
     }
 
 

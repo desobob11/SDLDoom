@@ -13,6 +13,15 @@
 #define LOOKUP_TABLE "./assets/lookup.txt"
 
 namespace NGIN {
+
+    typedef struct SCALED_SPRITE {
+        double factor;
+        uint32_t* img;
+        uint32_t h;
+        uint32_t w;
+    } SCALED_SPRITE;
+
+
     class SpriteBatch {
         private:
             std::vector<Sprite*> sprites;
@@ -23,6 +32,7 @@ namespace NGIN {
             void loadImages();
             void addSprite(Sprite* s);
             void renderSprites(SDL_Surface* surf);
+            SCALED_SPRITE scaleDown(double factor, uint32_t* img, uint32_t h, uint32_t w);
             static std::map<std::string, std::pair<uint32_t, uint32_t>> lookupTable; 
             SpriteBatch();
         

@@ -65,13 +65,13 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    if (SDL_SetRelativeMouseMode(SDL_TRUE)) {
-        printf("Error capturing mouse: %s\n", SDL_GetError());
-    }
+  //  if (SDL_SetRelativeMouseMode(SDL_TRUE)) {
+  //     printf("Error capturing mouse: %s\n", SDL_GetError());
+  //  }
 
-    if (SDL_ShowCursor(SDL_DISABLE)) {
-        printf("Error hiding cursor: %s\n", SDL_GetError());
-    }
+   // if (SDL_ShowCursor(SDL_DISABLE)) {
+   //     printf("Error hiding cursor: %s\n", SDL_GetError());
+   // }
 
     SDL_Event event;
     while (true) {
