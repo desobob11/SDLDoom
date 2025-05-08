@@ -18,10 +18,23 @@ void SpriteBatch::renderSprites(SDL_Surface* surface) {
         uint32_t w = this->lookupTable[(*sp).name].second;
 
         SCALED_SPRITE ss = scaleUp(img, h, w);
+        SCALED_SPRITE ss2 = scaleDown(0.5, img, h, w);
 
         for (uint32_t i = 0; i < ss.h; ++i) {
             for (uint32_t j = 0; j < ss.w; ++j) {
                 pixels[(i * surface->w) + j] = ss.img[(i * ss.w) + j];
+            }
+        }
+
+        for (uint32_t i = 0; i < h; ++i) {
+            for (uint32_t j = 0; j < w; ++j) {
+                pixels[(i * surface->w) + j] = img[(i * w) + j];
+            }
+        }
+
+        for (uint32_t i = 0; i < ss2.h; ++i) {
+            for (uint32_t j = 0; j < ss2.w; ++j) {
+                pixels[(i * surface->w) + j] = ss2.img[(i * ss2.w) + j];
             }
         }
     }
@@ -163,7 +176,7 @@ uint32_t SpriteBatch::q_interp(uint32_t a, uint32_t b, uint32_t c, uint32_t d) {
         return a;
     }
 
-    uint32_t r, g, _b;
+    uint32_t r = 0, g = 0, _b = 0;
     uint32_t arr[]{a, b, c, d};
 
     // sum r g and b channels
@@ -174,9 +187,9 @@ uint32_t SpriteBatch::q_interp(uint32_t a, uint32_t b, uint32_t c, uint32_t d) {
     }
 
     // average each channel
-    r /= sizeof(arr);
-    g /= sizeof(arr);
-    _b /= sizeof(arr);
+    r /= 4;
+    g /= 4;
+    _b /= 4;
 
     // merge channels and return
     uint32_t result = 0x00000000;
