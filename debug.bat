@@ -2,7 +2,7 @@ g++ -g -std=c++17 ^
 src\Const.cpp ^
 src\Game.cpp ^
 src\Automap.cpp ^
-src\scratch.cpp ^
+src\main.cpp ^
 src\Player.cpp ^
 src\Vector.cpp ^
 src\LevelState.cpp ^

@@ -6,5 +6,7 @@ src\main.cpp ^
 src\Player.cpp ^
 src\Vector.cpp ^
 src\LevelState.cpp ^
+src\Sprite.cpp ^
+src\SpriteBatch.cpp ^
 -IC:\Users\Des\SDLDoom\SDL2\include -LC:\Users\Des\SDLDoom\SDL2\lib -Wall -lmingw32 -lSDL2main -lSDL2 -o main
 main

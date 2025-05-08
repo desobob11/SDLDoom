@@ -24,6 +24,8 @@ extern int DRAW_MODE;
 int DRAW_MODE = 0;
 
 int main(int argc, char* argv[]) {
+
+
     /* Initializes the timer, audio, video, joystick,
     haptic, gamecontroller and events subsystems */
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -68,12 +70,14 @@ int main(int argc, char* argv[]) {
     PLAYER* player = PLAYER_init_player(start_pos);
 
     MAP map;
-    NGIN::Sprite* sprites[50] = {
-        nullptr, nullptr, nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr, nullptr,  nullptr,
-        nullptr, nullptr, nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr, nullptr,  nullptr,
-        nullptr, nullptr, nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr, nullptr,  nullptr,
-        nullptr, nullptr, nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr, nullptr,  nullptr,
-        nullptr, nullptr, nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr, nullptr,  nullptr};
+    NGIN::Sprite* sprites[49] = {
+        nullptr, nullptr, nullptr, nullptr,  nullptr, nullptr, nullptr,
+        nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr, nullptr, 
+        nullptr, nullptr, nullptr, nullptr, nullptr,  nullptr, nullptr, 
+        nullptr, nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr, 
+        nullptr,  nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+        nullptr, nullptr, nullptr, nullptr,  nullptr, nullptr, nullptr, 
+        nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr, nullptr};
 
     NGIN::WALL walls[49] = {
         white, white, white, white,  white, white, white, 
@@ -86,6 +90,10 @@ int main(int argc, char* argv[]) {
     map.map = walls;
 
     NGIN::LevelState level {walls, sprites};
+    NGIN::Sprite sp1 {"imp", DOOM::VERTEX {300.0, 0, 300.0}};
+
+    level.batch.addSprite(&sp1);
+    level.batch.loadImages();
 
     for (int i = 0; i < 7; ++i) {
         for (int j = 0; j < 7; ++j) {
@@ -129,6 +137,7 @@ int main(int argc, char* argv[]) {
             }
         }
 
+
         PLAYER_move_player(player, event, wall_colors, map.v_w, map.v_h, map.w,
                            map.h);
         PLAYER_rotate_camera(player, event);
@@ -138,6 +147,12 @@ int main(int argc, char* argv[]) {
         } else {
             AUTOMAP_render_map(wind, surface, map, player->position);
         }
+
+        level.batch.updateSpriteDistances(player->position);
+        SDL_LockSurface(surface);
+       // SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
+        level.batch.renderSprites(surface);
+        SDL_UnlockSurface(surface);
         SDL_Delay(1000 / FPS);
     }
 }

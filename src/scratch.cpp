@@ -1,3 +1,4 @@
+/*
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -102,6 +103,10 @@ int main(int argc, char* argv[]) {
         SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
         batch.renderSprites(surface);
         SDL_UnlockSurface(surface);
+
+
+        
         SDL_Delay(1000 / FPS);
     }
 }
+*/

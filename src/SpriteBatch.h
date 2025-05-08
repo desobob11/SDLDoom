@@ -26,7 +26,6 @@ namespace NGIN {
 
     class SpriteBatch {
         private:
-
             std::vector<Sprite*> sprites;
             std::map<std::string, uint32_t*> imgs;
             void loadImage(Sprite sp);
@@ -41,6 +40,7 @@ namespace NGIN {
             static std::map<std::string, std::pair<uint32_t, uint32_t>> lookupTable; 
             SpriteBatch();
             ~SpriteBatch();
+            void updateSpriteDistances(DOOM::Vector playerPos);
         
     };
 

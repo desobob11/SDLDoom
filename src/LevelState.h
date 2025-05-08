@@ -2,6 +2,8 @@
 #define LEVELSTATE_H_
 #include "../SDL2/include/SDL2/SDL.h"
 #include "Sprite.h"
+#include "SpriteBatch.h"
+#include "Vector.h"
 
 namespace NGIN {
 typedef struct WALL {
@@ -14,8 +16,12 @@ typedef struct WALL {
 class LevelState {
     public:
         WALL* walls;
-        NGIN::Sprite** sprites;
+        Sprite** sprites;
         LevelState(WALL* w, Sprite** s);
+        void updateSpriteDistances(DOOM::Vector playerPos);
+        SpriteBatch batch;
+    private:
+
 };
 }
 #endif

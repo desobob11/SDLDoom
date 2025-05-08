@@ -37,7 +37,9 @@ void SpriteBatch::renderSprites(SDL_Surface* surface) {
 
         for (uint32_t i = 0; i < draw_h; ++i) {
             for (uint32_t j = 0; j < draw_w; ++j) {
-                pixels[(i * surface->w) + j] = ss.img[(i * draw_w) + j];
+                if (ss.img[(i * draw_w) + j]) {
+                    pixels[(i * surface->w) + j] = ss.img[(i * draw_w) + j];       
+                }
             }
         }
 
@@ -45,9 +47,9 @@ void SpriteBatch::renderSprites(SDL_Surface* surface) {
             delete ss.img;
         }
     }
-
-
 }
+
+
 
 void SpriteBatch::loadImage(Sprite sp) {
     std::stringstream sb{};
@@ -218,4 +220,18 @@ uint32_t SpriteBatch::q_interp(uint32_t a, uint32_t b, uint32_t c, uint32_t d) {
 
 // uint32_t *pixels = (uint32_t *)surface->pixels;
 
+/*
+    Sets distance and update scale
+*/
+void SpriteBatch::updateSpriteDistances(DOOM::Vector playerPos) {
+    for (Sprite* sp : this->sprites) {
+        sp->dist = DOOM::Vector {playerPos.head, sp->pos.head}.Vector_length();
+
+        float blocksAway = sp->dist / BLOCK_SIZE;
+        sp->scale = ((int32_t) blocksAway) % (SPRITE_SCALE_MAX + 1);  // number of scales for sprites
+    }
+}
+
 }  // namespace NGIN
+
+

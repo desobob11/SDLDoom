@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #include "../SDL2/include/SDL2/SDL.h"
-#include "LevelState.h"
+
 
 namespace DOOM {
 
@@ -42,6 +42,16 @@ class Vector {
     static uint32_t Vector_darken_color(uint32_t color, uint32_t distance);
     static VERTEX Vector_closest_point(VERTEX ray_head, Vector horizon);
     static Vector Vector_rotate_vector(double theta, Vector vector);
+    /*
+    inline friend Vector operator-(const Vector& a,const Vector& b) {
+
+        return Vector {a.tail, b.tail};
+    }
+
+    inline friend Vector operator+(const Vector& a,const Vector& b) {
+        return Vector {a.tail, b.head};
+    }
+        */
 };
 }  // namespace DOOM
 
