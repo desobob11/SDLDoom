@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #include "../SDL2/include/SDL2/SDL.h"
-#include "Wall.h"
+#include "LevelState.h"
 
 namespace DOOM {
 

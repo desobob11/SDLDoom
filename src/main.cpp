@@ -10,7 +10,7 @@
 #include "Game.h"
 #include "Player.h"
 #include "Vector.h"
-#include "Wall.h"
+#include "LevelState.h"
 
 #define SDL_HINT_RENDER_VSYNC "SDL_RENDER_VSYNC"
 

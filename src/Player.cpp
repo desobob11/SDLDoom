@@ -4,8 +4,6 @@
 
 #include "Automap.h"
 #include "Const.h"
-#include "Wall.h"
-
 #define HORIZON_DIST 25
 #define MOVE_SPEED 10.0
 

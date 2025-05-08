@@ -1,5 +1,5 @@
-#ifndef WALL_H_
-#define WALL_H_
+#ifndef LEVELSTATE_H_
+#define LEVELSTATE_H_
 #include "../SDL2/include/SDL2/SDL.h"
 
 typedef struct WALL {
@@ -8,4 +8,10 @@ typedef struct WALL {
     uint32_t z_pos;
 } WALL;
 
+
+class LevelState {
+    public:
+        WALL* walls;
+        
+};
 #endif

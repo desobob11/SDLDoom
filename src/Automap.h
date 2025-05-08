@@ -8,7 +8,7 @@
 #include "Const.h"
 #include "Player.h"
 #include "Vector.h"
-#include "Wall.h"
+#include "LevelState.h"
 
 #define PLAYER_DOT_W 10
 #define PLAYER_DOT_H 10

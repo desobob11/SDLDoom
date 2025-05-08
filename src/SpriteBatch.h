@@ -40,6 +40,7 @@ namespace NGIN {
             SCALED_SPRITE scaleUp(float factor, uint32_t* img, uint32_t h, uint32_t w);
             static std::map<std::string, std::pair<uint32_t, uint32_t>> lookupTable; 
             SpriteBatch();
+            ~SpriteBatch();
         
     };
 

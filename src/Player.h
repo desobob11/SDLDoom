@@ -7,7 +7,7 @@
 
 #include "../SDL2/include/SDL2/SDL.h"
 #include "Vector.h"
-#include "Wall.h"
+#include "LevelState.h"
 
 #define MOUSE_SENS 300.0
 

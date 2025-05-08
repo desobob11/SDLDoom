@@ -49,6 +49,7 @@ DRAW_COL Vector::Vector_cast_seek_length(SDL_Renderer* rend, Vector h_point,
     while (!hit && (i >= 0 && i < map_h && j >= 0 && j < map_w)) {
         i = (int)copy.head.z / BLOCK_SIZE;
         j = (int)copy.head.x / BLOCK_SIZE;
+        // keep going until I find a wall
         if (walls[i * map_w + j]) {
             copy.tail = Vector::Vector_closest_point(copy.head, h_point);
 

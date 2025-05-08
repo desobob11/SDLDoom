@@ -42,7 +42,7 @@ void SpriteBatch::renderSprites(SDL_Surface* surface) {
         }
 
         if (ss.factor != 1.0) {
-            delete[] ss.img;
+            delete ss.img;
         }
     }
 
@@ -205,6 +205,16 @@ uint32_t SpriteBatch::q_interp(uint32_t a, uint32_t b, uint32_t c, uint32_t d) {
     result |= _b;
     return result;
 }
+
+    SpriteBatch::~SpriteBatch() {
+        for (Sprite* sp : this->sprites) {
+            delete sp;
+        }
+
+        for (auto iter = this->imgs.begin(); iter != this->imgs.end(); ++iter) {
+            delete iter->second;
+        }
+    }
 
 // uint32_t *pixels = (uint32_t *)surface->pixels;
 
