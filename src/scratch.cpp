@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
         cout << iter->first << " " << iter->second.first << " "
              << iter->second.second << endl;
     }
-    NGIN::Sprite sp1{"imp", 0, 0, 0.5};
+    NGIN::Sprite sp1{"imp", 0, 0, 1.0};
 
     batch.addSprite(&sp1);
     batch.loadImages();
@@ -78,6 +78,25 @@ int main(int argc, char* argv[]) {
         SDL_UpdateWindowSurface(wind);
         /* Process events */
         while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_KEYDOWN) {
+                SDL_Scancode code = event.key.keysym.scancode;
+
+                if (code == SDL_SCANCODE_DOWN) {
+                    if (batch.scaleFactor >= 0.25) {
+                        batch.scaleFactor -= 0.5;
+                    }
+                }
+                if (code == SDL_SCANCODE_UP) {
+                    batch.scaleFactor += 1;
+                }
+            }
+
+            if (event.type == SDL_QUIT) {
+                SDL_Quit();
+                SDL_DestroyWindowSurface(wind);
+                SDL_DestroyWindow(wind);
+                return 0;
+            }
         }
 
         SDL_LockSurface(surface);
