@@ -40,6 +40,7 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
         int col_height =
             SCREEN_HEIGHT - (SCREEN_HEIGHT / (((col.distance)) / 100.0));
 
+        // draw entire column that color
         if (col_height < 0) {
             for (int k = i; k < i + 1; ++k) {
                 for (int j = 0; j < SCREEN_HEIGHT; ++j) {
