@@ -1,10 +1,11 @@
+STRETCH
 --Automap
 	-- Draw player centered on automap
 	-- Draw walls within automap range of player
 
 
---Fix color shading turning bright when far
-	-- Do i want to have directional source of light?
+**--Fix color shading turning bright when far
+-- Do i want to have directional source of light?
 
 
 ** --Smooth player inputs
