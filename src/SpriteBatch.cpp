@@ -136,23 +136,23 @@ SCALED_SPRITE SpriteBatch::scaleUp(uint32_t* img, uint32_t height,
     uint32_t* scaledImg = new uint32_t[h * w];
 
     // go through the original sprite
-    for (size_t i = 0; i < height - 1; ++i) {
+    for (size_t i = 0; i < height; ++i) {
         size_t w_incr = 0;
-        for (size_t j = 0; j < width - 1; ++j) {
+        for (size_t j = 0; j < width; ++j) {
             // get 4 pixels for interpolation (2x2 box)
             uint32_t a = img[(i * width) + j];
-            uint32_t b = img[(i * width) + j + 1];
-            uint32_t c = img[((i + 1) * width) + j];
-            uint32_t d = img[((i + 1) * width) + j + 1];
+           // uint32_t b = img[(i * width) + j + 1];
+           // uint32_t c = img[((i + 1) * width) + j];
+           // uint32_t d = img[((i + 1) * width) + j + 1];
 
             // get the interpolated value
-            uint32_t interped = q_interp(a, b, c, d);
+          //  uint32_t interped = q_interp(a, b, c, d);
 
             // upscaled pixel (2x2 box) is interped color
-            scaledImg[(h_incr * w) + w_incr] = interped;
-            scaledImg[(h_incr * w) + w_incr + 1] = interped;
-            scaledImg[((h_incr + 1) * w) + w_incr] = interped;
-            scaledImg[((h_incr + 1) * w) + w_incr + 1] = interped;
+            scaledImg[(h_incr * w) + w_incr] = a;
+            scaledImg[(h_incr * w) + w_incr + 1] = a;
+            scaledImg[((h_incr + 1) * w) + w_incr] = a;
+            scaledImg[((h_incr + 1) * w) + w_incr + 1] = a;
 
             // move indexes for upscaled pixel
             w_incr += 2;
