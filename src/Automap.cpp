@@ -27,7 +27,7 @@ void AUTOMAP_render_player(SDL_Surface* surface, DOOM::Vector player_pos) {
     SDL_UnlockSurface(surface);
 }
 
-void AUTOMAP_render_wall(SDL_Surface* surface, WALL wall,
+void AUTOMAP_render_wall(SDL_Surface* surface, NGIN::WALL wall,
                          DOOM::Vector player_pos) {
     uint32_t* pixels = static_cast<uint32_t*>(surface->pixels);
     uint32_t x_off =
@@ -71,7 +71,7 @@ void AUTOMAP_render_vector(SDL_Surface* surface, DOOM::Vector vector) {
     SDL_UnlockSurface(surface);
 }
 
-void AUTOMAP_render_walls(SDL_Surface* surface, WALL* walls, int walls_len,
+void AUTOMAP_render_walls(SDL_Surface* surface, NGIN::WALL* walls, int walls_len,
                           DOOM::Vector player_pos) {
     for (int i = 0; i < walls_len; ++i) {
         AUTOMAP_render_wall(surface, walls[i], player_pos);

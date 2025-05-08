@@ -57,25 +57,35 @@ int main(int argc, char* argv[]) {
         printf("Error hiding cursor: %s\n", SDL_GetError());
     }
 
-    WALL red = {0x00FF0000};
-    WALL green = {0x0000FF00};
-    WALL blue = {0x000000FF};
-    WALL yellow = {0x00FFFF00};
-    WALL white = {0x00FFFFFF};
-    WALL none = {0x00000000};
+    NGIN::WALL red = {0x00FF0000};
+    NGIN::WALL green = {0x0000FF00};
+    NGIN::WALL blue = {0x000000FF};
+    NGIN::WALL yellow = {0x00FFFF00};
+    NGIN::WALL white = {0x00FFFFFF};
+    NGIN::WALL none = {0x00000000};
 
     DOOM::VERTEX start_pos = {700, 0, 700};
     PLAYER* player = PLAYER_init_player(start_pos);
 
     MAP map;
+    NGIN::Sprite* sprites[50] = {
+        nullptr, nullptr, nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr, nullptr,  nullptr,
+        nullptr, nullptr, nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr, nullptr,  nullptr,
+        nullptr, nullptr, nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr, nullptr,  nullptr,
+        nullptr, nullptr, nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr, nullptr,  nullptr,
+        nullptr, nullptr, nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr, nullptr,  nullptr};
 
-    WALL walls[49] = {
-        white, white, white, white,  white, white, white, white, none,  none,
-        none,  none,  blue,  white,  white, none,  red,   none,  none,  none,
-        white, white, none,  none,   none,  none,  none,  white, white, none,
-        red,   none,  none,  yellow, white, white, green, none,  none,  none,
-        none,  white, white, white,  white, white, white, white, white};
+    NGIN::WALL walls[49] = {
+        white, white, white, white,  white, white, white, 
+        white, none,  none, none,  none,  blue,  white,  
+        white, none,  red,   none,  none,  none, white, 
+        white, none,  none,   none,  none,  none,  white, 
+        white, none, red,   none,  none,  yellow, white, 
+        white, green, none,  none,  none, none,  white, 
+        white, white,  white, white, white, white, white};
     map.map = walls;
+
+    NGIN::LevelState level {walls, sprites};
 
     for (int i = 0; i < 7; ++i) {
         for (int j = 0; j < 7; ++j) {
