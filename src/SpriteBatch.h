@@ -28,6 +28,7 @@ namespace NGIN {
             std::map<std::string, uint32_t*> imgs;
             void loadImage(Sprite sp);
             static void loadLookup();
+            uint32_t q_interp(uint32_t a, uint32_t b, uint32_t c, uint32_t d);
         public:
             void loadImages();
             void addSprite(Sprite* s);

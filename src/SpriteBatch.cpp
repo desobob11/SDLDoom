@@ -114,6 +114,8 @@ namespace NGIN {
 
     
     SCALED_SPRITE SpriteBatch::scaleUp(double factor, uint32_t* img, uint32_t height, uint32_t width) {
+
+
         uint32_t h = static_cast<uint32_t>(height * factor);
         uint32_t w = static_cast<uint32_t>(width * factor);
 
@@ -132,6 +134,45 @@ namespace NGIN {
         }
         return SCALED_SPRITE {factor, scaledImg, h, w};
     }
+
+    /*
+        Interoplates 4 
+    */
+    uint32_t SpriteBatch::q_interp(uint32_t a, uint32_t b, uint32_t c, uint32_t d) {
+        uint8_t abc = !((a ^ b) | (a ^ c));
+        uint8_t abd = !((a ^ b) | (a ^ d));
+        uint8_t bcd = !((b ^ c) | (b ^ d));
+        uint8_t acd = !((a ^ c) | (a ^ d));
+
+        // three pixels equal, return them
+        if (abc | abd | bcd | acd) {
+            return a;
+        }
+
+        uint32_t r, g, b;
+        uint32_t arr[] {a, b, c, d};
+
+        // sum r g and b channels
+        for (size_t i = 0; i < sizeof(arr) / sizeof(arr[0]); ++i) {
+            r += (arr[i] >> 16) & 0xFF;
+            g += (arr[i] >> 8) & 0xFF;
+            b += (arr[i]) & 0xFF;
+        }
+
+        // average each channel
+        r /= sizeof(arr);
+        g /= sizeof(arr);
+        b /= sizeof(arr);
+        
+        // merge channels and return
+        uint32_t result = 0x00000000;
+        result |= (r << 16);
+        result |= (g << 8);
+        result |= b;
+        return result;
+    }
+
+
 
    // uint32_t *pixels = (uint32_t *)surface->pixels;
 
