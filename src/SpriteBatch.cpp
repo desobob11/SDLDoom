@@ -1,6 +1,6 @@
 #include "SpriteBatch.h"
 
-using namespace std;
+
 
 namespace NGIN {
 
@@ -17,27 +17,33 @@ void SpriteBatch::renderSprites(SDL_Surface* surface) {
         uint32_t h = this->lookupTable[(*sp).name].first;
         uint32_t w = this->lookupTable[(*sp).name].second;
 
-        SCALED_SPRITE ss = scaleUp(img, h, w);
-        SCALED_SPRITE ss2 = scaleDown(0.5, img, h, w);
+        SCALED_SPRITE ss = scaleUp(4.0, img, h, w);
 
-        for (uint32_t i = 0; i < ss.h; ++i) {
-            for (uint32_t j = 0; j < ss.w; ++j) {
-                pixels[(i * surface->w) + j] = ss.img[(i * ss.w) + j];
+        size_t draw_h = std::min(ss.h, (uint32_t) SCREEN_HEIGHT);
+        size_t draw_w = std::min(ss.w, (uint32_t) SCREEN_WIDTH);
+
+        for (uint32_t i = 0; i < draw_h; ++i) {
+            for (uint32_t j = 0; j < draw_w; ++j) {
+                pixels[(i * surface->w) + j] = ss.img[(i * draw_w) + j];
             }
         }
 
-        for (uint32_t i = 0; i < h; ++i) {
-            for (uint32_t j = 0; j < w; ++j) {
-                pixels[(i * surface->w) + j] = img[(i * w) + j];
-            }
-        }
+        SCALED_SPRITE ss2 = scaleDown(0.25, ss.img, ss.h, ss.w);
+
+
 
         for (uint32_t i = 0; i < ss2.h; ++i) {
             for (uint32_t j = 0; j < ss2.w; ++j) {
                 pixels[(i * surface->w) + j] = ss2.img[(i * ss2.w) + j];
             }
         }
+
+
+        delete[] ss.img;
+        delete[] ss2.img;
     }
+
+
 }
 
 void SpriteBatch::loadImage(Sprite sp) {
@@ -49,7 +55,7 @@ void SpriteBatch::loadImage(Sprite sp) {
     if (file.is_open()) {
         uint32_t h = this->lookupTable[sp.name].first;
         uint32_t w = this->lookupTable[sp.name].second;
-        cout << h << " " << w << endl;
+
 
         size_t offset = 0;
         uint32_t* imgArr = new uint32_t[h * w];
@@ -122,12 +128,14 @@ SCALED_SPRITE SpriteBatch::scaleDown(double factor, uint32_t* img,
 }
 
 // FACTOR IS ALWAYS 2
-SCALED_SPRITE SpriteBatch::scaleUp(uint32_t* img, uint32_t height,
+SCALED_SPRITE SpriteBatch::scaleUp(float factor, uint32_t* img, uint32_t height,
                                    uint32_t width) {
     // double dimensions
-    uint32_t h = static_cast<uint32_t>(height * SCALE_UP_F);
-    uint32_t w = static_cast<uint32_t>(width * SCALE_UP_F);
+    uint32_t h = static_cast<uint32_t>(height * factor);
+    uint32_t w = static_cast<uint32_t>(width * factor);
 
+    uint32_t i_factor = static_cast<uint32_t>(factor);
+    
     // indexes for upscaled arr (scaledImg)
     size_t h_incr = 0;
    // size_t w_incr = 0;
@@ -139,27 +147,21 @@ SCALED_SPRITE SpriteBatch::scaleUp(uint32_t* img, uint32_t height,
     for (size_t i = 0; i < height; ++i) {
         size_t w_incr = 0;
         for (size_t j = 0; j < width; ++j) {
-            // get 4 pixels for interpolation (2x2 box)
+            // get this pixel
             uint32_t a = img[(i * width) + j];
-           // uint32_t b = img[(i * width) + j + 1];
-           // uint32_t c = img[((i + 1) * width) + j];
-           // uint32_t d = img[((i + 1) * width) + j + 1];
 
-            // get the interpolated value
-          //  uint32_t interped = q_interp(a, b, c, d);
-
-            // upscaled pixel (2x2 box) is interped color
-            scaledImg[(h_incr * w) + w_incr] = a;
-            scaledImg[(h_incr * w) + w_incr + 1] = a;
-            scaledImg[((h_incr + 1) * w) + w_incr] = a;
-            scaledImg[((h_incr + 1) * w) + w_incr + 1] = a;
-
+            // blow it up, it will now be a factor * factor box
+            for (size_t k = h_incr; k < h_incr + i_factor; ++k) {
+                for (size_t l = w_incr; l < w_incr + i_factor; ++l) {
+                    scaledImg[(k * w) + l] = a;
+                }
+            }
             // move indexes for upscaled pixel
-            w_incr += 2;
+            w_incr += i_factor;
         }
-        h_incr += 2;
+        h_incr += i_factor;
     }
-    return SCALED_SPRITE{2.0, scaledImg, h, w};
+    return SCALED_SPRITE{factor, scaledImg, h, w};
 }
 
 /*

@@ -8,10 +8,11 @@
 #include "../SDL2/include/SDL2/SDL.h"
 #include <sstream>
 #include <fstream>
+#include "Const.h"
 
 #define PARSE_SIZE 4096
 #define LOOKUP_TABLE "./assets/lookup.txt"
-#define SCALE_UP_F 2
+#define SCALE_UP_F 4
 
 namespace NGIN {
 
@@ -35,7 +36,7 @@ namespace NGIN {
             void addSprite(Sprite* s);
             void renderSprites(SDL_Surface* surf);
             SCALED_SPRITE scaleDown(double factor, uint32_t* img, uint32_t h, uint32_t w);
-            SCALED_SPRITE scaleUp(uint32_t* img, uint32_t h, uint32_t w);
+            SCALED_SPRITE scaleUp(float factor, uint32_t* img, uint32_t h, uint32_t w);
             static std::map<std::string, std::pair<uint32_t, uint32_t>> lookupTable; 
             SpriteBatch();
         
