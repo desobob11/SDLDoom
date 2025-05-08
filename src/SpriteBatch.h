@@ -33,7 +33,6 @@ namespace NGIN {
             static void loadLookup();
             uint32_t q_interp(uint32_t a, uint32_t b, uint32_t c, uint32_t d);
         public:
-        float scaleFactor = 1.0;
             void loadImages();
             void addSprite(Sprite* s);
             void renderSprites(SDL_Surface* surf);

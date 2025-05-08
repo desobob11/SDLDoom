@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
         cout << iter->first << " " << iter->second.first << " "
              << iter->second.second << endl;
     }
-    NGIN::Sprite sp1{"imp", 0, 0, 1.0};
+    NGIN::Sprite sp1{"imp", 0, 0, NGIN::SPRITE_SCALE_BASE};
 
     batch.addSprite(&sp1);
     batch.loadImages();
@@ -76,18 +76,17 @@ int main(int argc, char* argv[]) {
     SDL_Event event;
     while (true) {
         SDL_UpdateWindowSurface(wind);
+      //  cout << NGIN::SPRITE_SCALES[sp1.scale] << endl;
         /* Process events */
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_KEYDOWN) {
                 SDL_Scancode code = event.key.keysym.scancode;
 
                 if (code == SDL_SCANCODE_DOWN) {
-                    if (batch.scaleFactor >= 0.25) {
-                        batch.scaleFactor -= 0.5;
-                    }
+                    sp1.scale = std::max(NGIN::SPRITE_SCALE_MIN, sp1.scale - 1);
                 }
                 if (code == SDL_SCANCODE_UP) {
-                    batch.scaleFactor += 1;
+                    sp1.scale = std::min(NGIN::SPRITE_SCALE_MAX, sp1.scale + 1);
                 }
             }
 

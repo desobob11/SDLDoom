@@ -18,17 +18,20 @@ void SpriteBatch::renderSprites(SDL_Surface* surface) {
         uint32_t w = this->lookupTable[sp->name].second;
 
         SCALED_SPRITE ss;
-        if (this->scaleFactor > 1.0) {
-            ss = scaleUp(this->scaleFactor, img, h, w);
+        float draw_scale = NGIN::SPRITE_SCALES[sp->scale];
+        std::cout << draw_scale << std::endl;
+        if (draw_scale > 1.0) {
+            ss = scaleUp(draw_scale, img, h, w);
         }
-        else if (this->scaleFactor < 1.0) {
-            ss = scaleDown(this->scaleFactor, img, h, w);
+        else if (draw_scale < 1.0) {
+            ss = scaleDown(draw_scale, img, h, w);
         }
         else {
-            ss = {1.0, img, h, w};
+            ss = {NGIN::SPRITE_SCALES[NGIN::SPRITE_SCALE_BASE], img, h, w};   
         }
-        
 
+        
+        
         size_t draw_h = std::min(ss.h, (uint32_t) SCREEN_HEIGHT);
         size_t draw_w = std::min(ss.w, (uint32_t) SCREEN_WIDTH);
 
@@ -37,12 +40,9 @@ void SpriteBatch::renderSprites(SDL_Surface* surface) {
                 pixels[(i * surface->w) + j] = ss.img[(i * draw_w) + j];
             }
         }
-        this->scaleFactor = 1.0;
 
         if (ss.factor != 1.0) {
-            delete[] img;
-            this->imgs[sp->name] = ss.img;
-            SpriteBatch::lookupTable[sp->name] = std::pair<uint32_t, uint32_t> {ss.h, ss.w};
+            delete[] ss.img;
         }
     }
 
@@ -116,6 +116,8 @@ SCALED_SPRITE SpriteBatch::scaleDown(double factor, uint32_t* img,
 
     size_t w_iter = static_cast<size_t>(width / w);
     size_t h_iter = static_cast<size_t>(height / h);
+    
+    std::cout << h_iter << " " << w_iter << " " << std::endl;
 
     size_t img_i = 0;
     uint32_t* scaledImg = new uint32_t[h * w];
