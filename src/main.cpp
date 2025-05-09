@@ -150,10 +150,10 @@ int main(int argc, char* argv[]) {
         }
 
         level.batch.updateSpriteDistances(player->position);
-        SDL_LockSurface(surface);
+       // SDL_LockSurface(surface);
        // SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
-        level.batch.renderSprites(surface);
-        SDL_UnlockSurface(surface);
+       // level.batch.renderSprites(surface);
+       // SDL_UnlockSurface(surface);
         SDL_Delay(1000 / FPS);
     }
 }

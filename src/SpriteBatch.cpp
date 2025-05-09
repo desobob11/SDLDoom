@@ -234,7 +234,8 @@ void SpriteBatch::updateSpriteDistances(DOOM::Vector playerPos) {
         sp->dist = DOOM::Vector {playerPos.head, sp->pos.head}.Vector_length();
 
         float blocksAway = sp->dist / BLOCK_SIZE;
-        sp->scale = std::min(static_cast<int32_t>(blocksAway), NGIN::SPRITE_SCALE_MAX);  // number of scales for sprites
+        sp->scale = std::max(0, SPRITE_SCALE_MAX - std::min(SPRITE_SCALE_MAX, static_cast<int32_t>(blocksAway)));
+        
     }
 }
 

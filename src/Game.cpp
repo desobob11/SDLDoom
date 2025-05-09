@@ -26,6 +26,8 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
     h_iter.head = h_head;
     h_iter.tail = h_head;
 
+    DRAW_COL* cols = new DRAW_COL[SCREEN_WIDTH];
+
     for (int i = 0; i < 800; i += 1) {
         DOOM::VERTEX plane_point = h_iter.head;
         DOOM::Vector ray;
@@ -39,18 +41,28 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
         ray.head.x += ray_x_incr;
         ray.head.z += ray_z_incr;
 
-        DRAW_COL col = Vector_cast_seek_length(ray, rend, player->horizon, ls,
+        cols[i] = Vector_cast_seek_length(ray, rend, player->horizon, ls,
                                                map_w, map_h, i);
 
-        int col_height =
-            SCREEN_HEIGHT - (SCREEN_HEIGHT / (((col.distance)) / 100.0));
+        h_iter.head.x += x_incr;
+        h_iter.head.z += z_incr;
+    }
+    
+    // render sprites first
+    ls.batch.renderSprites(surface);
 
+
+    for (int i = 0; i < 800; i += 1) {
+        DRAW_COL col = cols[i];
         // draw entire column that color
+        int col_height = SCREEN_HEIGHT - (SCREEN_HEIGHT / (((col.distance)) / 100.0));
         if (col_height < 0) {
             for (int k = i; k < i + 1; ++k) {
                 for (int j = 0; j < SCREEN_HEIGHT; ++j) {
                     uint32_t *pixels = (uint32_t *)surface->pixels;
-                    pixels[j * surface->w + k] = col.color;
+                    if (!pixels[j * surface->w + k]) {  // dont draw over sprits
+                        pixels[j * surface->w + k] = col.color;
+                    }
                 }
             }
         } else {
@@ -59,13 +71,13 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
             for (int k = i; k < i + 1; ++k) {
                 for (int j = half; j < SCREEN_HEIGHT - half; ++j) {
                     uint32_t *pixels = (uint32_t *)surface->pixels;
-                    pixels[j * surface->w + k] = col.color;
+                    if (!pixels[j * surface->w + k]) {// dont draw over sprits
+                        pixels[j * surface->w + k] = col.color;
+                    }
                 }
             }
         }
 
-        h_iter.head.x += x_incr;
-        h_iter.head.z += z_incr;
     }
     SDL_UnlockSurface(surface);
 }
