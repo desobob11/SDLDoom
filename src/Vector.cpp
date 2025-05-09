@@ -100,4 +100,11 @@ Vector Vector::Vector_rotate_vector(double theta, Vector vector) {
     to_return.tail = vector.tail;
     return to_return;
 }
+
+    bool Vector::overlapsBox(VERTEX topl, VERTEX topr, VERTEX botl, VERTEX botr) {
+        bool horiz = this->head.x >= topl.x && this->head.x <= topr.x;
+        bool vert = this->head.z >= topl.z && this->head.z <= botl.z;
+        return horiz && vert;
+    }
+
 }  // namespace DOOM

@@ -1,0 +1,12 @@
+g++ -std=c++17 ^
+src\Const.cpp ^
+src\Game.cpp ^
+src\Automap.cpp ^
+src\Tests.cpp ^
+src\Player.cpp ^
+src\Vector.cpp ^
+src\LevelState.cpp ^
+src\Sprite.cpp ^
+src\SpriteBatch.cpp ^
+-IC:\Users\Des\SDLDoom\SDL2\include -LC:\Users\Des\SDLDoom\SDL2\lib -Wall -lmingw32 -ldbghelp -lSDL2main -lSDL2 -o testexe
+testexe

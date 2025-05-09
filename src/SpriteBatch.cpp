@@ -215,13 +215,13 @@ uint32_t SpriteBatch::q_interp(uint32_t a, uint32_t b, uint32_t c, uint32_t d) {
 }
 
     SpriteBatch::~SpriteBatch() {
-        for (Sprite* sp : this->sprites) {
+   //     for (Sprite* sp : this->sprites) {
           //  delete sp;
-        }
+     //   }
 
-        for (auto iter = this->imgs.begin(); iter != this->imgs.end(); ++iter) {
+    //    for (auto iter = this->imgs.begin(); iter != this->imgs.end(); ++iter) {
         //    delete iter->second;
-        }
+     //   }
     }
 
 // uint32_t *pixels = (uint32_t *)surface->pixels;

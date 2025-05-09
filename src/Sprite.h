@@ -7,6 +7,7 @@
 
 
 
+
 namespace NGIN {
 
 class Sprite {
@@ -25,7 +26,7 @@ class Sprite {
     //     : name(name), w(w), h(h), x(x), z(z) {};
 };
 
-
+const uint32_t SPRITE_HBOX_DIM = 25;
 inline const int32_t SPRITE_SCALE_BASE = 2, SPRITE_SCALE_MAX = 5, SPRITE_SCALE_MIN = 0;
 inline float SPRITE_SCALES[] {0.25, 0.50, 1.0, 2.0, 3.0, 4.0};
 }  // namespace NGIN

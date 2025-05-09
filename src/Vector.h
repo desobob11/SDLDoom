@@ -25,6 +25,7 @@ class Vector {
     VERTEX tail;
 
     Vector(VERTEX head, VERTEX tail) : head(head), tail(tail) {};
+    Vector(VERTEX head) : head(head) {};
     Vector(const Vector& other) : head(other.head), tail(other.tail) {};
     Vector() {};
 
@@ -37,6 +38,7 @@ class Vector {
     static uint32_t Vector_darken_color(uint32_t color, uint32_t distance);
     static VERTEX Vector_closest_point(VERTEX ray_head, Vector horizon);
     static Vector Vector_rotate_vector(double theta, Vector vector);
+    bool overlapsBox(VERTEX topl, VERTEX topr, VERTEX botl, VERTEX botr);
     /*
     inline friend Vector operator-(const Vector& a,const Vector& b) {
 
