@@ -13,4 +13,11 @@ STRETCH
 **	-- Mouse input to look left and right
 **	-- Allow simaltaneous movement, turning, and automap
 
+
+
+** SPRITES
+	-- Need to render sprites on same block as player
+	-- Sprites need to be non-slidy
+	-- Walls should render over partly revealed sprites
+
 --Add movement in any direction

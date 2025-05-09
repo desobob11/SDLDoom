@@ -115,7 +115,6 @@ DRAW_COL Vector_cast_seek_length(DOOM::Vector ray, SDL_Renderer *rend,
                 renderedSprites.insert(rendering);
                 rendering->columnStart = pixelCol;
             }
-            hit = 1;
         }  
         
         if (!hit) {

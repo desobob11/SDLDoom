@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
     DOOM::VERTEX start_pos = {700, 0, 700};
     PLAYER* player = PLAYER_init_player(start_pos);
 
-    NGIN::Sprite sp1 {"imp", DOOM::VERTEX {300.0, 0, 300.0}};
+    NGIN::Sprite sp1 {"imp", DOOM::VERTEX {200.0, 0, 200.0}};
 
     MAP map;
     NGIN::Sprite* sprites[49] = {
