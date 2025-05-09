@@ -16,6 +16,7 @@ typedef struct WALL {
 class LevelState {
     public:
         WALL* walls;
+        uint32_t* wallColors;
         Sprite** sprites;
         LevelState(WALL* w, Sprite** s);
         void updateSpriteDistances(DOOM::Vector playerPos);

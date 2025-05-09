@@ -36,9 +36,8 @@ class Vector {
     static Vector Vector_cast(Vector v1, Vector v2);
     double Vector_length() const;
     int Vector_draw_height(double length);
-    DRAW_COL Vector_cast_seek_length(SDL_Renderer* rend, Vector h_point,
-                                     uint32_t* walls, int map_w,
-                                     int map_h) const;
+    DRAW_COL Vector_cast_seek_length(SDL_Renderer* rend, Vector h_point, NGIN::LevelState ls, int map_w,
+                                     int map_h, uint32_t pixelCol) const;
     static uint32_t Vector_darken_color(uint32_t color, uint32_t distance);
     static VERTEX Vector_closest_point(VERTEX ray_head, Vector horizon);
     static Vector Vector_rotate_vector(double theta, Vector vector);

@@ -142,7 +142,7 @@ int main(int argc, char* argv[]) {
                            map.h);
         PLAYER_rotate_camera(player, event);
         if (RENDER_MODE == 0) {
-            GAME_render_view(wind, surface, NULL, player, wall_colors, map.w,
+            GAME_render_view(wind, surface, NULL, player, level, map.w,
                              map.h);
         } else {
             AUTOMAP_render_map(wind, surface, map, player->position);

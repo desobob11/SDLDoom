@@ -15,6 +15,7 @@ class Sprite {
         std::string name;
         DOOM::Vector pos;
         float dist;
+        uint32_t columnStart;
         int32_t scale;
         Sprite(std::string n, DOOM::VERTEX p);
 

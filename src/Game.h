@@ -7,11 +7,12 @@
 #include "../SDL2/include/SDL2/SDL.h"
 #include "Player.h"
 #include "Vector.h"
+#include "LevelState.h"
 
 extern int RENDER_MODE;
 
 void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
-                      SDL_Renderer *rend, PLAYER *player, uint32_t *map,
+                      SDL_Renderer *rend, PLAYER *player, NGIN::LevelState ls,
                       int map_w, int map_h);
 
 #endif

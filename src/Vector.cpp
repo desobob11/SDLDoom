@@ -4,6 +4,7 @@
 
 #include "Automap.h"
 #include "Const.h"
+#include <set>
 
 namespace DOOM {
 
@@ -35,8 +36,10 @@ uint32_t Vector::Vector_darken_color(uint32_t color, uint32_t distance) {
 
 ////   VERTEX start_pos = {75, 0, 0};
 DRAW_COL Vector::Vector_cast_seek_length(SDL_Renderer* rend, Vector h_point,
-                                         uint32_t* walls, int map_w,
-                                         int map_h) const {
+                                         NGIN::LevelState ls, int map_w,
+                                         int map_h, uint32_t pixelCol) const {
+                                        
+    std::set<NGIN::Sprite*> renderedSprites {};
     int hit = 0;
     Vector copy = Vector{*this};
     DRAW_COL col;
@@ -50,14 +53,23 @@ DRAW_COL Vector::Vector_cast_seek_length(SDL_Renderer* rend, Vector h_point,
         i = (int)copy.head.z / BLOCK_SIZE;
         j = (int)copy.head.x / BLOCK_SIZE;
         // keep going until I find a wall
-        if (walls[i * map_w + j]) {
+        if (ls.wallColors[i * map_w + j]) {
             copy.tail = Vector::Vector_closest_point(copy.head, h_point);
 
             col.distance = copy.Vector_length();
-            col.color = Vector::Vector_darken_color(walls[i * map_w + j],
+            col.color = Vector::Vector_darken_color(ls.wallColors[i * map_w + j],
                                                     (uint32_t)col.distance);
             hit = 1;
-        } else {
+        }
+        else if (ls.sprites[i * map_w + j]) {
+            NGIN::Sprite* rendering = ls.sprites[i * map_w + j];
+            if (renderedSprites.find(rendering) == renderedSprites.end()) {
+                renderedSprites.insert(rendering);
+                rendering->columnStart = pixelCol;
+            }
+     
+        }
+        else {
             VERTEX new_head = {copy.head.x + x_incr, 0, copy.head.z + z_incr};
             copy.head = new_head;
         }

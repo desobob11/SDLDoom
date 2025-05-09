@@ -4,7 +4,7 @@
 
 int RENDER_MODE = 0;
 void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
-                      SDL_Renderer *rend, PLAYER *player, uint32_t *map,
+                      SDL_Renderer *rend, PLAYER *player, NGIN::LevelState ls,
                       int map_w, int map_h) {
     SDL_LockSurface(surface);
     SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
@@ -34,8 +34,7 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
         ray.head.x += ray_x_incr;
         ray.head.z += ray_z_incr;
 
-        DOOM::DRAW_COL col = ray.Vector_cast_seek_length(rend, player->horizon,
-                                                         map, map_w, map_h);
+        DOOM::DRAW_COL col = ray.Vector_cast_seek_length(rend, player->horizon, ls, map_w, map_h, i);
 
         int col_height =
             SCREEN_HEIGHT - (SCREEN_HEIGHT / (((col.distance)) / 100.0));
