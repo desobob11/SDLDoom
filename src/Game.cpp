@@ -1,10 +1,15 @@
 #include "Game.h"
 
+#include <set>
+
 #include "Const.h"
 
 int RENDER_MODE = 0;
+
+namespace NGIN {
+
 void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
-                      SDL_Renderer *rend, PLAYER *player, NGIN::LevelState ls,
+                      SDL_Renderer *rend, PLAYER *player, NGIN::LevelState &ls,
                       int map_w, int map_h) {
     SDL_LockSurface(surface);
     SDL_memset(surface->pixels, 0x00000000, surface->h * surface->pitch);
@@ -34,7 +39,8 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
         ray.head.x += ray_x_incr;
         ray.head.z += ray_z_incr;
 
-        DOOM::DRAW_COL col = ray.Vector_cast_seek_length(rend, player->horizon, ls, map_w, map_h, i);
+        DRAW_COL col = Vector_cast_seek_length(ray, rend, player->horizon, ls,
+                                               map_w, map_h, i);
 
         int col_height =
             SCREEN_HEIGHT - (SCREEN_HEIGHT / (((col.distance)) / 100.0));
@@ -63,3 +69,50 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
     }
     SDL_UnlockSurface(surface);
 }
+
+DRAW_COL Vector_cast_seek_length(DOOM::Vector ray, SDL_Renderer *rend,
+                                 DOOM::Vector h_point, NGIN::LevelState ls,
+                                 int map_w, int map_h, uint32_t pixelCol) {
+    std::set<NGIN::Sprite *> renderedSprites{};
+    int hit = 0;
+    DOOM::Vector copy = DOOM::Vector{ray.head, ray.tail};
+    DRAW_COL col;
+
+    double x_incr = ray.head.x - ray.tail.x;
+    double z_incr = ray.head.z - ray.tail.z;
+
+    int i = 0;
+    int j = 0;
+    while (!hit && (i >= 0 && i < map_h && j >= 0 && j < map_w)) {
+        i = (int)copy.head.z / BLOCK_SIZE;
+        j = (int)copy.head.x / BLOCK_SIZE;
+        // keep going until I find a wall
+        if (ls.wallColors[i * map_w + j]) {
+            copy.tail = DOOM::Vector::Vector_closest_point(copy.head, h_point);
+
+            col.distance = copy.Vector_length();
+            col.color = DOOM::Vector::Vector_darken_color(
+                ls.wallColors[i * map_w + j], (uint32_t)col.distance);
+            hit = 1;
+        }
+        //std::cout << ls.sprites[i * map_w + j] << std::endl;
+        if (ls.sprites[i * map_w + j]) {
+          //  std::cout << "HIT SPRITE" << std::endl;
+            NGIN::Sprite *rendering = ls.sprites[i * map_w + j];
+            if (renderedSprites.find(rendering) == renderedSprites.end()) {
+                renderedSprites.insert(rendering);
+                rendering->columnStart = pixelCol;
+            }
+            hit = 1;
+        }  
+        
+        if (!hit) {
+            DOOM::VERTEX new_head = {copy.head.x + x_incr, 0,
+                                     copy.head.z + z_incr};
+            copy.head = new_head;
+        }
+    }
+
+    return col;
+}
+}  // namespace NGIN

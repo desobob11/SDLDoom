@@ -3,7 +3,6 @@
 #include "../SDL2/include/SDL2/SDL.h"
 #include "Sprite.h"
 #include "SpriteBatch.h"
-#include "Vector.h"
 
 namespace NGIN {
 typedef struct WALL {
@@ -18,8 +17,8 @@ class LevelState {
         WALL* walls;
         uint32_t* wallColors;
         Sprite** sprites;
-        LevelState(WALL* w, Sprite** s);
-        void updateSpriteDistances(DOOM::Vector playerPos);
+        size_t wallCount;
+        LevelState(WALL* w, Sprite** s, size_t n_wall);
         SpriteBatch batch;
     private:
 

@@ -12,6 +12,8 @@ void SpriteBatch::renderSprites(SDL_Surface* surface) {
     uint32_t* pixels = (uint32_t*)surface->pixels;
 
     for (Sprite* sp : this->sprites) {
+        std::cout << sp->columnStart << std::endl;
+        
         uint32_t* img = this->imgs[sp->name];
 
         uint32_t h = this->lookupTable[sp->name].first;
@@ -32,20 +34,22 @@ void SpriteBatch::renderSprites(SDL_Surface* surface) {
         
         
         size_t draw_h = std::min(ss.h, (uint32_t) SCREEN_HEIGHT);
-        size_t draw_w = std::min(ss.w + sp->columnStart, (uint32_t) SCREEN_WIDTH);
+        size_t draw_w = std::min(ss.w, (uint32_t) SCREEN_WIDTH);
 
         uint32_t vertical_offset = (SCREEN_HEIGHT / 2) - (ss.h / 2);
 
         for (uint32_t i = 0; i < draw_h; ++i) {
-            for (uint32_t j = sp->columnStart; j < draw_w; ++j) {
+            for (uint32_t j = 0; j < draw_w; ++j) {
                 if (ss.img[(i * draw_w) + j]) {
-                    if (i + vertical_offset < SCREEN_HEIGHT) {
-                        pixels[((i + vertical_offset) * surface->w) + j] = ss.img[(i * draw_w) + j];       
+                    if (i + vertical_offset < SCREEN_HEIGHT && j + sp->columnStart < SCREEN_WIDTH) {
+                        pixels[((i + vertical_offset) * surface->w) + j + sp->columnStart] = ss.img[(i * draw_w) + j];       
                     }      
                 }
             }
         }
 
+        // reset column offset
+        sp->columnStart = SCREEN_WIDTH + 1;
         if (ss.factor != 1.0) {
             delete ss.img;
         }
@@ -122,7 +126,6 @@ SCALED_SPRITE SpriteBatch::scaleDown(double factor, uint32_t* img,
     size_t w_iter = static_cast<size_t>(width / w);
     size_t h_iter = static_cast<size_t>(height / h);
     
-    std::cout << h_iter << " " << w_iter << " " << std::endl;
 
     size_t img_i = 0;
     uint32_t* scaledImg = new uint32_t[h * w];
@@ -213,11 +216,11 @@ uint32_t SpriteBatch::q_interp(uint32_t a, uint32_t b, uint32_t c, uint32_t d) {
 
     SpriteBatch::~SpriteBatch() {
         for (Sprite* sp : this->sprites) {
-            delete sp;
+          //  delete sp;
         }
 
         for (auto iter = this->imgs.begin(); iter != this->imgs.end(); ++iter) {
-            delete iter->second;
+        //    delete iter->second;
         }
     }
 
@@ -231,7 +234,7 @@ void SpriteBatch::updateSpriteDistances(DOOM::Vector playerPos) {
         sp->dist = DOOM::Vector {playerPos.head, sp->pos.head}.Vector_length();
 
         float blocksAway = sp->dist / BLOCK_SIZE;
-        sp->scale = ((int32_t) blocksAway) % (SPRITE_SCALE_MAX + 1);  // number of scales for sprites
+        sp->scale = std::min(static_cast<int32_t>(blocksAway), NGIN::SPRITE_SCALE_MAX);  // number of scales for sprites
     }
 }
 

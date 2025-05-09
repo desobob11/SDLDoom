@@ -69,10 +69,12 @@ int main(int argc, char* argv[]) {
     DOOM::VERTEX start_pos = {700, 0, 700};
     PLAYER* player = PLAYER_init_player(start_pos);
 
+    NGIN::Sprite sp1 {"imp", DOOM::VERTEX {300.0, 0, 300.0}};
+
     MAP map;
     NGIN::Sprite* sprites[49] = {
         nullptr, nullptr, nullptr, nullptr,  nullptr, nullptr, nullptr,
-        nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr, nullptr, 
+        nullptr, &sp1,  nullptr, nullptr, nullptr, nullptr, nullptr, 
         nullptr, nullptr, nullptr, nullptr, nullptr,  nullptr, nullptr, 
         nullptr, nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr, 
         nullptr,  nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
@@ -89,8 +91,7 @@ int main(int argc, char* argv[]) {
         white, white,  white, white, white, white, white};
     map.map = walls;
 
-    NGIN::LevelState level {walls, sprites};
-    NGIN::Sprite sp1 {"imp", DOOM::VERTEX {300.0, 0, 300.0}};
+    NGIN::LevelState level {walls, sprites, 49};
 
     level.batch.addSprite(&sp1);
     level.batch.loadImages();
@@ -142,7 +143,7 @@ int main(int argc, char* argv[]) {
                            map.h);
         PLAYER_rotate_camera(player, event);
         if (RENDER_MODE == 0) {
-            GAME_render_view(wind, surface, NULL, player, level, map.w,
+            NGIN::GAME_render_view(wind, surface, NULL, player, level, map.w,
                              map.h);
         } else {
             AUTOMAP_render_map(wind, surface, map, player->position);
