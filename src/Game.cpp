@@ -54,6 +54,7 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
 
     for (int i = 0; i < 800; i += 1) {
         DRAW_COL col = cols[i];
+        std::cout << col.distance << " " << col.spriteDistance << std::endl;
         // draw entire column that color
         int col_height =
             SCREEN_HEIGHT - (SCREEN_HEIGHT / (((col.distance)) / 100.0));
