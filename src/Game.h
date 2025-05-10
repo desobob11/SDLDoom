@@ -17,6 +17,7 @@ namespace NGIN {
 typedef struct DRAW_COL {
     uint32_t color;
     double distance;
+    double spriteDistance = INT_MAX;
 } DRAW_COL;
 
 

@@ -2,6 +2,7 @@
 
 
 
+
 namespace NGIN {
 
 std::map<std::string, std::pair<uint32_t, uint32_t>> SpriteBatch::lookupTable{};

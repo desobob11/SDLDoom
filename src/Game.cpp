@@ -3,6 +3,7 @@
 #include <set>
 
 #include "Const.h"
+#include <algorithm>
 
 int RENDER_MODE = 0;
 
@@ -56,11 +57,13 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
         // draw entire column that color
         int col_height =
             SCREEN_HEIGHT - (SCREEN_HEIGHT / (((col.distance)) / 100.0));
+
+
         if (col_height < 0) {
             for (int k = i; k < i + 1; ++k) {
                 for (int j = 0; j < SCREEN_HEIGHT; ++j) {
                     uint32_t *pixels = (uint32_t *)surface->pixels;
-                    if (!pixels[j * surface->w + k]) {  // dont draw over sprits
+                    if (col.distance < col.spriteDistance || pixels[j * surface->w + k] == 0x00000000) {
                         pixels[j * surface->w + k] = col.color;
                     }
                 }
@@ -71,7 +74,7 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
             for (int k = i; k < i + 1; ++k) {
                 for (int j = half; j < SCREEN_HEIGHT - half; ++j) {
                     uint32_t *pixels = (uint32_t *)surface->pixels;
-                    if (!pixels[j * surface->w + k]) {  // dont draw over sprits
+                    if (col.distance < col.spriteDistance || pixels[j * surface->w + k] == 0x00000000) {
                         pixels[j * surface->w + k] = col.color;
                     }
                 }
@@ -123,7 +126,14 @@ DRAW_COL Vector_cast_seek_length(DOOM::Vector ray, SDL_Renderer *rend,
             if (copy.overlapsBox(hb[0], hb[1], hb[2], hb[3])) {
                 if (renderedSprites.find(rendering) == renderedSprites.end()) {
                     renderedSprites.insert(rendering);
-                    rendering->columnStart = pixelCol;
+                  //  uint32_t startDrawCol = std::max(pixelCol - rene)
+
+                    // TODO
+                    // wow needs to be an easier way to get this info
+                    uint32_t baseWidth = SpriteBatch::lookupTable[rendering->name].second;
+                    uint32_t scaledWidth = static_cast<uint32_t>(baseWidth * NGIN::SPRITE_SCALES[rendering->scale]);
+                    rendering->columnStart = std::max(pixelCol - scaledWidth / 2, static_cast<uint32_t>(0));
+                    col.spriteDistance = static_cast<float>(rendering->dist);
                 }
             }
             delete hb;
