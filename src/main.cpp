@@ -70,6 +70,7 @@ int main(int argc, char* argv[]) {
     PLAYER* player = PLAYER_init_player(start_pos);
 
     NGIN::Sprite sp1 {"imp", DOOM::VERTEX {300.0, 0, 300.0}};
+    NGIN::Sprite sp2 {"imp", DOOM::VERTEX {1100.0, 0, 1100.0}};
 
     MAP map;
     NGIN::Sprite* sprites[49] = {
@@ -78,7 +79,7 @@ int main(int argc, char* argv[]) {
         nullptr, nullptr, nullptr, nullptr, nullptr,  nullptr, nullptr, 
         nullptr, nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr, 
         nullptr,  nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-        nullptr, nullptr, nullptr, nullptr,  nullptr, nullptr, nullptr, 
+        nullptr, nullptr, nullptr, nullptr,  nullptr, &sp2, nullptr, 
         nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr, nullptr};
 
     NGIN::WALL walls[49] = {
@@ -86,7 +87,7 @@ int main(int argc, char* argv[]) {
         white, none,  none, none,  none,  blue,  white,  
         white, none,  red,   none,  none,  none, white, 
         white, none,  none,   none,  none,  none,  white, 
-        white, none, red,   none,  none,  yellow, white, 
+        white, none, red,   none,  none,  none, white, 
         white, green, none,  none,  none, none,  white, 
         white, white,  white, white, white, white, white};
     map.map = walls;
@@ -94,6 +95,7 @@ int main(int argc, char* argv[]) {
     NGIN::LevelState level {walls, sprites, 49};
 
     level.batch.addSprite(&sp1);
+    level.batch.addSprite(&sp2);
     level.batch.loadImages();
 
     for (int i = 0; i < 7; ++i) {
