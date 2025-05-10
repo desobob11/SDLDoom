@@ -98,16 +98,27 @@ DRAW_COL Vector_cast_seek_length(DOOM::Vector ray, SDL_Renderer *rend,
 
     int i = 0;
     int j = 0;
-    while (!hit && (i >= 0 && i < map_h && j >= 0 && j < map_w)) {
+    while (i >= 0 && i < map_h && j >= 0 && j < map_w) {
         i = (int)copy.head.z / BLOCK_SIZE;
         j = (int)copy.head.x / BLOCK_SIZE;
+
+        // bandaid
+        if (i < 0 || i >= map_h) {
+            continue;
+        }
+
+        if (j < 0 || j >= map_w) {
+            continue;
+        }
+
+
         // keep going until I find a wall
-        if (ls.wallColors[i * map_w + j]) {
+        if (ls.wallColors[i * map_w + j] && !hit) {
             copy.tail = DOOM::Vector::Vector_closest_point(copy.head, h_point);
 
             col.distance = copy.Vector_length();
             col.color = DOOM::Vector::Vector_darken_color(
-                ls.wallColors[i * map_w + j], (uint32_t)col.distance);
+            ls.wallColors[i * map_w + j], (uint32_t)col.distance);
             hit = 1;
         }
 
@@ -140,11 +151,11 @@ DRAW_COL Vector_cast_seek_length(DOOM::Vector ray, SDL_Renderer *rend,
             delete hb;
         }
 
-        if (!hit) {
+       // if (!hit) {
             DOOM::VERTEX new_head = {copy.head.x + x_incr, 0,
                                      copy.head.z + z_incr};
             copy.head = new_head;
-        }
+        //}
     }
 
     return col;
