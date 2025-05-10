@@ -12,7 +12,7 @@ void SpriteBatch::renderSprites(SDL_Surface* surface) {
     uint32_t* pixels = (uint32_t*)surface->pixels;
 
     for (Sprite* sp : this->sprites) {
-        std::cout << sp->columnStart << std::endl;
+      //  std::cout << sp->columnStart << std::endl;
         
         uint32_t* img = this->imgs[sp->name];
 

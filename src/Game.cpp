@@ -26,7 +26,7 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
     h_iter.head = h_head;
     h_iter.tail = h_head;
 
-    DRAW_COL* cols = new DRAW_COL[SCREEN_WIDTH];
+    DRAW_COL *cols = new DRAW_COL[SCREEN_WIDTH];
 
     for (int i = 0; i < 800; i += 1) {
         DOOM::VERTEX plane_point = h_iter.head;
@@ -41,21 +41,21 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
         ray.head.x += ray_x_incr;
         ray.head.z += ray_z_incr;
 
-        cols[i] = Vector_cast_seek_length(ray, rend, player->horizon, ls,
-                                               map_w, map_h, i);
+        cols[i] = Vector_cast_seek_length(ray, rend, player->horizon, ls, map_w,
+                                          map_h, i);
 
         h_iter.head.x += x_incr;
         h_iter.head.z += z_incr;
     }
-    
+
     // render sprites first
     ls.batch.renderSprites(surface);
-
 
     for (int i = 0; i < 800; i += 1) {
         DRAW_COL col = cols[i];
         // draw entire column that color
-        int col_height = SCREEN_HEIGHT - (SCREEN_HEIGHT / (((col.distance)) / 100.0));
+        int col_height =
+            SCREEN_HEIGHT - (SCREEN_HEIGHT / (((col.distance)) / 100.0));
         if (col_height < 0) {
             for (int k = i; k < i + 1; ++k) {
                 for (int j = 0; j < SCREEN_HEIGHT; ++j) {
@@ -71,13 +71,12 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
             for (int k = i; k < i + 1; ++k) {
                 for (int j = half; j < SCREEN_HEIGHT - half; ++j) {
                     uint32_t *pixels = (uint32_t *)surface->pixels;
-                    if (!pixels[j * surface->w + k]) {// dont draw over sprits
+                    if (!pixels[j * surface->w + k]) {  // dont draw over sprits
                         pixels[j * surface->w + k] = col.color;
                     }
                 }
             }
         }
-
     }
     SDL_UnlockSurface(surface);
 }
@@ -107,16 +106,29 @@ DRAW_COL Vector_cast_seek_length(DOOM::Vector ray, SDL_Renderer *rend,
                 ls.wallColors[i * map_w + j], (uint32_t)col.distance);
             hit = 1;
         }
-        //std::cout << ls.sprites[i * map_w + j] << std::endl;
+
+        // we have a sprite somewhere on this block
         if (ls.sprites[i * map_w + j]) {
-          //  std::cout << "HIT SPRITE" << std::endl;
             NGIN::Sprite *rendering = ls.sprites[i * map_w + j];
-            if (renderedSprites.find(rendering) == renderedSprites.end()) {
-                renderedSprites.insert(rendering);
-                rendering->columnStart = pixelCol;
+            DOOM::VERTEX *hb = rendering->getHitBox();
+            
+          //  for (size_t i = 0; i < 4; ++i) {
+          //      std::cout << hb[i] << " ";
+        //    }
+          //  std::cout << std::endl;
+
+       //   std::cout << copy.head << std::endl;
+
+            // this ray is overlapping with the sprite's world coord
+            if (copy.overlapsBox(hb[0], hb[1], hb[2], hb[3])) {
+                if (renderedSprites.find(rendering) == renderedSprites.end()) {
+                    renderedSprites.insert(rendering);
+                    rendering->columnStart = pixelCol;
+                }
             }
-        }  
-        
+            delete hb;
+        }
+
         if (!hit) {
             DOOM::VERTEX new_head = {copy.head.x + x_incr, 0,
                                      copy.head.z + z_incr};

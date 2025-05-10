@@ -4,10 +4,7 @@
 
 #include <Windows.h>
 #include <DbgHelp.h>
-#include <iostream>
-#include <string>
-#include <cstdlib>
-#include "Vector.h"
+#include "Tests.h"
 
 
 
@@ -68,8 +65,40 @@ void assertFalse(bool actual, std::string msg) {
     }
 }
 
+template <typename T>
+void assertEquals(T expected, T actual, std::string msg) {
+    if (expected != actual) {
+        std::cout << "FAIL: " << getFunctionNameStack(1) << " -> " << msg
+                  << std::endl;
+        ++FAILS;
+    } else {
+        ++PASSES;
+    }
+}
+
+template <typename T>
+void assertNotEquals(T expected, T actual, std::string msg) {
+    if (expected == actual) {
+        std::cout << "FAIL: " << getFunctionNameStack(1) << " -> " << msg
+                  << std::endl;
+        ++FAILS;
+    } else {
+        ++PASSES;
+    }
+}
 
 
+
+
+void test_spriteGetHitBox() {
+    NGIN::Sprite sp1 {"imp", DOOM::VERTEX {300, 0, 300}};
+    DOOM::VERTEX* arr = sp1.getHitBox();
+    assertEquals(arr[0], DOOM::VERTEX {275, 0, 275}, "TOP LEFT OFF");
+    assertEquals(arr[1], DOOM::VERTEX {325, 0, 275}, "TOP RIGHT OFF");
+    assertEquals(arr[2], DOOM::VERTEX {275, 0, 325}, "BOT LEFT OFF");
+    assertEquals(arr[3], DOOM::VERTEX {325, 0, 325}, "BOT RIGHT OFF");
+    delete arr;
+}
 
 
 
@@ -105,6 +134,7 @@ int main() {
     }
 
     test_vectorOverlapsBox();
+    test_spriteGetHitBox();
 
     std::cout << "PASSED TESTS: -> " << PASSES << " / " << PASSES + FAILS
               << std::endl;

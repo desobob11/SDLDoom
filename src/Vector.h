@@ -4,20 +4,35 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
+#include <sstream>
 
 // THIS IS BAD
 
-
 #include "../SDL2/include/SDL2/SDL.h"
-
 
 namespace DOOM {
 
-typedef struct VERTEX {
+class VERTEX {
+   public:
     double x;
     double y;
     double z;
-} VERTEX;
+
+    inline friend bool operator==(const VERTEX& a, const VERTEX& b) {
+        return a.x == b.x && a.y == b.y && a.z == b.z;
+    }
+
+    
+    inline friend bool operator!=(const VERTEX& a, const VERTEX& b) {
+        return a.x != b.x || a.y != b.y || a.z != b.z;
+    }
+
+    inline friend std::ostream& operator<<(std::ostream& os, const VERTEX& a) {
+        os << "<" << a.x << ", " << a.y << ", " << a.z << ">";
+        return os;
+    }
+};
 
 class Vector {
    public:
