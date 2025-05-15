@@ -44,8 +44,9 @@ void SpriteBatch::renderSprites(SDL_Surface* surface) {
             for (uint32_t j = 0; j < draw_w; ++j) {
                 if (ss.img[(i * draw_w) + j]) {
                     if (i + vertical_offset < SCREEN_HEIGHT && j + sp->columnStart < SCREEN_WIDTH) {
-                        uint32_t index = std::min((i - col_height) / 2, (uint32_t) 0);
-                        pixels[((i - index) * surface->w) + j + sp->columnStart] = ss.img[(i * draw_w) + j];       
+                        uint32_t index = std::min(col_height / 2, (uint32_t) SCREEN_HEIGHT - 1);
+                        if (i + index < SCREEN_HEIGHT)
+                            pixels[((i + index) * surface->w) + j + sp->columnStart] = ss.img[(i * draw_w) + j];       
                     }      
                 }
             }
