@@ -4,10 +4,10 @@
 
 #include "Automap.h"
 #include "Const.h"
-#define HORIZON_DIST 25
+#define HORIZON_DIST 32
 #define MOVE_SPEED 10.0
 
-#define HORIZ_LEN 25
+#define HORIZ_LEN 32
 void PLAYER_move_player(PLAYER* player, SDL_Event event, uint32_t* walls,
                         int map_vw, int map_vh, int map_w, int map_h) {
     int i = 0, j = 0;

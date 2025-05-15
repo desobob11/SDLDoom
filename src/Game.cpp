@@ -29,7 +29,7 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
 
     DRAW_COL *cols = new DRAW_COL[SCREEN_WIDTH];
 
-    for (int i = 0; i < 800; i += 1) {
+    for (int i = 0; i < SCREEN_WIDTH; i += 1) {
         DOOM::VERTEX plane_point = h_iter.head;
         DOOM::Vector ray;
         ray.head = plane_point;
@@ -52,7 +52,7 @@ void GAME_render_view(SDL_Window *wind, SDL_Surface *surface,
     // render sprites first
     ls.batch.renderSprites(surface);
 
-    for (int i = 0; i < 800; i += 1) {
+    for (int i = 0; i < SCREEN_WIDTH; i += 1) {
         DRAW_COL col = cols[i];
 
         // draw entire column that color

@@ -8,7 +8,7 @@
 
 #define BLOCK_SIZE 200
 #define BLOCK_DRAW_SIZE 100
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 800
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 1024
 
 #endif
